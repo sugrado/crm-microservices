@@ -5,6 +5,7 @@ import com.turkcell.crm.customer_service.business.dtos.requests.customers.Create
 import com.turkcell.crm.customer_service.business.dtos.requests.customers.UpdateCustomerRequest;
 import com.turkcell.crm.customer_service.business.dtos.responses.customers.*;
 import com.turkcell.crm.customer_service.business.mappers.CustomerMapper;
+import com.turkcell.crm.customer_service.business.rules.CustomerBusinessRules;
 import com.turkcell.crm.customer_service.data_access.abstracts.CustomerRepository;
 import com.turkcell.crm.customer_service.entities.concretes.Customer;
 import lombok.AllArgsConstructor;
@@ -12,54 +13,57 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 public class CustomerManager implements CustomerService {
     private CustomerRepository customerRepository;
-    private CustomerMapper customerMapper;
+    private CustomerBusinessRules customerBusinessRules;
 
     @Override
     public CreatedCustomerResponse add(CreateCustomerRequest request) {
-        Customer customer = this.customerMapper.toCustomer(request);
+        Customer customer = CustomerMapper.MAPPER.toCustomer(request);
+        customerBusinessRules.nationalityIdShouldBeUnique(customer.getNationalityId());
+        customerBusinessRules.nationalityIdShouldBeValid(customer);
 
         Customer createdCustomer = this.customerRepository.save(customer);
-
-        return this.customerMapper.toCreatedCustomerResponse(createdCustomer);
+        return CustomerMapper.MAPPER.toCreatedCustomerResponse(createdCustomer);
     }
 
     @Override
     public List<GetAllCustomerResponse> getAll() {
-//        List<GetAllCustomerResponse> getAllCustomerResponsesList = new ArrayList<>();
         List<Customer> customerList = this.customerRepository.findAll();
-        return this.customerMapper.toGetAllCustomerResponseList(customerList);
-//        for (Customer customer : customerList) {
-//            GetAllCustomerResponse getAllCustomerResponse = this.modelMapperService.forResponse().map(customer, GetAllCustomerResponse.class);
-//            getAllCustomerResponsesList.add(getAllCustomerResponse);
-//        }
-//        return getAllCustomerResponsesList;
+        return CustomerMapper.MAPPER.toGetAllCustomerResponseList(customerList);
     }
 
     @Override
     public GetByIdCustomerResponse getById(int id) {
-        Customer customer = this.customerRepository.findById(id).get();
-        return this.customerMapper.toGetByIdCustomerResponse(customer);
+        Optional<Customer> customerOptional = this.customerRepository.findById(id);
+        customerBusinessRules.customerShouldBeExist(customerOptional);
+        Customer customer = customerOptional.get();
+        return CustomerMapper.MAPPER.toGetByIdCustomerResponse(customer);
     }
 
     @Override
     public UpdatedCustomerResponse update(int id, UpdateCustomerRequest updateCustomerRequest) {
-        Customer customer = this.customerMapper.toCustomer(updateCustomerRequest);
-        customer.setId(id);
+        Optional<Customer> customerOptional = this.customerRepository.findById(id);
+        customerBusinessRules.customerShouldBeExist(customerOptional);
+        Customer customer = customerOptional.get();
+
+        CustomerMapper.MAPPER.updateCustomerFromRequest(updateCustomerRequest, customer);
         this.customerRepository.save(customer);
 
-        return this.customerMapper.toUpdatedCustomerResponse(customer);
+        return CustomerMapper.MAPPER.toUpdatedCustomerResponse(customer);
     }
 
     @Override
     public DeletedCustomerResponse delete(int id) {
-        Customer deletedCustomer = this.customerRepository.findById(id).get();
+        Optional<Customer> customerOptional = this.customerRepository.findById(id);
+        customerBusinessRules.customerShouldBeExist(customerOptional);
+        Customer deletedCustomer = customerOptional.get();
         deletedCustomer.setDeletedDate(LocalDateTime.now());
         this.customerRepository.save(deletedCustomer);
-        return this.customerMapper.toDeletedCustomerResponse(deletedCustomer);
+        return CustomerMapper.MAPPER.toDeletedCustomerResponse(deletedCustomer);
     }
 }

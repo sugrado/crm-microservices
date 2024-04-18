@@ -8,9 +8,13 @@ import java.util.List;
 
 public interface CustomerService {
     CreatedCustomerResponse add(CreateCustomerRequest request);
+
     List<GetAllCustomerResponse> getAll();
+
     GetByIdCustomerResponse getById(int id);
+
     UpdatedCustomerResponse update(int id, UpdateCustomerRequest updateCustomerRequest);
+
     DeletedCustomerResponse delete(int id);
 
 }

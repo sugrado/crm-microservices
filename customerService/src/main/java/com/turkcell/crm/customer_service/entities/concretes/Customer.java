@@ -3,7 +3,10 @@ package com.turkcell.crm.customer_service.entities.concretes;
 import com.turkcell.crm.customer_service.core.entities.BaseEntity;
 import com.turkcell.crm.customer_service.entities.enums.Gender;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
@@ -23,7 +26,7 @@ public class Customer extends BaseEntity<Integer> {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name ="nationality_id")
+    @Column(name = "nationality_id")
     private String nationalityId;
 
     @Column(name = "birth_date")

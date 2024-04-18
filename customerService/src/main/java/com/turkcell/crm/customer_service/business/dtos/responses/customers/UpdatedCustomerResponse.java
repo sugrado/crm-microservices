@@ -1,7 +1,6 @@
 package com.turkcell.crm.customer_service.business.dtos.responses.customers;
 
 import com.turkcell.crm.customer_service.entities.enums.Gender;
-import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
