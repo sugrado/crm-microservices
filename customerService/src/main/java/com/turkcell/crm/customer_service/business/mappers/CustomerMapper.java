@@ -8,14 +8,12 @@ import com.turkcell.crm.customer_service.entities.concretes.Customer;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
-import org.mapstruct.factory.Mappers;
+import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
 
-@Mapper
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
 public interface CustomerMapper {
-    CustomerMapper MAPPER = Mappers.getMapper(CustomerMapper.class);
-
     Customer toCustomer(CreateCustomerRequest createCustomerRequest);
 
     CreatedCustomerResponse toCreatedCustomerResponse(Customer customer);
@@ -25,8 +23,6 @@ public interface CustomerMapper {
     GetByIdCustomerResponse toGetByIdCustomerResponse(Customer customer);
 
     DeletedCustomerResponse toDeletedCustomerResponse(Customer customer);
-
-    Customer toCustomer(UpdateCustomerRequest updateCustomerRequest);
 
     UpdatedCustomerResponse toUpdatedCustomerResponse(Customer customer);
 

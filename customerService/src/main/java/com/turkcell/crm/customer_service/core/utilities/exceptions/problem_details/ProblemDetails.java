@@ -1,4 +1,4 @@
-package com.turkcell.crm.customer_service.core.utilities.exceptions.problemDetails;
+package com.turkcell.crm.customer_service.core.utilities.exceptions.problem_details;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
