@@ -1,4 +1,4 @@
-package com.turkcell.crm.customerService;
+package com.turkcell.crm.customer_service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
