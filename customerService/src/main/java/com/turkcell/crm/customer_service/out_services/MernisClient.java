@@ -1,5 +1,6 @@
 package com.turkcell.crm.customer_service.out_services;
 
+import com.turkcell.crm.customer_service.core.utilities.exceptions.types.BusinessException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -12,28 +13,25 @@ import org.springframework.web.client.RestTemplate;
 public class MernisClient {
     private final RestTemplate restTemplate;
 
-    public boolean checkNationality(String tcKimlikNo, String ad, String soyad, int dogumYili) {
+    public boolean TCKimlikNoDogrula(String identityNumber, String firstName, String lastName, int birthYear) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "text/xml; charset=utf-8");
-        String requestBody = createRequestBody(tcKimlikNo, ad, soyad, dogumYili);
+        String requestBody = createRequestBody(identityNumber, firstName, lastName, birthYear);
         HttpEntity<String> request = new HttpEntity<>(requestBody, headers);
-        ResponseEntity<String> response = restTemplate.postForEntity("https://tckimlik.nvi.gov.tr/Service/KPSPublic.asmx", request, String.class);
-        return response.getBody().contains("<TCKimlikNoDogrulaResult>true</TCKimlikNoDogrulaResult>");
+        ResponseEntity<String> responseEntity = restTemplate
+                .postForEntity("https://tckimlik.nvi.gov.tr/Service/KPSPublic.asmx", request, String.class);
+
+        String response = responseEntity.getBody();
+        if (response == null) {
+            // TODO: Log
+            throw new BusinessException("Mernis servisine bağlanılamadı.");
+        }
+        return response.contains("<TCKimlikNoDogrulaResult>true</TCKimlikNoDogrulaResult>");
     }
 
-    public String createRequestBody(String tcKimlikNo, String ad, String soyad, int dogumYili) {
+    public String createRequestBody(String identityNumber, String firstName, String lastName, int birthYear) {
         return String.format(
-                "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
-                        "<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">" +
-                        "<soap:Body>" +
-                        "<TCKimlikNoDogrula xmlns=\"http://tckimlik.nvi.gov.tr/WS\">" +
-                        "<TCKimlikNo>%s</TCKimlikNo>" +
-                        "<Ad>%s</Ad>" +
-                        "<Soyad>%s</Soyad>" +
-                        "<DogumYili>%s</DogumYili>" +
-                        "</TCKimlikNoDogrula>" +
-                        "</soap:Body>" +
-                        "</soap:Envelope>",
-                tcKimlikNo, ad, soyad, dogumYili);
+                "<?xml version=\"1.0\" encoding=\"utf-8\"?><soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"><soap:Body><TCKimlikNoDogrula xmlns=\"http://tckimlik.nvi.gov.tr/WS\"><TCKimlikNo>%s</TCKimlikNo><Ad>%s</Ad><Soyad>%s</Soyad><DogumYili>%s</DogumYili></TCKimlikNoDogrula></soap:Body></soap:Envelope>",
+                identityNumber, firstName, lastName, birthYear);
     }
 }

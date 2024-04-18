@@ -11,6 +11,9 @@ public class MernisAdapter implements CheckNationalityService {
 
     @Override
     public boolean validate(CheckNationalityDTO checkNationalityDTO) {
-        return mernisClient.checkNationality(checkNationalityDTO.getNationalityId(), checkNationalityDTO.getFirstName(), checkNationalityDTO.getLastName(), checkNationalityDTO.getBirthYear());
+        return mernisClient.TCKimlikNoDogrula(checkNationalityDTO.getNationalityId(),
+                checkNationalityDTO.getFirstName(),
+                checkNationalityDTO.getLastName(),
+                checkNationalityDTO.getBirthYear());
     }
 }
