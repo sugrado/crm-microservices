@@ -32,7 +32,7 @@ public class CustomerBusinessRules {
 
     public void nationalityIdShouldBeValid(Customer customer) {
         boolean result = checkNationalityService.validate(new CheckNationalityDTO(customer.getNationalityId(),
-                customer.getFirstName(), customer.getLastName(), customer.getBirthDate().getYear()));
+                customer.getFirstName() + " " + customer.getMiddleName(), customer.getLastName(), customer.getBirthDate().getYear()));
         if (!result) {
             throw new BusinessException(CustomerMessages.NATIONALITY_ID_NOT_VALID);
         }

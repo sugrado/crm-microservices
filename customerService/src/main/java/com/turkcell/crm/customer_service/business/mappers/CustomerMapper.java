@@ -1,18 +1,18 @@
 package com.turkcell.crm.customer_service.business.mappers;
 
-
 import com.turkcell.crm.customer_service.business.dtos.requests.customers.CreateCustomerRequest;
 import com.turkcell.crm.customer_service.business.dtos.requests.customers.UpdateCustomerRequest;
 import com.turkcell.crm.customer_service.business.dtos.responses.customers.*;
+import com.turkcell.crm.customer_service.core.utilities.mapping.MapstructService;
 import com.turkcell.crm.customer_service.entities.concretes.Customer;
+import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
-import org.mapstruct.ReportingPolicy;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 
 import java.util.List;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
+@Mapper(config = MapstructService.class)
 public interface CustomerMapper {
     Customer toCustomer(CreateCustomerRequest createCustomerRequest);
 
@@ -26,6 +26,6 @@ public interface CustomerMapper {
 
     UpdatedCustomerResponse toUpdatedCustomerResponse(Customer customer);
 
-    @Mapping(ignore = true, target = "createdDate")
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateCustomerFromRequest(UpdateCustomerRequest updateCustomerRequest, @MappingTarget Customer customer);
 }
