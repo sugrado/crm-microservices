@@ -4,7 +4,7 @@ import com.turkcell.crm.customer_service.out_services.MernisClient;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-@Service
+//@Service
 @AllArgsConstructor
 public class MernisAdapter implements CheckNationalityService {
     private final MernisClient mernisClient;
@@ -12,8 +12,8 @@ public class MernisAdapter implements CheckNationalityService {
     @Override
     public boolean validate(CheckNationalityDTO checkNationalityDTO) {
         return mernisClient.TCKimlikNoDogrula(checkNationalityDTO.getNationalityId(),
-                checkNationalityDTO.getFirstName(),
-                checkNationalityDTO.getLastName(),
+                checkNationalityDTO.getFirstName().toUpperCase(),
+                checkNationalityDTO.getLastName().toUpperCase(),
                 checkNationalityDTO.getBirthYear());
     }
 }

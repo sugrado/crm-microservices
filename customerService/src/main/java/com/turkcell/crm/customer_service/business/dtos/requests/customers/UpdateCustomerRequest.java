@@ -7,21 +7,17 @@ import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 
 public record UpdateCustomerRequest(
-        @NotNull
         @Size(min = 1)
         String firstName,
         @Size(min = 1)
         String middleName,
-        @NotNull
         @Size(min = 1)
         String lastName,
-        @NotNull
         LocalDate birthDate,
         @Size(min = 1)
         String motherName,
         @Size(min = 1)
         String fatherName,
-        @NotNull
         Gender gender
 ) {
 }
