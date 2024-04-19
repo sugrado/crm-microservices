@@ -1,10 +1,10 @@
-package com.turkcell.crm.discoveryServer;
+package com.turkcell.crm.gatewayService;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class DiscoveryServerApplicationTests {
+class GatewayServiceApplicationTests {
 
     @Test
     void contextLoads() {

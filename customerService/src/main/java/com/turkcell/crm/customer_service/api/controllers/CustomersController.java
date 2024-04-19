@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("api/v1/customers")
+@RequestMapping("customer-service/api/v1/customers")
 public class CustomersController {
     private CustomerService customerService;
 

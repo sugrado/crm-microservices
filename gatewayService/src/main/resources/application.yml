@@ -1,0 +1,26 @@
+server:
+  port: 7002
+eureka:
+  client:
+    fetchRegistry: true
+    registerWithEureka: true
+    serviceUrl:
+      defaultZone: http://localhost:7000/eureka
+  instance:
+    instance-id: ${spring.application.name}:${instanceId:${random.value}}
+    preferIpAddress: true
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      mvc:
+        routes[0]:
+          id: customer-service
+          predicates[0]: Path=/customer-service/api/v1/customers/**
+          uri: lb://customer-service
+        routes[1]:
+          id: discoveryserver
+          predicates[0]: Path=/eureka/web
+          filters[0]: SetPath=/
+          uri: http://localhost:7000
