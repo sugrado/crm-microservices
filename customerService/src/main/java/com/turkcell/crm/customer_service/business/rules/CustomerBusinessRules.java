@@ -2,7 +2,8 @@ package com.turkcell.crm.customer_service.business.rules;
 
 import com.turkcell.crm.customer_service.adapters.mernis.CheckNationalityDTO;
 import com.turkcell.crm.customer_service.adapters.mernis.CheckNationalityService;
-import com.turkcell.crm.customer_service.business.constants.messages.CustomerMessages;
+import com.turkcell.crm.customer_service.business.constants.messages.Messages;
+import com.turkcell.crm.customer_service.core.business.abstracts.MessageService;
 import com.turkcell.crm.customer_service.core.utilities.exceptions.types.BusinessException;
 import com.turkcell.crm.customer_service.data_access.abstracts.CustomerRepository;
 import com.turkcell.crm.customer_service.entities.concretes.Customer;
@@ -16,17 +17,18 @@ import java.util.Optional;
 public class CustomerBusinessRules {
     private final CustomerRepository customerRepository;
     private CheckNationalityService checkNationalityService;
+    private MessageService messageService;
 
     public void customerShouldBeExist(Optional<Customer> customer) {
         if (customer.isEmpty()) {
-            throw new BusinessException(CustomerMessages.CUSTOMER_NOT_FOUND);
+            throw new BusinessException(messageService.getMessage(Messages.CustomerMessages.CUSTOMER_NOT_FOUND));
         }
     }
 
     public void nationalityIdShouldBeUnique(String nationalityId) {
         Optional<Customer> customer = customerRepository.findByNationalityId(nationalityId);
         if (customer.isPresent()) {
-            throw new BusinessException(CustomerMessages.CUSTOMER_NATIONALITY_ID_ALREADY_EXISTS);
+            throw new BusinessException(messageService.getMessage(Messages.CustomerMessages.CUSTOMER_NATIONALITY_ID_ALREADY_EXISTS));
         }
     }
 
@@ -34,7 +36,7 @@ public class CustomerBusinessRules {
         boolean result = checkNationalityService.validate(new CheckNationalityDTO(customer.getNationalityId(),
                 customer.getFirstName() + " " + customer.getMiddleName(), customer.getLastName(), customer.getBirthDate().getYear()));
         if (!result) {
-            throw new BusinessException(CustomerMessages.NATIONALITY_ID_NOT_VALID);
+            throw new BusinessException(messageService.getMessage(Messages.CustomerMessages.CUSTOMER_NATIONALITY_ID_NOT_VALID));
         }
     }
 }
