@@ -24,7 +24,7 @@ public class CustomersController {
     }
 
     @GetMapping
-    public List<GetAllCustomerResponse> getAll() {
+    public List<GetAllCustomersResponse> getAll() {
         return this.customerService.getAll();
     }
 
@@ -33,7 +33,7 @@ public class CustomersController {
         return this.customerService.getById(id);
     }
 
-    @PutMapping("{id}")
+    @PatchMapping("{id}")
     public UpdatedCustomerResponse update(@PathVariable int id, @Valid @RequestBody UpdateCustomerRequest updateCustomerRequest) {
         return this.customerService.update(id, updateCustomerRequest);
     }

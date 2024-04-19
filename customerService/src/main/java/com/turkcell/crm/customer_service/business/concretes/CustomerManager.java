@@ -33,9 +33,9 @@ public class CustomerManager implements CustomerService {
     }
 
     @Override
-    public List<GetAllCustomerResponse> getAll() {
+    public List<GetAllCustomersResponse> getAll() {
         List<Customer> customerList = this.customerRepository.findAll();
-        return customerMapper.toGetAllCustomerResponseList(customerList);
+        return customerMapper.toGetAllCustomersResponseList(customerList);
     }
 
     @Override

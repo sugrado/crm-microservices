@@ -18,7 +18,7 @@ public interface CustomerMapper {
 
     CreatedCustomerResponse toCreatedCustomerResponse(Customer customer);
 
-    List<GetAllCustomerResponse> toGetAllCustomerResponseList(List<Customer> customerList);
+    List<GetAllCustomersResponse> toGetAllCustomersResponseList(List<Customer> customerList);
 
     GetByIdCustomerResponse toGetByIdCustomerResponse(Customer customer);
 

@@ -5,7 +5,7 @@ import com.turkcell.crm.customer_service.entities.enums.Gender;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public record GetAllCustomerResponse(
+public record GetAllCustomersResponse(
         int id,
         LocalDateTime createdDate,
         LocalDateTime updatedDate,
