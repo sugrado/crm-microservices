@@ -35,7 +35,7 @@ public record CreateCustomerRequest(
         @NotNull
         @Size(min = 1)
         String firstName,
-        @Size(min = 1)
+        @Size(min = 0)
         String middleName,
         @NotNull
         @Size(min = 1)

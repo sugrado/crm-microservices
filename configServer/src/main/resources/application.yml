@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: ConfigServer
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/mertklnc6/CRMConfigurations
+server:
+    port: 8050
