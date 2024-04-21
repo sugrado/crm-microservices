@@ -1,5 +1,7 @@
 package com.turkcell.crm.customer_service.business.concretes;
 
+import com.turkcell.crm.customer_service.business.abstracts.ContactService;
+import com.turkcell.crm.customer_service.business.abstracts.CustomerAddressService;
 import com.turkcell.crm.customer_service.business.abstracts.CustomerService;
 import com.turkcell.crm.customer_service.business.dtos.requests.customers.CreateCustomerRequest;
 import com.turkcell.crm.customer_service.business.dtos.requests.customers.UpdateCustomerRequest;
@@ -21,6 +23,8 @@ public class CustomerManager implements CustomerService {
     private final CustomerRepository customerRepository;
     private final CustomerBusinessRules customerBusinessRules;
     private final CustomerMapper customerMapper;
+    private final ContactService contactService;
+    private final CustomerAddressService customerAddressService;
 
     @Override
     public CreatedCustomerResponse add(CreateCustomerRequest request) {
@@ -29,6 +33,8 @@ public class CustomerManager implements CustomerService {
         customerBusinessRules.nationalityIdShouldBeValid(customer);
 
         Customer createdCustomer = this.customerRepository.save(customer);
+        contactService.add(request.customerContact());
+        customerAddressService.add(request.customerAddresses());
         return customerMapper.toCreatedCustomerResponse(createdCustomer);
     }
 
