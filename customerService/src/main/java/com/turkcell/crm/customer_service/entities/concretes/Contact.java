@@ -14,20 +14,16 @@ import lombok.Setter;
 @Entity
 @Table(name = "contacts")
 public class Contact extends BaseEntity<Integer> {
-//    @Id
-//    @Column(name = "customer_id",nullable = false)
-//    private int customerId;
-
-    @Column(name= "email", nullable = false)
+    @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name= "home_phone", nullable = false)
+    @Column(name = "home_phone", nullable = false)
     private String homePhone;
 
-    @Column(name= "mobile_phone", nullable = false)
+    @Column(name = "mobile_phone", nullable = false)
     private String mobilePhone;
 
-    @Column(name= "fax_number", nullable = false)
+    @Column(name = "fax_number", nullable = false)
     private String faxNumber;
 
     @MapsId

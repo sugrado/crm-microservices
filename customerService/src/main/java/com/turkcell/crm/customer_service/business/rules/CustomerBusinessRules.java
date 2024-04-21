@@ -7,17 +7,17 @@ import com.turkcell.crm.customer_service.core.business.abstracts.MessageService;
 import com.turkcell.crm.customer_service.core.utilities.exceptions.types.BusinessException;
 import com.turkcell.crm.customer_service.data_access.abstracts.CustomerRepository;
 import com.turkcell.crm.customer_service.entities.concretes.Customer;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CustomerBusinessRules {
     private final CustomerRepository customerRepository;
-    private CheckNationalityService checkNationalityService;
-    private MessageService messageService;
+    private final CheckNationalityService checkNationalityService;
+    private final MessageService messageService;
 
     public void customerShouldBeExist(Optional<Customer> customer) {
         if (customer.isEmpty()) {

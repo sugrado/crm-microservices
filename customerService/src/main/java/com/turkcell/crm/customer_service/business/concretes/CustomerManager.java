@@ -33,8 +33,8 @@ public class CustomerManager implements CustomerService {
         customerBusinessRules.nationalityIdShouldBeValid(customer);
 
         Customer createdCustomer = this.customerRepository.save(customer);
-        contactService.add(request.customerContact(),customer);
-        customerAddressService.add(request.customerAddresses(),customer);
+        contactService.add(request.customerContact(), customer);
+        customerAddressService.add(request.customerAddresses(), customer);
         return customerMapper.toCreatedCustomerResponse(createdCustomer);
     }
 
