@@ -3,23 +3,28 @@ package com.turkcell.crm.customer_service.business.dtos.requests.customers;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
-public record CustomerContactDto (
-        @NotNull
-        int customerId,
+@Getter
+@Setter
+@AllArgsConstructor
+public class CustomerContactDto {
         @NotNull
         @Email
         @Size(min = 1)
-        String email,
+        private String email;
         @NotNull
-        @Size(min = 13,max = 15)
-        String homePhone,
+        @Size(min = 13, max = 15)
+        private String homePhone;
         @NotNull
-        @Size(min = 13,max = 15)
-        String mobilePhone,
+        @Size(min = 13, max = 15)
+        private String mobilePhone;
         @NotNull
-        @Size(min = 5,max = 15)
-        String faxNumber
+        @Size(min = 5, max = 15)
+        private String faxNumber;
 
-){
 }
+

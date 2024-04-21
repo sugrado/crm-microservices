@@ -9,5 +9,5 @@ import java.util.List;
 
 @Mapper(config = MapstructService.class)
 public interface CustomerAddressMapper {
-    List<CustomerAddress> toCustomerAddresses(List<CustomerAddressDto> customerAddressDtos);
+    CustomerAddress toCustomerAddress(CustomerAddressDto customerAddressDto);
 }

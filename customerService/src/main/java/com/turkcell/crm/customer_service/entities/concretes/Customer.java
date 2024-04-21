@@ -21,7 +21,7 @@ public class Customer extends BaseEntity<Integer> {
     @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @Column(name = "middle_name", nullable = false)
+    @Column(name = "middle_name")
     private String middleName;
 
     @Column(name = "last_name", nullable = false)
@@ -33,10 +33,10 @@ public class Customer extends BaseEntity<Integer> {
     @Column(name = "birth_date", nullable = false)
     private LocalDate birthDate;
 
-    @Column(name = "mother_name", nullable = false)
+    @Column(name = "mother_name")
     private String motherName;
 
-    @Column(name = "father_name", nullable = false)
+    @Column(name = "father_name" )
     private String fatherName;
 
     @Column(name = "gender", nullable = false)
@@ -45,4 +45,6 @@ public class Customer extends BaseEntity<Integer> {
 
     @OneToMany(mappedBy = "customer")
     private List<CustomerAddress> customerAddresses;
+    @OneToOne(mappedBy = "customer")
+    private Contact contact;
 }
