@@ -1,10 +1,12 @@
 package com.turkcell.crm.customer_service.business.dtos.requests.customers;
 
 import com.turkcell.crm.customer_service.entities.enums.Gender;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
+import java.util.List;
 
 //@AllArgsConstructor
 //@NoArgsConstructor
@@ -50,6 +52,9 @@ public record CreateCustomerRequest(
         @Size(min = 1)
         String fatherName,
         @NotNull
-        Gender gender
+        Gender gender,
+
+        List<CustomerAddressDto> customerAddresses,
+        CustomerContactDto customerContact
 ) {
 }
