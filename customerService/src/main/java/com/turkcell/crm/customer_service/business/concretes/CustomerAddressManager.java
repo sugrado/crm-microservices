@@ -4,6 +4,8 @@ import com.turkcell.crm.customer_service.business.abstracts.CustomerAddressServi
 import com.turkcell.crm.customer_service.business.dtos.requests.customers.CustomerAddressDto;
 import com.turkcell.crm.customer_service.business.mappers.CustomerAddressMapper;
 import com.turkcell.crm.customer_service.data_access.abstracts.CustomerAddressRepository;
+import com.turkcell.crm.customer_service.entities.concretes.Customer;
+import com.turkcell.crm.customer_service.entities.concretes.CustomerAddress;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +16,12 @@ public class CustomerAddressManager implements CustomerAddressService {
     private final CustomerAddressRepository customerAddressRepository;
     private final CustomerAddressMapper customerAddressMapper;
     @Override
-    public void add(List<CustomerAddressDto> customerAddressDtoList) {
-        customerAddressRepository.saveAll(customerAddressMapper.toCustomerAddresses(customerAddressDtoList));
+    public void add(List<CustomerAddressDto> customerAddressDtoList, Customer customer) {
+        List<CustomerAddress> customerAddressList=customerAddressDtoList.stream().map(x->{
+            CustomerAddress customerAddress=customerAddressMapper.toCustomerAddress(x);
+            customerAddress.setCustomer(customer);
+            return customerAddress;
+        }).toList();
+        customerAddressRepository.saveAll(customerAddressList);
     }
 }

@@ -1,6 +1,7 @@
 package com.turkcell.crm.customer_service.business.dtos.requests.customers;
 
 import com.turkcell.crm.customer_service.entities.enums.Gender;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -53,8 +54,9 @@ public record CreateCustomerRequest(
         String fatherName,
         @NotNull
         Gender gender,
-
+        @Valid
         List<CustomerAddressDto> customerAddresses,
+        @Valid
         CustomerContactDto customerContact
 ) {
 }
