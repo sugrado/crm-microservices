@@ -1,10 +1,10 @@
 spring:
   application:
-    name: ConfigServer
+    name: configServer
   cloud:
     config:
       server:
         git:
-          uri: https://github.com/mertklnc6/CRMConfigurations
+          uri: https://github.com/sugrado/telko-crm-configuration.git
 server:
-    port: 8050
+  port: 8050

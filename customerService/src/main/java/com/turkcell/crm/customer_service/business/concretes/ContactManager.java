@@ -17,8 +17,8 @@ public class ContactManager implements ContactService {
 
     @Override
     public void add(CustomerContactDto customerContactDto, Customer customer) {
-       Contact contact=contactMapper.toContact(customerContactDto);
-       contact.setCustomer(customer);
-       contactRepository.save(contact);
+        Contact contact = contactMapper.toContact(customerContactDto);
+        contact.setCustomer(customer);
+        contactRepository.save(contact);
     }
 }

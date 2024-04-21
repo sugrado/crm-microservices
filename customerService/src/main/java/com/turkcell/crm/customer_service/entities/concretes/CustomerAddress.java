@@ -28,6 +28,6 @@ public class CustomerAddress extends BaseEntity<Integer> {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name="customer_id")
+    @JoinColumn(name = "customer_id")
     private Customer customer;
 }

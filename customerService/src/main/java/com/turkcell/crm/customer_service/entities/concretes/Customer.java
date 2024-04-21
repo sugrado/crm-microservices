@@ -36,7 +36,7 @@ public class Customer extends BaseEntity<Integer> {
     @Column(name = "mother_name")
     private String motherName;
 
-    @Column(name = "father_name" )
+    @Column(name = "father_name")
     private String fatherName;
 
     @Column(name = "gender", nullable = false)
@@ -44,7 +44,8 @@ public class Customer extends BaseEntity<Integer> {
     private Gender gender;
 
     @OneToMany(mappedBy = "customer")
-    private List<CustomerAddress> customerAddresses;
+    private List<CustomerAddress> addresses;
+
     @OneToOne(mappedBy = "customer")
     private Contact contact;
 }

@@ -10,15 +10,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class CustomerAddressManager implements CustomerAddressService {
     private final CustomerAddressRepository customerAddressRepository;
     private final CustomerAddressMapper customerAddressMapper;
+
     @Override
     public void add(List<CustomerAddressDto> customerAddressDtoList, Customer customer) {
-        List<CustomerAddress> customerAddressList=customerAddressDtoList.stream().map(x->{
-            CustomerAddress customerAddress=customerAddressMapper.toCustomerAddress(x);
+        List<CustomerAddress> customerAddressList = customerAddressDtoList.stream().map(x -> {
+            CustomerAddress customerAddress = customerAddressMapper.toCustomerAddress(x);
             customerAddress.setCustomer(customer);
             return customerAddress;
         }).toList();

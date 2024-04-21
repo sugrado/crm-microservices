@@ -1,6 +1,7 @@
 # Telko CRM Project with Microservices
 
-This repo includes the **Telko CRM** project developed by the **Pair 2** group within the scope of the **Turkcell GYGY 3.0**
+This repo includes the **Telko CRM** project developed by the **Pair 2** group within the scope of the **Turkcell GYGY
+3.0**
 Program. **Microservice** architecture was implemented using the **Java** programming language.
 
 ## Development
