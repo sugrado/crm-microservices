@@ -1,6 +1,5 @@
 package com.turkcell.crm.customer_service.business.dtos.requests.individual_customers;
 
-import com.turkcell.crm.customer_service.business.dtos.requests.customers.AddressDto;
 import com.turkcell.crm.customer_service.business.dtos.requests.customers.CreateCustomerRequest;
 import com.turkcell.crm.customer_service.entities.enums.Gender;
 import jakarta.validation.Valid;
@@ -8,7 +7,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
-import java.util.List;
 
 public record CreateIndividualCustomerRequest(
         @NotNull
