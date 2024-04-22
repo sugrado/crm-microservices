@@ -1,6 +1,5 @@
 package com.turkcell.crm.customer_service.business.dtos.requests.customers;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -10,20 +9,17 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class CustomerContactDto {
+public class AddressDto {
     @NotNull
-    @Email
     @Size(min = 1)
-    private String email;
+    private String city;
     @NotNull
-    @Size(min = 13, max = 15)
-    private String homePhone;
+    @Size(min = 1)
+    private String street;
     @NotNull
-    @Size(min = 13, max = 15)
-    private String mobilePhone;
+    @Size(min = 1)
+    private String houseFlatNumber;
     @NotNull
-    @Size(min = 5, max = 15)
-    private String faxNumber;
-
+    @Size(min = 1)
+    private String description;
 }
-
