@@ -12,8 +12,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "customer_addresses")
-public class CustomerAddress extends BaseEntity<Integer> {
+@Table(name = "addresses")
+public class Address extends BaseEntity<Integer> {
 
     @Column(name = "city", nullable = false)
     private String city;

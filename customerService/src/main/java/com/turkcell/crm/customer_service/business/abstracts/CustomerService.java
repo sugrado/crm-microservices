@@ -2,19 +2,10 @@ package com.turkcell.crm.customer_service.business.abstracts;
 
 import com.turkcell.crm.customer_service.business.dtos.requests.customers.CreateCustomerRequest;
 import com.turkcell.crm.customer_service.business.dtos.requests.customers.UpdateCustomerRequest;
-import com.turkcell.crm.customer_service.business.dtos.responses.customers.*;
-
-import java.util.List;
+import com.turkcell.crm.customer_service.entities.concretes.Customer;
 
 public interface CustomerService {
-    CreatedCustomerResponse add(CreateCustomerRequest request);
+    Customer add(CreateCustomerRequest request);
 
-    List<GetAllCustomersResponse> getAll();
-
-    GetByIdCustomerResponse getById(int id);
-
-    UpdatedCustomerResponse update(int id, UpdateCustomerRequest updateCustomerRequest);
-
-    DeletedCustomerResponse delete(int id);
-
+    Customer update(int id, UpdateCustomerRequest updateCustomerRequest);
 }
