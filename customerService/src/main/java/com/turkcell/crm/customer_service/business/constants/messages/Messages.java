@@ -11,4 +11,8 @@ public class Messages {
         public static final String CUSTOMER_NATIONALITY_ID_ALREADY_EXISTS = "customerNationalityIdAlreadyExists";
         public static final String CUSTOMER_NATIONALITY_ID_NOT_VALID = "customerNationalityIdNotValid";
     }
+
+    public static class CityMessages{
+        public static final String NOT_FOUND = "cityNotFound";
+    }
 }
