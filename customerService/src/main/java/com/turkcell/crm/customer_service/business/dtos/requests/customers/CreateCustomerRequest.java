@@ -1,5 +1,6 @@
 package com.turkcell.crm.customer_service.business.dtos.requests.customers;
 
+import com.turkcell.crm.customer_service.business.dtos.requests.accounts.CreateAccountRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
