@@ -8,4 +8,5 @@ public interface CustomerService {
     Customer add(CreateCustomerRequest request);
 
     Customer update(int id, UpdateCustomerRequest updateCustomerRequest);
+    Customer getById(int id);
 }
