@@ -2,7 +2,6 @@ package com.turkcell.crm.customer_service.business.concretes;
 
 import com.turkcell.crm.customer_service.business.abstracts.CityService;
 import com.turkcell.crm.customer_service.business.dtos.responses.cities.GetAllCitiesResponse;
-import com.turkcell.crm.customer_service.business.dtos.responses.cities.GetByIdCityResponse;
 import com.turkcell.crm.customer_service.business.mappers.CityMapper;
 import com.turkcell.crm.customer_service.business.rules.CityBusinessRules;
 import com.turkcell.crm.customer_service.data_access.abstracts.CityRepository;
