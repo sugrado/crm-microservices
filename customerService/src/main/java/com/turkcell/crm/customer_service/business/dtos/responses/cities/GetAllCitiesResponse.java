@@ -1,9 +1,8 @@
 package com.turkcell.crm.customer_service.business.dtos.responses.cities;
 
-public record GetAllCitiesResponse (
+public record GetAllCitiesResponse(
         int id,
         String name
-){
-
+) {
 }
 
