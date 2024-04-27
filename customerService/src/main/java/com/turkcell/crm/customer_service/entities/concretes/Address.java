@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -14,10 +16,6 @@ import lombok.Setter;
 @Entity
 @Table(name = "addresses")
 public class Address extends BaseEntity<Integer> {
-
-    @Column(name = "city", nullable = false)
-    private String city;
-
     @Column(name = "street", nullable = false)
     private String street;
 
@@ -30,4 +28,11 @@ public class Address extends BaseEntity<Integer> {
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
+
+    @ManyToOne
+    @JoinColumn(name = "city_id")
+    private City city;
+
+    @OneToMany(mappedBy = "address")
+    private List<AccountAddress> accountAddresses;
 }

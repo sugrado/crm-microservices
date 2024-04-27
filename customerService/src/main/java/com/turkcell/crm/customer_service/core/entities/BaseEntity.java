@@ -19,7 +19,7 @@ public class BaseEntity<T> {
     @Column(name = "id")
     private T id;
 
-    @Column(name = "created_date")
+    @Column(name = "created_date", nullable = false)
     private LocalDateTime createdDate;
 
     @Column(name = "updated_date")

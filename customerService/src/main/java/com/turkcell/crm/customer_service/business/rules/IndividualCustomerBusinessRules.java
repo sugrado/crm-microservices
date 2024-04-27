@@ -28,7 +28,7 @@ public class IndividualCustomerBusinessRules {
     public void nationalityIdShouldBeUnique(String nationalityId) {
         Optional<IndividualCustomer> customer = customerRepository.findByNationalityId(nationalityId);
         if (customer.isPresent()) {
-            throw new BusinessException(messageService.getMessage(Messages.IndividualCustomerMessages.CUSTOMER_NATIONALITY_ID_ALREADY_EXISTS));
+            throw new BusinessException(messageService.getMessage(Messages.IndividualCustomerMessages.NATIONALITY_ID_ALREADY_EXISTS));
         }
     }
 
@@ -36,7 +36,7 @@ public class IndividualCustomerBusinessRules {
         boolean result = checkNationalityService.validate(new CheckNationalityDTO(customer.getNationalityId(),
                 customer.getFirstName() + " " + customer.getMiddleName(), customer.getLastName(), customer.getBirthDate().getYear()));
         if (!result) {
-            throw new BusinessException(messageService.getMessage(Messages.IndividualCustomerMessages.CUSTOMER_NATIONALITY_ID_NOT_VALID));
+            throw new BusinessException(messageService.getMessage(Messages.IndividualCustomerMessages.NATIONALITY_ID_NOT_VALID));
         }
     }
 }

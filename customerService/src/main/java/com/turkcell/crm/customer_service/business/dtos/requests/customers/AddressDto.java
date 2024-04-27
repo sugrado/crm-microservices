@@ -11,8 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class AddressDto {
     @NotNull
-    @Size(min = 1)
-    private String city;
+    private int cityId;
     @NotNull
     @Size(min = 1)
     private String street;
