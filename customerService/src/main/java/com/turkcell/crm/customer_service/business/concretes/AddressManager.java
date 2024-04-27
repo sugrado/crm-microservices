@@ -33,4 +33,9 @@ public class AddressManager implements AddressService {
         }).toList();
         addressRepository.saveAll(addressList);
     }
+
+    @Override
+    public Address getById(int id) {
+        return addressRepository.findById(id).get();
+    }
 }

@@ -1,27 +1,28 @@
 package com.turkcell.crm.customer_service.entities.concretes;
 
 import com.turkcell.crm.customer_service.core.entities.BaseEntity;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name = "account_types")
-public class AccountType extends BaseEntity<Integer> {
-    @Column(name = "name")
-    private String name;
+@Table(name = "account_addresses")
+public class AccountAddress extends BaseEntity<Integer> {
+    @ManyToOne
+    @JoinColumn(name = "account_id")
+    private Account account;
 
-    @OneToMany(mappedBy = "accountType")
-    private List<Account> accounts;
+    @ManyToOne
+    @JoinColumn(name = "address_id")
+    private Address address;
+
 }

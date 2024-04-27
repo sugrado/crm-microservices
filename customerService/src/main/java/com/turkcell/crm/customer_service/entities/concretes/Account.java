@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -16,14 +18,21 @@ import lombok.Setter;
 public class Account extends BaseEntity<Integer> {
     @Column(name = "status")
     private String Status;
+
     @Column(name = "name")
     private String name;
+
     @Column(name = "number")
     private String number;
+
     @ManyToOne()
     @JoinColumn(name = "customer_id")
     private Customer customer;
+
     @ManyToOne()
     @JoinColumn(name = "type_id")
     private AccountType accountType;
+
+    @OneToMany(mappedBy = "account")
+    private List<AccountAddress> accountAddresses;
 }
