@@ -40,9 +40,4 @@ public class CustomerManager implements CustomerService {
         this.customerRepository.save(customer);
         return customer;
     }
-
-    @Override
-    public Customer getById(int id) {
-        return this.customerRepository.findById(id).get();
-    }
 }

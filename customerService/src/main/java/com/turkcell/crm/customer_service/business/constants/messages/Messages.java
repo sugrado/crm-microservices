@@ -15,4 +15,16 @@ public class Messages {
     public static class CityMessages{
         public static final String NOT_FOUND = "cityNotFound";
     }
+
+    public static class AddressMessages {
+        public static final String NOT_FOUND = "addressNotFound";
+    }
+
+    public static class AccountMessages {
+        public static final String NOT_FOUND = "accountNotFound";
+    }
+
+    public static class AccountTypeMessages {
+        public static final String NOT_FOUND = "accountTypeNotFound";
+    }
 }
