@@ -16,8 +16,9 @@ import java.util.List;
 @Entity
 @Table(name = "accounts")
 public class Account extends BaseEntity<Integer> {
+    // TODO: videoya bakalım
     @Column(name = "status")
-    private String Status;
+    private String status;
 
     @Column(name = "name")
     private String name;
@@ -31,8 +32,12 @@ public class Account extends BaseEntity<Integer> {
 
     @ManyToOne()
     @JoinColumn(name = "type_id")
-    private AccountType accountType;
+    private AccountType type;
 
     @OneToMany(mappedBy = "account")
-    private List<AccountAddress> accountAddresses;
+    private List<AccountAddress> addresses;
+
+    public Account(int id) {
+        setId(id);
+    }
 }

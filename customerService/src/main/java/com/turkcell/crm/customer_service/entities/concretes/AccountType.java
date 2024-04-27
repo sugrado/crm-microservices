@@ -22,6 +22,6 @@ public class AccountType extends BaseEntity<Integer> {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "accountType")
+    @OneToMany(mappedBy = "type")
     private List<Account> accounts;
 }

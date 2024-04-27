@@ -28,6 +28,6 @@ public class Customer extends BaseEntity<Integer> {
     @OneToOne(mappedBy = "customer")
     private IndividualCustomer individualCustomer;
 
-    @OneToMany(mappedBy ="customer")
+    @OneToMany(mappedBy = "customer")
     private List<Account> accounts;
 }

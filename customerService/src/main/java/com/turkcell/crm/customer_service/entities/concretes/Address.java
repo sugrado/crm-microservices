@@ -16,7 +16,6 @@ import java.util.List;
 @Entity
 @Table(name = "addresses")
 public class Address extends BaseEntity<Integer> {
-
     @Column(name = "street", nullable = false)
     private String street;
 

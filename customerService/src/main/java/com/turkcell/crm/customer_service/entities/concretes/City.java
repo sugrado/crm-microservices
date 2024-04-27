@@ -20,7 +20,7 @@ import java.util.List;
 @Table(name = "cities")
 public class City extends BaseEntity<Integer> {
 
-    @Column(name="name", nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
     @OneToMany(mappedBy = "city")

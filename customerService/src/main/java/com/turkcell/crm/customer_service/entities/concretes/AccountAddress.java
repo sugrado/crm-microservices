@@ -24,5 +24,4 @@ public class AccountAddress extends BaseEntity<Integer> {
     @ManyToOne
     @JoinColumn(name = "address_id")
     private Address address;
-
 }
