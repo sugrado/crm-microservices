@@ -4,6 +4,7 @@ import com.turkcell.crm.customer_service.business.abstracts.CityService;
 import com.turkcell.crm.customer_service.business.dtos.responses.cities.GetAllCitiesResponse;
 import com.turkcell.crm.customer_service.business.mappers.CityMapper;
 import com.turkcell.crm.customer_service.data_access.abstracts.CityRepository;
+import com.turkcell.crm.customer_service.entities.concretes.City;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +22,7 @@ public class CityManager implements CityService {
     }
 
     @Override
-    public List<Integer> getAllById(List<Integer> ids) {
+    public List<City> getAllById(List<Integer> ids) {
         return this.cityRepository.findAllByIdIsIn(ids);
     }
 }

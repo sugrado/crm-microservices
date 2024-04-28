@@ -12,5 +12,5 @@ public interface AddressService {
 
     GetByIdAddressResponse getById(int id);
 
-    List<Address> getAllById(List<Integer> ids);
+    List<Address> getAllByCustomerAndIds(int customerId, List<Integer> ids);
 }

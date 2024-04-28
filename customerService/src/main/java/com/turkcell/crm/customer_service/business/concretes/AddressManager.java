@@ -8,6 +8,7 @@ import com.turkcell.crm.customer_service.business.mappers.AddressMapper;
 import com.turkcell.crm.customer_service.business.rules.AddressBusinessRules;
 import com.turkcell.crm.customer_service.data_access.abstracts.AddressRepository;
 import com.turkcell.crm.customer_service.entities.concretes.Address;
+import com.turkcell.crm.customer_service.entities.concretes.City;
 import com.turkcell.crm.customer_service.entities.concretes.Customer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,11 @@ public class AddressManager implements AddressService {
 
     @Override
     public void add(List<AddressDto> addressDtoList, Customer customer) {
-        List<Integer> cities = cityService.getAllById(addressDtoList.stream().map(AddressDto::getCityId).toList());
+        List<Integer> cities = cityService
+                .getAllById(addressDtoList.stream().map(AddressDto::getCityId).toList())
+                .stream()
+                .map(City::getId)
+                .toList();
         List<Address> addressList = addressDtoList.stream().filter(a -> cities.contains(a.getCityId())).map(x -> {
             Address address = addressMapper.toCustomerAddress(x);
             address.setCustomer(customer);
@@ -43,7 +48,7 @@ public class AddressManager implements AddressService {
     }
 
     @Override
-    public List<Address> getAllById(List<Integer> ids) {
-        return this.addressRepository.findAllByIdIsIn(ids);
+    public List<Address> getAllByCustomerAndIds(int customerId, List<Integer> ids) {
+        return this.addressRepository.findAllByCustomerIdAndIdIsIn(customerId, ids);
     }
 }
