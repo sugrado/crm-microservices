@@ -1,5 +1,6 @@
 package com.turkcell.crm.customer_service.business.concretes;
 
+import com.turkcell.crm.common.events.CustomerCreatedEvent;
 import com.turkcell.crm.customer_service.business.abstracts.CustomerService;
 import com.turkcell.crm.customer_service.business.abstracts.IndividualCustomerService;
 import com.turkcell.crm.customer_service.business.dtos.requests.individual_customers.CreateIndividualCustomerRequest;
@@ -10,6 +11,7 @@ import com.turkcell.crm.customer_service.business.rules.IndividualCustomerBusine
 import com.turkcell.crm.customer_service.data_access.abstracts.IndividualCustomerRepository;
 import com.turkcell.crm.customer_service.entities.concretes.Customer;
 import com.turkcell.crm.customer_service.entities.concretes.IndividualCustomer;
+import com.turkcell.crm.customer_service.kafka.producers.CustomerProducer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,7 @@ public class IndividualCustomerManager implements IndividualCustomerService {
     private final IndividualCustomerBusinessRules individualCustomerBusinessRules;
     private final IndividualCustomerMapper individualCustomerMapper;
     private final CustomerService customerService;
+    private final CustomerProducer customerProducer;
 
     @Override
     public CreatedIndividualCustomerResponse add(CreateIndividualCustomerRequest request) {
@@ -32,8 +35,11 @@ public class IndividualCustomerManager implements IndividualCustomerService {
         individualCustomerBusinessRules.nationalityIdShouldBeValid(individualCustomer);
         Customer customer = customerService.add(request.customer());
         individualCustomer.setCustomer(customer);
-
         IndividualCustomer createdIndividualCustomer = this.individualCustomerRepository.save(individualCustomer);
+
+        CustomerCreatedEvent customerCreatedEvent = individualCustomerMapper.toCustomerCreatedEvent(createdIndividualCustomer);
+        customerProducer.send(customerCreatedEvent);
+
         return individualCustomerMapper.toCreatedIndividualCustomerResponse(createdIndividualCustomer);
     }
 
