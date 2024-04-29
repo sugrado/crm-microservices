@@ -1,6 +1,5 @@
-package com.turkcell.crm.searchService.entities.concretes;
+package com.turkcell.crm.search_service.entities.concretes;
 
-import com.turkcell.crm.searchService.entities.enums.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,7 +29,7 @@ public class Customer {
     private LocalDate birthDate;
     private String motherName;
     private String fatherName;
-    private Gender gender;
+    private String gender;
     private String email;
     private String mobilePhone;
 }

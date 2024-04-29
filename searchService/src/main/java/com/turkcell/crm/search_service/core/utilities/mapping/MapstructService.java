@@ -1,4 +1,4 @@
-package com.turkcell.crm.searchService.core.utilities.mapping;
+package com.turkcell.crm.search_service.core.utilities.mapping;
 
 import org.mapstruct.MapperConfig;
 import org.mapstruct.ReportingPolicy;

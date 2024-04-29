@@ -1,9 +1,9 @@
-package com.turkcell.crm.searchService.kafka.consumers;
+package com.turkcell.crm.search_service.business.kafka.consumers;
 
-import com.turkcell.crm.common.events.CustomerCreatedEvent;
-import com.turkcell.crm.searchService.business.abstracts.CustomerSearchService;
-import com.turkcell.crm.searchService.business.mappers.CustomerMapper;
-import com.turkcell.crm.searchService.entities.concretes.Customer;
+import com.turkcell.crm.common.kafka.events.CustomerCreatedEvent;
+import com.turkcell.crm.search_service.business.abstracts.CustomerSearchService;
+import com.turkcell.crm.search_service.business.mappers.CustomerMapper;
+import com.turkcell.crm.search_service.entities.concretes.Customer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
