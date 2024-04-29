@@ -1,4 +1,4 @@
-package com.turkcell.crm.common.events;
+package com.turkcell.crm.common.kafka.events;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

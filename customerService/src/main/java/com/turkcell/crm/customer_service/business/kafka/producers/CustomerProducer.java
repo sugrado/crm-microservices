@@ -1,6 +1,6 @@
-package com.turkcell.crm.customer_service.kafka.producers;
+package com.turkcell.crm.customer_service.business.kafka.producers;
 
-import com.turkcell.crm.common.events.CustomerCreatedEvent;
+import com.turkcell.crm.common.kafka.events.CustomerCreatedEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.KafkaHeaders;
