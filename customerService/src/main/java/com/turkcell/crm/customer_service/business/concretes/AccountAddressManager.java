@@ -44,16 +44,25 @@ public class AccountAddressManager implements AccountAddressService {
     @Override
     public void add(List<AccountAddressDto> accountAddressDtoList, Account account) {
         List<Integer> addresses = addressService
-                .getAllById(accountAddressDtoList.stream().map(AccountAddressDto::addressId).toList())
+                .getAllByCustomerAndIds(
+                        account.getCustomer().getId(),
+                        accountAddressDtoList
+                                .stream()
+                                .map(AccountAddressDto::addressId)
+                                .toList())
                 .stream()
-                .filter(a -> a.getCustomer().getId().equals(account.getCustomer().getId()))
-                .map(Address::getId).toList();
+                .map(Address::getId)
+                .toList();
 
-        List<AccountAddress> addressList = accountAddressDtoList.stream().filter(a -> addresses.contains(a.addressId())).map(x -> {
-            AccountAddress accountAddress = accountAddressMapper.toAccountAddress(x);
-            accountAddress.setAccount(account);
-            return accountAddress;
-        }).toList();
+        List<AccountAddress> addressList = accountAddressDtoList
+                .stream()
+                .filter(a -> addresses.contains(a.addressId()))
+                .map(a -> {
+                    AccountAddress accountAddress = accountAddressMapper.toAccountAddress(a);
+                    accountAddress.setAccount(account);
+                    return accountAddress;
+                })
+                .toList();
 
         accountAddressRepository.saveAll(addressList);
     }

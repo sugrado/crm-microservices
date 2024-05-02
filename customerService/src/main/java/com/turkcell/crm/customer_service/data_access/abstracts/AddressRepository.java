@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface AddressRepository extends JpaRepository<Address, Integer> {
-    List<Address> findAllByIdIsIn(List<Integer> ids);
+    List<Address> findAllByCustomerIdAndIdIsIn(int customerId, List<Integer> ids);
 }

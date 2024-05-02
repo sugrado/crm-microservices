@@ -25,10 +25,11 @@ public class AccountManager implements AccountService {
     public CreatedAccountResponse add(CreateAccountRequest createAccountRequest) {
         customerBusinessRules.customerShouldBeExist(createAccountRequest.customerId());
         accountTypeBusinessRules.accountTypeShouldBeExist(createAccountRequest.typeId());
+
         Account account = this.accountMapper.toAccount(createAccountRequest);
         Account createdAccount = this.accountRepository.save(account);
         if (createAccountRequest.accountAddresses() != null && !createAccountRequest.accountAddresses().isEmpty()) {
-            accountAddressService.add(createAccountRequest.accountAddresses(), account);
+            accountAddressService.add(createAccountRequest.accountAddresses(), createdAccount);
         }
         return this.accountMapper.toCreatedAccountResponse(createdAccount);
     }

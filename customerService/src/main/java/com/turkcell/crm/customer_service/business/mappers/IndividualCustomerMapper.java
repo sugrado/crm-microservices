@@ -1,14 +1,12 @@
 package com.turkcell.crm.customer_service.business.mappers;
 
+import com.turkcell.crm.common.kafka.events.CustomerCreatedEvent;
 import com.turkcell.crm.customer_service.business.dtos.requests.individual_customers.CreateIndividualCustomerRequest;
 import com.turkcell.crm.customer_service.business.dtos.requests.individual_customers.UpdateIndividualCustomerRequest;
 import com.turkcell.crm.customer_service.business.dtos.responses.individual_customers.*;
 import com.turkcell.crm.customer_service.core.utilities.mapping.MapstructService;
 import com.turkcell.crm.customer_service.entities.concretes.IndividualCustomer;
-import org.mapstruct.BeanMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.*;
 
 import java.util.List;
 
@@ -28,4 +26,9 @@ public interface IndividualCustomerMapper {
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateIndividualCustomerFromRequest(UpdateIndividualCustomerRequest updateIndividualCustomerRequest, @MappingTarget IndividualCustomer customer);
+
+    @Mapping(target = "email", source = "customer.email")
+    @Mapping(target = "mobilePhone", source = "customer.mobilePhone")
+    @Mapping(target = "gender", source = "gender")
+    CustomerCreatedEvent toCustomerCreatedEvent(IndividualCustomer customer);
 }
