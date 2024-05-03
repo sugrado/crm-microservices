@@ -32,7 +32,4 @@ public class Address extends BaseEntity<Integer> {
     @ManyToOne
     @JoinColumn(name = "city_id")
     private City city;
-
-    @OneToMany(mappedBy = "address")
-    private List<AccountAddress> accountAddresses;
 }

@@ -1,5 +1,6 @@
 package com.turkcell.crm.customer_service.business.abstracts;
 
+import com.turkcell.crm.customer_service.business.dtos.requests.addresses.CheckAddressCustomerCheckRequest;
 import com.turkcell.crm.customer_service.business.dtos.requests.customers.AddressDto;
 import com.turkcell.crm.customer_service.business.dtos.responses.addresses.GetByIdAddressResponse;
 import com.turkcell.crm.customer_service.entities.concretes.Address;
@@ -13,4 +14,6 @@ public interface AddressService {
     GetByIdAddressResponse getById(int id);
 
     List<Address> getAllByCustomerAndIds(int customerId, List<Integer> ids);
+
+    void checkAddressAndCustomerMatch(CheckAddressCustomerCheckRequest checkAddressCustomerCheckRequest);
 }

@@ -2,6 +2,7 @@ package com.turkcell.crm.customer_service.business.concretes;
 
 import com.turkcell.crm.customer_service.business.abstracts.AddressService;
 import com.turkcell.crm.customer_service.business.abstracts.CityService;
+import com.turkcell.crm.customer_service.business.dtos.requests.addresses.CheckAddressCustomerCheckRequest;
 import com.turkcell.crm.customer_service.business.dtos.requests.customers.AddressDto;
 import com.turkcell.crm.customer_service.business.dtos.responses.addresses.GetByIdAddressResponse;
 import com.turkcell.crm.customer_service.business.mappers.AddressMapper;
@@ -50,5 +51,11 @@ public class AddressManager implements AddressService {
     @Override
     public List<Address> getAllByCustomerAndIds(int customerId, List<Integer> ids) {
         return this.addressRepository.findAllByCustomerIdAndIdIsIn(customerId, ids);
+    }
+
+    @Override
+    public void checkAddressAndCustomerMatch(CheckAddressCustomerCheckRequest checkAddressCustomerCheckRequest) {
+        addressBusinessRules.addressAndCustomerShouldBeMatch(
+                checkAddressCustomerCheckRequest.addressId(), checkAddressCustomerCheckRequest.customerId());
     }
 }

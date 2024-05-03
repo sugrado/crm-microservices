@@ -40,4 +40,9 @@ public class CustomerManager implements CustomerService {
         this.customerRepository.save(customer);
         return customer;
     }
+
+    @Override
+    public void checkIfCustomerExists(int customerId) {
+        customerBusinessRules.customerShouldBeExist(customerId);
+    }
 }

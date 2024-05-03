@@ -28,4 +28,11 @@ public class AddressBusinessRules {
             throw new BusinessException(this.messageService.getMessage(Messages.AddressMessages.NOT_FOUND));
         }
     }
+
+    public void addressAndCustomerShouldBeMatch(int addressId,int customerId) {
+        Optional<Address> address = addressRepository.findByIdAndCustomerId(addressId, customerId);
+        if (address.isEmpty()) {
+            throw new BusinessException(this.messageService.getMessage(Messages.AddressMessages.CUSTOMER_ADDRESS_MISMATCH));
+        }
+    }
 }
