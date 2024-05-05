@@ -1,6 +1,8 @@
 package com.turkcell.crm.search_service.business.kafka.consumers;
 
 import com.turkcell.crm.common.kafka.events.CustomerCreatedEvent;
+import com.turkcell.crm.common.kafka.events.CustomerDeletedEvent;
+import com.turkcell.crm.common.kafka.events.CustomerUpdatedEvent;
 import com.turkcell.crm.search_service.business.abstracts.CustomerSearchService;
 import com.turkcell.crm.search_service.business.mappers.CustomerMapper;
 import com.turkcell.crm.search_service.entities.concretes.Customer;
@@ -18,5 +20,16 @@ public class CustomerConsumer {
     public void consume(CustomerCreatedEvent customerCreatedEvent) {
         Customer customer = customerMapper.toCustomer(customerCreatedEvent);
         customerSearchService.add(customer);
+    }
+
+    @KafkaListener(topics = "customer-updated", groupId = "customer.group")
+    public void consume(CustomerUpdatedEvent customerUpdatedEvent) {
+        Customer customer = customerMapper.toCustomer(customerUpdatedEvent);
+        customerSearchService.update(customer);
+    }
+
+    @KafkaListener(topics = "customer-deleted", groupId = "customer.group")
+    public void consume(CustomerDeletedEvent customerDeletedEvent) {
+        customerSearchService.delete(customerDeletedEvent.getId());
     }
 }
