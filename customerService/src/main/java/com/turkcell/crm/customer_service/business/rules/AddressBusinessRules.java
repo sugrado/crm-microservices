@@ -28,4 +28,10 @@ public class AddressBusinessRules {
             throw new BusinessException(this.messageService.getMessage(Messages.AddressMessages.NOT_FOUND));
         }
     }
+
+    public void defaultAddressCanNotDelete(Address address) {
+        if (address.isDefaultAddress()) {
+            throw new BusinessException(this.messageService.getMessage(Messages.AddressMessages.DEFAULT_ADDRESS_CAN_NOT_DELETE));
+        }
+    }
 }

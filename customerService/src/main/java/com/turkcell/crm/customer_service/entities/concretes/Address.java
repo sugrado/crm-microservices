@@ -25,6 +25,9 @@ public class Address extends BaseEntity<Integer> {
     @Column(name = "description", nullable = false)
     private String description;
 
+    @Column(name = "default_address", nullable = false)
+    private boolean defaultAddress;
+
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
