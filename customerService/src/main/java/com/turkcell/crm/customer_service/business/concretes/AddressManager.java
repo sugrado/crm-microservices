@@ -2,12 +2,13 @@ package com.turkcell.crm.customer_service.business.concretes;
 
 import com.turkcell.crm.customer_service.business.abstracts.AddressService;
 import com.turkcell.crm.customer_service.business.abstracts.CityService;
+import com.turkcell.crm.customer_service.business.dtos.requests.addresses.ChangeDefaultAddressRequest;
 import com.turkcell.crm.customer_service.business.dtos.requests.addresses.CreateAddressRequest;
 import com.turkcell.crm.customer_service.business.dtos.requests.customers.AddressDto;
+import com.turkcell.crm.customer_service.business.dtos.responses.addresses.ChangedDefaultAddressResponse;
 import com.turkcell.crm.customer_service.business.dtos.responses.addresses.CreatedAddressResponse;
 import com.turkcell.crm.customer_service.business.dtos.responses.addresses.DeletedAddressResponse;
 import com.turkcell.crm.customer_service.business.dtos.responses.addresses.GetByIdAddressResponse;
-import com.turkcell.crm.customer_service.business.dtos.responses.addresses.UpdatedDefaultAdressStateResponse;
 import com.turkcell.crm.customer_service.business.mappers.AddressMapper;
 import com.turkcell.crm.customer_service.business.rules.AddressBusinessRules;
 import com.turkcell.crm.customer_service.data_access.abstracts.AddressRepository;
@@ -41,7 +42,7 @@ public class AddressManager implements AddressService {
             address.setCustomer(customer);
             return address;
         }).toList();
-        addressList.stream().findFirst().get().setDefaultAddress(true);
+        addressList.get(0).setDefaultAddress(true);
         addressRepository.saveAll(addressList);
     }
 
@@ -66,24 +67,36 @@ public class AddressManager implements AddressService {
 
     @Override
     public DeletedAddressResponse delete(int id) {
-        addressBusinessRules.addressShouldBeExist(id);
-        addressBusinessRules.defaultAddressCanNotDelete(id);
-        Address address=this.addressRepository.findById(id).get();
+        Optional<Address> addressOptional = this.addressRepository.findById(id);
+        addressBusinessRules.addressShouldBeExist(addressOptional);
+        Address address = addressOptional.get();
+
+        addressBusinessRules.defaultAddressCanNotDelete(address);
         address.setDeletedDate(LocalDateTime.now());
-        Address deletedAddress=this.addressRepository.save(address);
+        Address deletedAddress = this.addressRepository.save(address);
         return this.addressMapper.toDeletedAddressResponse(deletedAddress);
     }
-    //TODO:DTO eklenecek
+
     @Override
-    public UpdatedDefaultAdressStateResponse updateDefaultAddressState(int id) {
-        this.addressBusinessRules.addressShouldBeExist(id);
-        Address newDefaultAddress=this.addressRepository.findById(id).get();
-        Address oldDefaultAddress=this.addressRepository.findByIsDefaultAddressTrueAndCustomerId(newDefaultAddress.getCustomer().getId()).get();
-        oldDefaultAddress.setDefaultAddress(false);
-        newDefaultAddress.setDefaultAddress(true);
-        this.addressRepository.save(oldDefaultAddress);
-        Address updatedAddress = this.addressRepository.save(newDefaultAddress);
-        //TODO:db de deault adresi düzeltiyor ama response hep false olarak dönüyor
-        return this.addressMapper.toUpdatedDefaultAdressStateResponse(updatedAddress);
+    public ChangedDefaultAddressResponse changeDefaultAddress(ChangeDefaultAddressRequest changeDefaultAddressRequest) {
+        Optional<Address> newDefaultAddressOptional = this.addressRepository.findById(changeDefaultAddressRequest.addressId());
+        this.addressBusinessRules.addressShouldBeExist(newDefaultAddressOptional);
+        Address newDefaultAddress = newDefaultAddressOptional.get();
+        Address oldDefaultAddress = getDefault(newDefaultAddress.getCustomer());
+
+        changeState(oldDefaultAddress, false);
+        Address updatedAddress = changeState(newDefaultAddress, true);
+        return this.addressMapper.toChangedDefaultAddressResponse(updatedAddress);
+    }
+
+    private Address getDefault(Customer customer) {
+        Optional<Address> defaultAddressOptional = this.addressRepository.findByDefaultAddressIsTrueAndCustomerId(customer.getId());
+        this.addressBusinessRules.addressShouldBeExist(defaultAddressOptional);
+        return defaultAddressOptional.get();
+    }
+
+    private Address changeState(Address address, boolean isDefault) {
+        address.setDefaultAddress(isDefault);
+        return this.addressRepository.save(address);
     }
 }
