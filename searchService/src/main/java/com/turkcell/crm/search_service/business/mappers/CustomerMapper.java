@@ -1,7 +1,6 @@
 package com.turkcell.crm.search_service.business.mappers;
 
 import com.turkcell.crm.common.kafka.events.CustomerCreatedEvent;
-import com.turkcell.crm.common.kafka.events.CustomerDeletedEvent;
 import com.turkcell.crm.common.kafka.events.CustomerUpdatedEvent;
 import com.turkcell.crm.search_service.core.utilities.mapping.MapstructService;
 import com.turkcell.crm.search_service.entities.concretes.Customer;
