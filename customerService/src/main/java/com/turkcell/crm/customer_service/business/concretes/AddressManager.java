@@ -11,6 +11,7 @@ import com.turkcell.crm.customer_service.business.dtos.responses.addresses.Delet
 import com.turkcell.crm.customer_service.business.dtos.responses.addresses.GetByIdAddressResponse;
 import com.turkcell.crm.customer_service.business.mappers.AddressMapper;
 import com.turkcell.crm.customer_service.business.rules.AddressBusinessRules;
+import com.turkcell.crm.customer_service.business.rules.CustomerBusinessRules;
 import com.turkcell.crm.customer_service.data_access.abstracts.AddressRepository;
 import com.turkcell.crm.customer_service.entities.concretes.Address;
 import com.turkcell.crm.customer_service.entities.concretes.City;
@@ -29,6 +30,7 @@ public class AddressManager implements AddressService {
     private final AddressMapper addressMapper;
     private final CityService cityService;
     private final AddressBusinessRules addressBusinessRules;
+    private final CustomerBusinessRules customerBusinessRules;
 
     @Override
     public void add(List<AddressDto> addressDtoList, Customer customer) {
@@ -61,7 +63,12 @@ public class AddressManager implements AddressService {
 
     @Override
     public CreatedAddressResponse add(CreateAddressRequest createAddressRequest) {
-        Address address=this.addressMapper.toCustomerAddressWithRequest(createAddressRequest);
+        customerBusinessRules.customerShouldBeExist(createAddressRequest.customerId());
+        Address address = this.addressMapper.toCustomerAddressWithRequest(createAddressRequest);
+        if (address.isDefaultAddress()) {
+            Address defaultAddress = getDefault(address.getCustomer());
+            changeState(defaultAddress, false);
+        }
         return this.addressMapper.toCreateAddressResponse(this.addressRepository.save(address));
     }
 
