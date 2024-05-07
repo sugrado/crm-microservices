@@ -4,10 +4,11 @@ import java.time.LocalDateTime;
 
 public record DeletedAddressResponse(
         int id,
+        LocalDateTime deletedDate,
         String street,
         String houseFlatNumber,
-        LocalDateTime deletedDate,
-        String cityName,
         String description,
-        boolean isDefaultAddress) {
+        boolean defaultAddress,
+        int cityId
+) {
 }

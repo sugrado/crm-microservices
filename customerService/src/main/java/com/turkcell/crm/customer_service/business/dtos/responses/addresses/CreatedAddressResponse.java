@@ -4,8 +4,8 @@ public record CreatedAddressResponse(
         int id,
         String street,
         String houseFlatNumber,
-        String cityName,
         String description,
-        boolean isDefaultAddress
+        boolean defaultAddress,
+        int cityId
 ) {
 }

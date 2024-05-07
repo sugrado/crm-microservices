@@ -18,10 +18,7 @@ public class Messages {
 
     public static class AddressMessages {
         public static final String NOT_FOUND = "addressNotFound";
-        public static final String DEFAULT_ADDRESS_CAN_NOT_DELETE="defaultAddressCanNotDelete";
-
-        public static final String DELETED_ADDRESS_CAN_NOT_BE_DEFAULT_ADDRESS="deletedAddressCanNotBeDefaultAddress";
-
+        public static final String DEFAULT_ADDRESS_CAN_NOT_DELETE = "defaultAddressCanNotDelete";
     }
 
     public static class AccountMessages {
