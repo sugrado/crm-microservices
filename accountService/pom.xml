@@ -84,11 +84,11 @@
             <artifactId>spring-cloud-starter-feign</artifactId>
             <version>1.4.7.RELEASE</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>com.turkcell.crm</groupId>-->
-<!--            <artifactId>common</artifactId>-->
-<!--            <version>0.0.1</version>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.turkcell.crm</groupId>-->
+        <!--            <artifactId>common</artifactId>-->
+        <!--            <version>0.0.1</version>-->
+        <!--        </dependency>-->
     </dependencies>
     <dependencyManagement>
         <dependencies>
