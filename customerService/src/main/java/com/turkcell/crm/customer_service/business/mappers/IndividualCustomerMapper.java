@@ -1,6 +1,8 @@
 package com.turkcell.crm.customer_service.business.mappers;
 
 import com.turkcell.crm.common.kafka.events.CustomerCreatedEvent;
+import com.turkcell.crm.common.kafka.events.CustomerDeletedEvent;
+import com.turkcell.crm.common.kafka.events.CustomerUpdatedEvent;
 import com.turkcell.crm.customer_service.business.dtos.requests.individual_customers.CreateIndividualCustomerRequest;
 import com.turkcell.crm.customer_service.business.dtos.requests.individual_customers.UpdateIndividualCustomerRequest;
 import com.turkcell.crm.customer_service.business.dtos.responses.individual_customers.*;
@@ -31,4 +33,11 @@ public interface IndividualCustomerMapper {
     @Mapping(target = "mobilePhone", source = "customer.mobilePhone")
     @Mapping(target = "gender", source = "gender")
     CustomerCreatedEvent toCustomerCreatedEvent(IndividualCustomer customer);
+
+    @Mapping(target = "email", source = "customer.email")
+    @Mapping(target = "mobilePhone", source = "customer.mobilePhone")
+    @Mapping(target = "gender", source = "gender")
+    CustomerUpdatedEvent toCustomerUpdatedEvent(IndividualCustomer customer);
+
+    CustomerDeletedEvent toCustomerDeletedEvent(IndividualCustomer customer);
 }

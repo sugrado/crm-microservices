@@ -29,6 +29,12 @@ public class AddressBusinessRules {
         }
     }
 
+    public void defaultAddressCanNotDelete(Address address) {
+        if (address.isDefaultAddress()) {
+            throw new BusinessException(this.messageService.getMessage(Messages.AddressMessages.DEFAULT_ADDRESS_CAN_NOT_DELETE));
+        }
+    }
+
     public void addressAndCustomerShouldBeMatch(int addressId,int customerId) {
         Optional<Address> address = addressRepository.findByIdAndCustomerId(addressId, customerId);
         if (address.isEmpty()) {

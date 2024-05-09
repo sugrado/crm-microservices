@@ -9,5 +9,7 @@ import java.util.Optional;
 public interface AddressRepository extends JpaRepository<Address, Integer> {
     List<Address> findAllByCustomerIdAndIdIsIn(int customerId, List<Integer> ids);
 
+    Optional<Address> findByDefaultAddressIsTrueAndCustomerId(int customerId);
+
     Optional<Address> findByIdAndCustomerId(int id, int customerId);
 }

@@ -1,7 +1,10 @@
 package com.turkcell.crm.customer_service.business.dtos.responses.addresses;
 
-public record GetByIdAddressResponse(
+import java.time.LocalDateTime;
+
+public record DeletedAddressResponse(
         int id,
+        LocalDateTime deletedDate,
         String street,
         String houseFlatNumber,
         String description,

@@ -1,6 +1,8 @@
 package com.turkcell.crm.customer_service.business.concretes;
 
 import com.turkcell.crm.common.kafka.events.CustomerCreatedEvent;
+import com.turkcell.crm.common.kafka.events.CustomerDeletedEvent;
+import com.turkcell.crm.common.kafka.events.CustomerUpdatedEvent;
 import com.turkcell.crm.customer_service.business.abstracts.CustomerService;
 import com.turkcell.crm.customer_service.business.abstracts.IndividualCustomerService;
 import com.turkcell.crm.customer_service.business.dtos.requests.individual_customers.CreateIndividualCustomerRequest;
@@ -66,6 +68,10 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 
         individualCustomerMapper.updateIndividualCustomerFromRequest(updateIndividualCustomerRequest, individualCustomer);
         this.individualCustomerRepository.save(individualCustomer);
+
+        CustomerUpdatedEvent customerUpdatedEvent = individualCustomerMapper.toCustomerUpdatedEvent(individualCustomer);
+        customerProducer.send(customerUpdatedEvent);
+
         return individualCustomerMapper.toUpdatedIndividualCustomerResponse(individualCustomer);
     }
 
@@ -76,7 +82,11 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 
         IndividualCustomer individualCustomerToDelete = individualCustomerOptional.get();
         individualCustomerToDelete.setDeletedDate(LocalDateTime.now());
-        this.individualCustomerRepository.save(individualCustomerToDelete);
+        IndividualCustomer deletedCustomer = this.individualCustomerRepository.save(individualCustomerToDelete);
+
+        CustomerDeletedEvent customerDeletedEvent = individualCustomerMapper.toCustomerDeletedEvent(deletedCustomer);
+        customerProducer.send(customerDeletedEvent);
+
         return individualCustomerMapper.toDeletedIndividualCustomerResponse(individualCustomerToDelete);
     }
 }
