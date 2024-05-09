@@ -1,7 +1,7 @@
 package com.turkcell.crm.search_service.api.controllers;
 
 import com.turkcell.crm.search_service.business.abstracts.CustomerSearchService;
-import com.turkcell.crm.search_service.business.dtos.requests.FilterRequest;
+import com.turkcell.crm.search_service.core.services.search.models.DynamicQuery;
 import com.turkcell.crm.search_service.entities.concretes.Customer;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +18,7 @@ public class CustomersController {
     private final CustomerSearchService customerSearchService;
 
     @PostMapping("/dynamic-search")
-    public List<Customer> searchCustomers(@RequestBody FilterRequest filterRequest) {
-        return customerSearchService.searchCustomers(filterRequest.searchParams());
+    public List<Customer> searchCustomers(@RequestBody DynamicQuery dynamicQuery) {
+        return customerSearchService.searchCustomers(dynamicQuery);
     }
 }
