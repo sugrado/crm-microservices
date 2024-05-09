@@ -34,4 +34,11 @@ public class AddressBusinessRules {
             throw new BusinessException(this.messageService.getMessage(Messages.AddressMessages.DEFAULT_ADDRESS_CAN_NOT_DELETE));
         }
     }
+
+    public void addressAndCustomerShouldBeMatch(int addressId, int customerId) {
+        boolean exists = addressRepository.existsByIdAndCustomerId(addressId, customerId);
+        if (!exists) {
+            throw new BusinessException(this.messageService.getMessage(Messages.AddressMessages.CUSTOMER_ADDRESS_MISMATCH));
+        }
+    }
 }

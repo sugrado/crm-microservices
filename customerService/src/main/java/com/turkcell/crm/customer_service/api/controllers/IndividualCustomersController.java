@@ -15,31 +15,31 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("customer-service/api/v1/individual-customers")
 public class IndividualCustomersController {
-    private IndividualCustomerService customerService;
+    private IndividualCustomerService individualCustomerService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CreatedIndividualCustomerResponse add(@Valid @RequestBody CreateIndividualCustomerRequest createIndividualCustomerRequest) {
-        return this.customerService.add(createIndividualCustomerRequest);
+        return this.individualCustomerService.add(createIndividualCustomerRequest);
     }
 
     @GetMapping
     public List<GetAllIndividualCustomersResponse> getAll() {
-        return this.customerService.getAll();
+        return this.individualCustomerService.getAll();
     }
 
     @GetMapping("{id}")
     public GetByIdIndividualCustomerResponse getById(@PathVariable int id) {
-        return this.customerService.getById(id);
+        return this.individualCustomerService.getById(id);
     }
 
     @PatchMapping("{id}")
     public UpdatedIndividualCustomerResponse update(@PathVariable int id, @Valid @RequestBody UpdateIndividualCustomerRequest updateIndividualCustomerRequest) {
-        return this.customerService.update(id, updateIndividualCustomerRequest);
+        return this.individualCustomerService.update(id, updateIndividualCustomerRequest);
     }
 
     @DeleteMapping("{id}")
     public DeletedIndividualCustomerResponse delete(@PathVariable int id) {
-        return this.customerService.delete(id);
+        return this.individualCustomerService.delete(id);
     }
 }

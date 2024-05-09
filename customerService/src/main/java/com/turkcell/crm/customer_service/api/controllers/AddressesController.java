@@ -2,6 +2,7 @@ package com.turkcell.crm.customer_service.api.controllers;
 
 import com.turkcell.crm.customer_service.business.abstracts.AddressService;
 import com.turkcell.crm.customer_service.business.dtos.requests.addresses.ChangeDefaultAddressRequest;
+import com.turkcell.crm.customer_service.business.dtos.requests.addresses.CheckAddressAndCustomerMatchRequest;
 import com.turkcell.crm.customer_service.business.dtos.requests.addresses.CreateAddressRequest;
 import com.turkcell.crm.customer_service.business.dtos.responses.addresses.ChangedDefaultAddressResponse;
 import com.turkcell.crm.customer_service.business.dtos.responses.addresses.CreatedAddressResponse;
@@ -31,5 +32,11 @@ public class AddressesController {
     @DeleteMapping("{id}")
     public DeletedAddressResponse delete(@PathVariable int id) {
         return this.addressService.delete(id);
+    }
+
+    @PostMapping("check-address-and-customer-match")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void checkAddressAndCustomerMatch(@RequestBody CheckAddressAndCustomerMatchRequest checkAddressAndCustomerMatchRequest) {
+        this.addressService.checkAddressAndCustomerMatch(checkAddressAndCustomerMatchRequest);
     }
 }
