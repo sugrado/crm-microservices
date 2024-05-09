@@ -1,6 +1,7 @@
 package com.turkcell.crm.account_service.business.rules;
 
 //import com.turkcell.crm.account_service.api.clients.CustomerClient;
+
 import com.turkcell.crm.account_service.business.constants.Messages;
 import com.turkcell.crm.account_service.core.business.abstracts.MessageService;
 import com.turkcell.crm.account_service.core.utilities.exceptions.types.BusinessException;
