@@ -2,8 +2,8 @@ package com.turkcell.crm.customer_service.business.concretes;
 
 import com.turkcell.crm.customer_service.business.abstracts.AddressService;
 import com.turkcell.crm.customer_service.business.abstracts.CityService;
-import com.turkcell.crm.customer_service.business.dtos.requests.addresses.CheckAddressCustomerCheckRequest;
 import com.turkcell.crm.customer_service.business.dtos.requests.addresses.ChangeDefaultAddressRequest;
+import com.turkcell.crm.customer_service.business.dtos.requests.addresses.CheckAddressAndCustomerMatchRequest;
 import com.turkcell.crm.customer_service.business.dtos.requests.addresses.CreateAddressRequest;
 import com.turkcell.crm.customer_service.business.dtos.requests.customers.AddressDto;
 import com.turkcell.crm.customer_service.business.dtos.responses.addresses.ChangedDefaultAddressResponse;
@@ -63,9 +63,9 @@ public class AddressManager implements AddressService {
     }
 
     @Override
-    public void checkAddressAndCustomerMatch(CheckAddressCustomerCheckRequest checkAddressCustomerCheckRequest) {
+    public void checkAddressAndCustomerMatch(CheckAddressAndCustomerMatchRequest checkAddressAndCustomerMatchRequest) {
         addressBusinessRules.addressAndCustomerShouldBeMatch(
-                checkAddressCustomerCheckRequest.addressId(), checkAddressCustomerCheckRequest.customerId());
+                checkAddressAndCustomerMatchRequest.addressId(), checkAddressAndCustomerMatchRequest.customerId());
     }
 
     @Override

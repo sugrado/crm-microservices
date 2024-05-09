@@ -1,7 +1,7 @@
 package com.turkcell.crm.customer_service.business.abstracts;
 
-import com.turkcell.crm.customer_service.business.dtos.requests.addresses.CheckAddressCustomerCheckRequest;
 import com.turkcell.crm.customer_service.business.dtos.requests.addresses.ChangeDefaultAddressRequest;
+import com.turkcell.crm.customer_service.business.dtos.requests.addresses.CheckAddressAndCustomerMatchRequest;
 import com.turkcell.crm.customer_service.business.dtos.requests.addresses.CreateAddressRequest;
 import com.turkcell.crm.customer_service.business.dtos.requests.customers.AddressDto;
 import com.turkcell.crm.customer_service.business.dtos.responses.addresses.ChangedDefaultAddressResponse;
@@ -20,7 +20,7 @@ public interface AddressService {
 
     List<Address> getAllByCustomerAndIds(int customerId, List<Integer> ids);
 
-    void checkAddressAndCustomerMatch(CheckAddressCustomerCheckRequest checkAddressCustomerCheckRequest);
+    void checkAddressAndCustomerMatch(CheckAddressAndCustomerMatchRequest checkAddressAndCustomerMatchRequest);
 
     CreatedAddressResponse add(CreateAddressRequest createAddressRequest);
 

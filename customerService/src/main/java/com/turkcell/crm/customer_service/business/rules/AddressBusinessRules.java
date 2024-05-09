@@ -35,9 +35,9 @@ public class AddressBusinessRules {
         }
     }
 
-    public void addressAndCustomerShouldBeMatch(int addressId,int customerId) {
-        Optional<Address> address = addressRepository.findByIdAndCustomerId(addressId, customerId);
-        if (address.isEmpty()) {
+    public void addressAndCustomerShouldBeMatch(int addressId, int customerId) {
+        boolean exists = addressRepository.existsByIdAndCustomerId(addressId, customerId);
+        if (!exists) {
             throw new BusinessException(this.messageService.getMessage(Messages.AddressMessages.CUSTOMER_ADDRESS_MISMATCH));
         }
     }
