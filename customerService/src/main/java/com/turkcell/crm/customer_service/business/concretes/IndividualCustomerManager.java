@@ -8,12 +8,12 @@ import com.turkcell.crm.customer_service.business.abstracts.IndividualCustomerSe
 import com.turkcell.crm.customer_service.business.dtos.requests.individual_customers.CreateIndividualCustomerRequest;
 import com.turkcell.crm.customer_service.business.dtos.requests.individual_customers.UpdateIndividualCustomerRequest;
 import com.turkcell.crm.customer_service.business.dtos.responses.individual_customers.*;
-import com.turkcell.crm.customer_service.kafka.producers.CustomerProducer;
 import com.turkcell.crm.customer_service.business.mappers.IndividualCustomerMapper;
 import com.turkcell.crm.customer_service.business.rules.IndividualCustomerBusinessRules;
 import com.turkcell.crm.customer_service.data_access.abstracts.IndividualCustomerRepository;
 import com.turkcell.crm.customer_service.entities.concretes.Customer;
 import com.turkcell.crm.customer_service.entities.concretes.IndividualCustomer;
+import com.turkcell.crm.customer_service.kafka.producers.CustomerProducer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
