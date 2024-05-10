@@ -2,7 +2,6 @@ package com.turkcell.crm.identity_service.business.security;
 
 import com.turkcell.crm.core.services.SecurityService;
 import com.turkcell.crm.identity_service.business.constants.Roles;
-
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.stereotype.Service;
