@@ -22,7 +22,7 @@ public class SecurityManager implements SecurityService {
     public HttpSecurity configureSecurity(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(x -> x
                 .requestMatchers(WHITE_LIST_URLS).permitAll()
-                .requestMatchers(HttpMethod.GET, "/identity-service/api/v1/auth/test").hasAnyAuthority(Roles.ADMIN)
+                .requestMatchers(HttpMethod.GET, "/identity-service/api/v1/auth/test").hasAuthority(Roles.ADMIN)
                 .anyRequest().authenticated());
         return http;
     }
