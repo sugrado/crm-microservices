@@ -21,7 +21,7 @@ public class RefreshTokenManager implements RefreshTokenService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final RefreshTokenBusinessRules refreshTokenBusinessRules;
     private final JwtService jwtService;
-    @Value("${jwt.refresh.days}")
+    @Value("${refreshToken.expiration.days}")
     private int refreshTokenExpiryDays;
 
     @Override

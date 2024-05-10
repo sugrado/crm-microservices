@@ -35,4 +35,8 @@ public class BaseController {
         }
         return ipAddress;
     }
+
+    protected int calculateCookieExpirationSeconds(int expirationDays) {
+        return expirationDays * 24 * 60 * 60;
+    }
 }
