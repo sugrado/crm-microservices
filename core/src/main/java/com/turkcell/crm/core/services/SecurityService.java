@@ -1,4 +1,4 @@
-package com.turkcell.crm.identity_service.core.services;
+package com.turkcell.crm.core.services;
 
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 

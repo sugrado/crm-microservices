@@ -1,8 +1,9 @@
 package com.turkcell.crm.identity_service.business.concretes;
 
+import com.turkcell.crm.core.services.JwtService;
 import com.turkcell.crm.identity_service.business.abstracts.RefreshTokenService;
 import com.turkcell.crm.identity_service.business.rules.RefreshTokenBusinessRules;
-import com.turkcell.crm.identity_service.core.services.JwtService;
+
 import com.turkcell.crm.identity_service.data_access.abstracts.RefreshTokenRepository;
 import com.turkcell.crm.identity_service.entities.concretes.RefreshToken;
 import com.turkcell.crm.identity_service.entities.concretes.User;

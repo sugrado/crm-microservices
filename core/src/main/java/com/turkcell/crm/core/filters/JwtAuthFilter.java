@@ -1,6 +1,7 @@
-package com.turkcell.crm.identity_service.core.filters;
+package com.turkcell.crm.core.filters;
 
-import com.turkcell.crm.identity_service.core.services.JwtService;
+
+import com.turkcell.crm.core.services.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

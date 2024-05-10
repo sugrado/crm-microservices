@@ -1,4 +1,4 @@
-package com.turkcell.crm.identity_service.core.services;
+package com.turkcell.crm.core.services;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
