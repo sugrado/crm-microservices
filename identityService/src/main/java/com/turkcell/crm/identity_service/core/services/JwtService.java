@@ -18,7 +18,7 @@ import java.util.Map;
 public class JwtService {
     @Value("${jwt.secret.key}")
     private String secretKey;
-    @Value("${jwt.expiration.time}")
+    @Value("${jwt.expiration.ms}")
     private long expiration;
 
     public String generateToken(String userName, Map<String, Object> claims) {

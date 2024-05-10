@@ -10,22 +10,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name = "refresh_tokens")
-public class RefreshToken extends BaseEntity<Integer> {
-    private String revokedByIp;
-    private LocalDateTime revokedDate;
-    private String revokeReason;
-    private String token;
-    private LocalDateTime expirationDate;
-
+@Table(name = "user_roles")
+public class UserRole extends BaseEntity<Integer> {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
 }

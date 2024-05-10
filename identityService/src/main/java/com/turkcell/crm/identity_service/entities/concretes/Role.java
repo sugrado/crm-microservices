@@ -3,7 +3,7 @@ package com.turkcell.crm.identity_service.entities.concretes;
 import com.turkcell.crm.identity_service.core.entities.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,12 +19,12 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "roles")
-public class Role extends BaseEntity implements GrantedAuthority {
+public class Role extends BaseEntity<Integer> implements GrantedAuthority {
     @Column(name = "name")
     private String name;
 
-    @ManyToMany(mappedBy = "authorities")
-    private Set<User> users;
+    @OneToMany(mappedBy = "role")
+    private Set<UserRole> users;
 
     @Override
     public String getAuthority() {
