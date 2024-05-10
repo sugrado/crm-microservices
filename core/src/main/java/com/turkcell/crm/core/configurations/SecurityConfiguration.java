@@ -1,7 +1,8 @@
-package com.turkcell.crm.identity_service.core.configurations;
+package com.turkcell.crm.core.configurations;
 
-import com.turkcell.crm.identity_service.core.filters.JwtAuthFilter;
-import com.turkcell.crm.identity_service.core.services.SecurityService;
+
+import com.turkcell.crm.core.filters.JwtAuthFilter;
+import com.turkcell.crm.core.services.SecurityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

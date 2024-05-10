@@ -1,5 +1,6 @@
 package com.turkcell.crm.identity_service.business.concretes;
 
+import com.turkcell.crm.core.services.JwtService;
 import com.turkcell.crm.identity_service.business.abstracts.AuthService;
 import com.turkcell.crm.identity_service.business.abstracts.RefreshTokenService;
 import com.turkcell.crm.identity_service.business.abstracts.UserService;
@@ -10,7 +11,6 @@ import com.turkcell.crm.identity_service.business.dtos.responses.auth.RefreshedT
 import com.turkcell.crm.identity_service.business.dtos.responses.auth.RegisteredResponse;
 import com.turkcell.crm.identity_service.business.mappers.AuthMapper;
 import com.turkcell.crm.identity_service.business.rules.AuthBusinessRules;
-import com.turkcell.crm.identity_service.core.services.JwtService;
 import com.turkcell.crm.identity_service.entities.concretes.RefreshToken;
 import com.turkcell.crm.identity_service.entities.concretes.User;
 import lombok.RequiredArgsConstructor;
