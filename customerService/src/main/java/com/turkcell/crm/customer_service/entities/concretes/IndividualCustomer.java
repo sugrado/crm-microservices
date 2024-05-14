@@ -17,6 +17,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "individual_customers")
 public class IndividualCustomer extends BaseEntity<Integer> {
+
     @Column(name = "first_name", nullable = false)
     private String firstName;
 
@@ -44,7 +45,7 @@ public class IndividualCustomer extends BaseEntity<Integer> {
     @Column(name = "gender", nullable = false)
     private Gender gender;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @MapsId
     @JoinColumn(name = "customer_id")
     private Customer customer;

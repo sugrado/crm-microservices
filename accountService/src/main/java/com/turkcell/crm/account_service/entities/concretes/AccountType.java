@@ -1,10 +1,7 @@
 package com.turkcell.crm.account_service.entities.concretes;
 
 import com.turkcell.crm.account_service.core.entities.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +19,6 @@ public class AccountType extends BaseEntity<Integer> {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "type")
+    @OneToMany(mappedBy = "type", cascade = CascadeType.ALL)
     private List<Account> accounts;
 }
