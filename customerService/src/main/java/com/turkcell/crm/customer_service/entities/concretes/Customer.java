@@ -16,15 +16,16 @@ import java.util.List;
 @Entity
 @Table(name = "customers")
 public class Customer extends BaseEntity<Integer> {
+
     @Column(name = "email", nullable = false)
     private String email;
 
     @Column(name = "mobile_phone", nullable = false)
     private String mobilePhone;
 
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private List<Address> addresses;
 
-    @OneToOne(mappedBy = "customer")
+    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
     private IndividualCustomer individualCustomer;
 }

@@ -6,6 +6,7 @@ import com.turkcell.crm.identity_service.business.rules.RefreshTokenBusinessRule
 import com.turkcell.crm.identity_service.data_access.abstracts.RefreshTokenRepository;
 import com.turkcell.crm.identity_service.entities.concretes.RefreshToken;
 import com.turkcell.crm.identity_service.entities.concretes.User;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -43,6 +44,7 @@ public class RefreshTokenManager implements RefreshTokenService {
     }
 
     @Override
+    @Transactional
     public RefreshToken rotate(RefreshToken token, String ipAddress) {
         RefreshToken createdToken = create(token.getUser());
         revokeToken(token, ipAddress, createdToken.getToken());

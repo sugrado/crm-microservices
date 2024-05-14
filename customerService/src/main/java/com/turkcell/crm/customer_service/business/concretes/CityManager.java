@@ -13,16 +13,19 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class CityManager implements CityService {
+
     private final CityRepository cityRepository;
     private final CityMapper cityMapper;
 
     @Override
     public List<GetAllCitiesResponse> getAll() {
+
         return this.cityMapper.toGetAllCitiesResponseList(this.cityRepository.findAll());
     }
 
     @Override
     public List<City> getAllById(List<Integer> ids) {
+
         return this.cityRepository.findAllByIdIsIn(ids);
     }
 }

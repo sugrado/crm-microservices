@@ -13,6 +13,7 @@ import com.turkcell.crm.identity_service.business.mappers.AuthMapper;
 import com.turkcell.crm.identity_service.business.rules.AuthBusinessRules;
 import com.turkcell.crm.identity_service.entities.concretes.RefreshToken;
 import com.turkcell.crm.identity_service.entities.concretes.User;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -31,28 +32,41 @@ public class AuthManager implements AuthService {
     private final AuthMapper authMapper;
 
     @Override
+    @Transactional
     public RegisteredResponse register(RegisterRequest request) {
+
         User user = authMapper.toUser(request);
         authBusinessRules.userEmailShouldNotBeExists(user.getEmail());
+
         String encodedPassword = passwordEncoder.encode(request.password());
         user.setPassword(encodedPassword);
+
         User createdUser = userService.add(user);
         RefreshToken refreshToken = refreshTokenService.create(createdUser);
+
         String accessToken = generateJwt(createdUser);
         return new RegisteredResponse(accessToken, refreshToken.getToken());
     }
 
     @Override
+    @Transactional
     public LoggedInResponse login(LoginRequest loginRequest, String ipAddress) {
+
         authBusinessRules.emailAndPasswordShouldBeMatch(loginRequest.email(), loginRequest.password());
+
         User user = userService.findByUsername(loginRequest.email());
+
         refreshTokenService.revokeOldTokens(user, ipAddress);
+
         RefreshToken refreshToken = refreshTokenService.create(user);
+
         String accessToken = generateJwt(user);
+
         return new LoggedInResponse(accessToken, refreshToken.getToken());
     }
 
     @Override
+    @Transactional
     public RefreshedTokenResponse refreshToken(String refreshToken, String ipAddress) {
         RefreshToken token = refreshTokenService.verify(refreshToken);
         RefreshToken newToken = refreshTokenService.rotate(token, ipAddress);

@@ -20,5 +20,6 @@ public class Messages {
         public static final String NOT_FOUND = "addressNotFound";
         public static final String DEFAULT_ADDRESS_CAN_NOT_DELETE = "defaultAddressCanNotDelete";
         public static final String CUSTOMER_ADDRESS_MISMATCH = "customerAddressMismatch";
+        public static final String CUSTOMER_SHOULD_HAVE_AT_LEAST_ONE_ADDRESS = "customerShouldHaveAtLeastOneAddress";
     }
 }

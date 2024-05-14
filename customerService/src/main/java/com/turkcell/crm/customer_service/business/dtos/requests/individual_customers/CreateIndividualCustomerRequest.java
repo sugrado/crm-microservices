@@ -4,6 +4,7 @@ import com.turkcell.crm.customer_service.business.dtos.requests.customers.Create
 import com.turkcell.crm.customer_service.entities.enums.Gender;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
@@ -19,6 +20,7 @@ public record CreateIndividualCustomerRequest(
         String lastName,
         @NotNull
         @Size(min = 11, max = 11)
+        @Pattern(regexp = "^[1-9]\\d{9}[02468]$")
         String nationalityId,
         @NotNull
         LocalDate birthDate,

@@ -26,10 +26,10 @@ public class User extends BaseEntity<Integer> implements UserDetails {
     @Column(name = "email")
     private String email;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<UserRole> authorities;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<RefreshToken> refreshTokens;
 
     @Override

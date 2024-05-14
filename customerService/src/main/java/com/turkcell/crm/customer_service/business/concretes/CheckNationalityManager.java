@@ -6,8 +6,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CheckNationalityManager implements CheckNationalityService {
+
     @Override
     public boolean validate(CheckNationalityDTO checkNationalityDTO) {
+
         return true;
     }
 }
