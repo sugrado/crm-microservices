@@ -3,11 +3,13 @@ package com.turkcell.crm.customer_service.business.rules;
 import com.turkcell.crm.customer_service.business.constants.messages.Messages;
 import com.turkcell.crm.customer_service.core.business.abstracts.MessageService;
 import com.turkcell.crm.customer_service.core.utilities.exceptions.types.BusinessException;
+import com.turkcell.crm.customer_service.core.utilities.exceptions.types.NotFoundException;
 import com.turkcell.crm.customer_service.data_access.abstracts.AddressRepository;
 import com.turkcell.crm.customer_service.entities.concretes.Address;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,13 +21,13 @@ public class AddressBusinessRules {
     public void addressShouldBeExist(int id) {
         boolean exists = this.addressRepository.existsById(id);
         if (!exists) {
-            throw new BusinessException(this.messageService.getMessage(Messages.AddressMessages.NOT_FOUND));
+            throw new NotFoundException(this.messageService.getMessage(Messages.AddressMessages.NOT_FOUND));
         }
     }
 
     public void addressShouldBeExist(Optional<Address> address) {
         if (address.isEmpty()) {
-            throw new BusinessException(this.messageService.getMessage(Messages.AddressMessages.NOT_FOUND));
+            throw new NotFoundException(this.messageService.getMessage(Messages.AddressMessages.NOT_FOUND));
         }
     }
 
@@ -39,6 +41,12 @@ public class AddressBusinessRules {
         boolean exists = addressRepository.existsByIdAndCustomerId(addressId, customerId);
         if (!exists) {
             throw new BusinessException(this.messageService.getMessage(Messages.AddressMessages.CUSTOMER_ADDRESS_MISMATCH));
+        }
+    }
+
+    public void customerShouldHaveAtLeastOneAddress(List<Address> addressList) {
+        if (addressList.isEmpty()) {
+            throw new BusinessException(this.messageService.getMessage(Messages.AddressMessages.CUSTOMER_SHOULD_HAVE_AT_LEAST_ONE_ADDRESS));
         }
     }
 }

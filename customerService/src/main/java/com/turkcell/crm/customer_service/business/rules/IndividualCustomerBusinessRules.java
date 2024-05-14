@@ -5,6 +5,7 @@ import com.turkcell.crm.customer_service.adapters.mernis.CheckNationalityService
 import com.turkcell.crm.customer_service.business.constants.messages.Messages;
 import com.turkcell.crm.customer_service.core.business.abstracts.MessageService;
 import com.turkcell.crm.customer_service.core.utilities.exceptions.types.BusinessException;
+import com.turkcell.crm.customer_service.core.utilities.exceptions.types.NotFoundException;
 import com.turkcell.crm.customer_service.data_access.abstracts.IndividualCustomerRepository;
 import com.turkcell.crm.customer_service.entities.concretes.IndividualCustomer;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,7 @@ public class IndividualCustomerBusinessRules {
 
     public void individualCustomerShouldBeExist(Optional<IndividualCustomer> individualCustomer) {
         if (individualCustomer.isEmpty()) {
-            throw new BusinessException(messageService.getMessage(Messages.IndividualCustomerMessages.NOT_FOUND));
+            throw new NotFoundException(messageService.getMessage(Messages.IndividualCustomerMessages.NOT_FOUND));
         }
     }
 
