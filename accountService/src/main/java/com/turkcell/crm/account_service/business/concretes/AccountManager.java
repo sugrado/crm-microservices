@@ -9,6 +9,7 @@ import com.turkcell.crm.account_service.business.rules.AccountBusinessRules;
 import com.turkcell.crm.account_service.business.rules.AccountTypeBusinessRules;
 import com.turkcell.crm.account_service.data_access.abstracts.AccountRepository;
 import com.turkcell.crm.account_service.entities.concretes.Account;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,7 @@ public class AccountManager implements AccountService {
     private final AccountBusinessRules accountBusinessRules;
 
     @Override
+    @Transactional
     public CreatedAccountResponse add(CreateAccountRequest createAccountRequest) {
         accountBusinessRules.customerShouldBeExistsWhenAccountIsCreated(createAccountRequest.customerId());
         accountTypeBusinessRules.accountTypeShouldBeExist(createAccountRequest.typeId());

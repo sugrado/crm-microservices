@@ -14,6 +14,7 @@ import com.turkcell.crm.customer_service.data_access.abstracts.IndividualCustome
 import com.turkcell.crm.customer_service.entities.concretes.Customer;
 import com.turkcell.crm.customer_service.entities.concretes.IndividualCustomer;
 import com.turkcell.crm.customer_service.kafka.producers.CustomerProducer;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,7 @@ public class IndividualCustomerManager implements IndividualCustomerService {
     private final CustomerProducer customerProducer;
 
     @Override
+    @Transactional
     public CreatedIndividualCustomerResponse add(CreateIndividualCustomerRequest request) {
         IndividualCustomer individualCustomer = individualCustomerMapper.toIndividualCustomer(request);
         individualCustomerBusinessRules.nationalityIdShouldBeUnique(individualCustomer.getNationalityId());
@@ -54,16 +56,17 @@ public class IndividualCustomerManager implements IndividualCustomerService {
     @Override
     public GetByIdIndividualCustomerResponse getById(int id) {
         Optional<IndividualCustomer> individualCustomerOptional = this.individualCustomerRepository.findById(id);
-        individualCustomerBusinessRules.individualCustomerShouldBeExist(individualCustomerOptional);
+        this.individualCustomerBusinessRules.individualCustomerShouldBeExist(individualCustomerOptional);
 
         IndividualCustomer individualCustomer = individualCustomerOptional.get();
         return individualCustomerMapper.toGetByIdIndividualCustomerResponse(individualCustomer);
     }
 
     @Override
+    @Transactional
     public UpdatedIndividualCustomerResponse update(int id, UpdateIndividualCustomerRequest updateIndividualCustomerRequest) {
         Optional<IndividualCustomer> individualCustomerOptional = this.individualCustomerRepository.findById(id);
-        individualCustomerBusinessRules.individualCustomerShouldBeExist(individualCustomerOptional);
+        this.individualCustomerBusinessRules.individualCustomerShouldBeExist(individualCustomerOptional);
         IndividualCustomer individualCustomer = individualCustomerOptional.get();
 
         individualCustomerMapper.updateIndividualCustomerFromRequest(updateIndividualCustomerRequest, individualCustomer);
@@ -76,16 +79,17 @@ public class IndividualCustomerManager implements IndividualCustomerService {
     }
 
     @Override
+    @Transactional
     public DeletedIndividualCustomerResponse delete(int id) {
         Optional<IndividualCustomer> individualCustomerOptional = this.individualCustomerRepository.findById(id);
-        individualCustomerBusinessRules.individualCustomerShouldBeExist(individualCustomerOptional);
+        this.individualCustomerBusinessRules.individualCustomerShouldBeExist(individualCustomerOptional);
 
         IndividualCustomer individualCustomerToDelete = individualCustomerOptional.get();
         individualCustomerToDelete.setDeletedDate(LocalDateTime.now());
         IndividualCustomer deletedCustomer = this.individualCustomerRepository.save(individualCustomerToDelete);
 
         CustomerDeletedEvent customerDeletedEvent = individualCustomerMapper.toCustomerDeletedEvent(deletedCustomer);
-        customerProducer.send(customerDeletedEvent);
+        this.customerProducer.send(customerDeletedEvent);
 
         return individualCustomerMapper.toDeletedIndividualCustomerResponse(individualCustomerToDelete);
     }
