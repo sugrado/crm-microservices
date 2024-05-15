@@ -3,7 +3,7 @@ package com.turkcell.crm.customer_service.core.utilities.exceptions.problem_deta
 public class NotFoundProblemDetails extends ProblemDetails {
     public NotFoundProblemDetails() {
         setTitle("Not Found");
-        setType("http://mydomain.com/exceptions/authentication");
+        setType("http://mydomain.com/exceptions/not-found");
         setStatus("404");
     }
 }

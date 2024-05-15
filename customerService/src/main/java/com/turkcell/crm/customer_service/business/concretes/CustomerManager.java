@@ -48,7 +48,6 @@ public class CustomerManager implements CustomerService {
 
     @Override
     public void checkIfCustomerExists(int customerId) {
-
         this.customerBusinessRules.customerShouldBeExist(customerId);
     }
 }

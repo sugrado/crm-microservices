@@ -3,12 +3,9 @@ package com.turkcell.crm.customer_service.business.abstracts;
 import com.turkcell.crm.customer_service.business.dtos.requests.addresses.ChangeDefaultAddressRequest;
 import com.turkcell.crm.customer_service.business.dtos.requests.addresses.CheckAddressAndCustomerMatchRequest;
 import com.turkcell.crm.customer_service.business.dtos.requests.addresses.CreateAddressRequest;
+import com.turkcell.crm.customer_service.business.dtos.requests.addresses.GetValidatedCustomerAddressesRequest;
 import com.turkcell.crm.customer_service.business.dtos.requests.customers.AddressDto;
-import com.turkcell.crm.customer_service.business.dtos.responses.addresses.ChangedDefaultAddressResponse;
-import com.turkcell.crm.customer_service.business.dtos.responses.addresses.CreatedAddressResponse;
-import com.turkcell.crm.customer_service.business.dtos.responses.addresses.DeletedAddressResponse;
-import com.turkcell.crm.customer_service.business.dtos.responses.addresses.GetByIdAddressResponse;
-import com.turkcell.crm.customer_service.entities.concretes.Address;
+import com.turkcell.crm.customer_service.business.dtos.responses.addresses.*;
 import com.turkcell.crm.customer_service.entities.concretes.Customer;
 
 import java.util.List;
@@ -18,7 +15,7 @@ public interface AddressService {
 
     GetByIdAddressResponse getById(int id);
 
-    List<Address> getAllByCustomerAndIds(int customerId, List<Integer> ids);
+    List<GetValidatedCustomerAddressesListItemDto> getAllByCustomerAndIds(GetValidatedCustomerAddressesRequest request);
 
     void checkAddressAndCustomerMatch(CheckAddressAndCustomerMatchRequest checkAddressAndCustomerMatchRequest);
 
@@ -27,4 +24,6 @@ public interface AddressService {
     DeletedAddressResponse delete(int id);
 
     ChangedDefaultAddressResponse changeDefaultAddress(ChangeDefaultAddressRequest changeDefaultAddressRequest);
+
+    void checkIfAddressExists(int addressId);
 }
