@@ -1,7 +1,6 @@
 package com.turkcell.crm.account_service.business.rules;
 
-//import com.turkcell.crm.account_service.api.clients.CustomerClient;
-
+import com.turkcell.crm.account_service.api.clients.CustomerClient;
 import com.turkcell.crm.account_service.business.constants.Messages;
 import com.turkcell.crm.account_service.core.business.abstracts.MessageService;
 import com.turkcell.crm.account_service.core.utilities.exceptions.types.BusinessException;
@@ -14,7 +13,7 @@ import org.springframework.stereotype.Service;
 public class AccountBusinessRules {
     private final MessageService messageService;
     private final AccountRepository accountRepository;
-//    private final CustomerClient customerClient;
+    private final CustomerClient customerClient;
 
     public void accountShouldBeExist(int id) {
         boolean exists = this.accountRepository.existsById(id);
@@ -24,8 +23,10 @@ public class AccountBusinessRules {
     }
 
     public void customerShouldBeExistsWhenAccountIsCreated(int customerId) {
-//        var response = customerClient.checkIfCustomerExists(customerId);
-//        if (response != null)
-//            throw new BusinessException(response.getDetail());
+        customerClient.checkIfCustomerExists(customerId);
+    }
+
+    public void addressShouldBeExist(int addressId) {
+        this.customerClient.checkIfAddressExists(addressId);
     }
 }

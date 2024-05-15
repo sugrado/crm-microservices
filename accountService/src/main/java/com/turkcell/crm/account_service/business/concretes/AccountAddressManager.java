@@ -1,5 +1,8 @@
 package com.turkcell.crm.account_service.business.concretes;
 
+import com.turkcell.crm.account_service.api.clients.CustomerClient;
+import com.turkcell.crm.account_service.api.clients.dtos.customers.GetValidatedCustomerAddressesListItemDto;
+import com.turkcell.crm.account_service.api.clients.dtos.customers.GetValidatedCustomerAddressesRequest;
 import com.turkcell.crm.account_service.business.abstracts.AccountAddressService;
 import com.turkcell.crm.account_service.business.dtos.requests.account_addresses.CreateAccountAddressRequest;
 import com.turkcell.crm.account_service.business.dtos.requests.accounts.AccountAddressDto;
@@ -20,14 +23,13 @@ import java.util.List;
 public class AccountAddressManager implements AccountAddressService {
     private final AccountAddressRepository accountAddressRepository;
     private final AccountAddressMapper accountAddressMapper;
-    //    private final AddressService addressService;
     private final AccountAddressBusinessRules accountAddressBusinessRules;
-    //    private final AddressBusinessRules addressBusinessRules;
     private final AccountBusinessRules accountBusinessRules;
+    private final CustomerClient customerClient;
 
     @Override
     public CreatedAccountAddressResponse add(int accountId, CreateAccountAddressRequest createAccountAddressRequest) {
-//        addressBusinessRules.addressShouldBeExist(createAccountAddressRequest.addressId());
+        accountBusinessRules.addressShouldBeExist(createAccountAddressRequest.addressId());
         accountBusinessRules.accountShouldBeExist(accountId);
         accountAddressBusinessRules.addressShouldNotBeExistInAccount(accountId, createAccountAddressRequest.addressId());
         accountAddressBusinessRules.addressMustBelongToAccountOwner(accountId, createAccountAddressRequest.addressId());
@@ -40,27 +42,29 @@ public class AccountAddressManager implements AccountAddressService {
 
     @Override
     public void add(List<AccountAddressDto> accountAddressDtoList, Account account) {
-//        List<Integer> addresses = addressService
-//                .getAllByCustomerAndIds(
-//                        account.getCustomer().getId(),
-//                        accountAddressDtoList
-//                                .stream()
-//                                .map(AccountAddressDto::addressId)
-//                                .toList())
-//                .stream()
-//                .map(Address::getId)
-//                .toList();
-//
-//        List<AccountAddress> addressList = accountAddressDtoList
-//                .stream()
-//                .filter(a -> addresses.contains(a.addressId()))
-//                .map(a -> {
-//                    AccountAddress accountAddress = accountAddressMapper.toAccountAddress(a);
-//                    accountAddress.setAccount(account);
-//                    return accountAddress;
-//                })
-//                .toList();
-//
-//        accountAddressRepository.saveAll(addressList);
+        List<Integer> validatedAddresses = customerClient
+                .getValidatedCustomerAddresses(
+                        new GetValidatedCustomerAddressesRequest(
+                                account.getCustomerId(),
+                                accountAddressDtoList
+                                        .stream()
+                                        .map(AccountAddressDto::addressId)
+                                        .toList()
+                        ))
+                .stream()
+                .map(GetValidatedCustomerAddressesListItemDto::addressId)
+                .toList();
+
+        List<AccountAddress> addressesToSave = accountAddressDtoList
+                .stream()
+                .filter(a -> validatedAddresses.contains(a.addressId()))
+                .map(a -> {
+                    AccountAddress accountAddress = this.accountAddressMapper.toAccountAddress(a);
+                    accountAddress.setAccount(account);
+                    return accountAddress;
+                })
+                .toList();
+
+        accountAddressRepository.saveAll(addressesToSave);
     }
 }
