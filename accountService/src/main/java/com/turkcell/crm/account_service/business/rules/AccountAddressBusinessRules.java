@@ -1,8 +1,7 @@
 package com.turkcell.crm.account_service.business.rules;
 
-//import com.turkcell.crm.account_service.api.clients.CustomerClient;
-//import com.turkcell.crm.account_service.api.clients.dtos.CheckAddressCustomerCheckRequest;
-
+import com.turkcell.crm.account_service.api.clients.CustomerClient;
+import com.turkcell.crm.account_service.api.clients.dtos.customers.CheckAddressAndCustomerMatchRequest;
 import com.turkcell.crm.account_service.core.utilities.exceptions.types.BusinessException;
 import com.turkcell.crm.account_service.data_access.abstracts.AccountAddressRepository;
 import com.turkcell.crm.account_service.data_access.abstracts.AccountRepository;
@@ -15,14 +14,11 @@ import org.springframework.stereotype.Service;
 public class AccountAddressBusinessRules {
     private final AccountAddressRepository accountAddressRepository;
     private final AccountRepository accountRepository;
-//    private final CustomerClient customerClient;
+    private final CustomerClient customerClient;
 
     public void addressMustBelongToAccountOwner(int accountId, int addressId) {
         Account account = accountRepository.findById(accountId).get();
-//        var response = customerClient.checkAddressAndCustomerMatch(new CheckAddressCustomerCheckRequest(account.getCustomerId(), addressId));
-//        if (response != null) {
-//            throw new BusinessException(response.getDetail());
-//        }
+        customerClient.checkAddressAndCustomerMatch(new CheckAddressAndCustomerMatchRequest(account.getCustomerId(), addressId));
     }
 
     public void addressShouldNotBeExistInAccount(int accountId, int addressId) {

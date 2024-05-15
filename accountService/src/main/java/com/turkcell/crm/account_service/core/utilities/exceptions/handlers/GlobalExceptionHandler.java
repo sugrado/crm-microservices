@@ -1,8 +1,7 @@
 package com.turkcell.crm.account_service.core.utilities.exceptions.handlers;
 
-import com.turkcell.crm.account_service.core.utilities.exceptions.problem_details.BusinessProblemDetails;
-import com.turkcell.crm.account_service.core.utilities.exceptions.problem_details.ValidationProblemDetails;
-import com.turkcell.crm.account_service.core.utilities.exceptions.types.BusinessException;
+import com.turkcell.crm.account_service.core.utilities.exceptions.problem_details.*;
+import com.turkcell.crm.account_service.core.utilities.exceptions.types.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -22,8 +21,28 @@ public class GlobalExceptionHandler {
         return businessProblemDetails;
     }
 
+    @ExceptionHandler({NotFoundException.class})
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public NotFoundProblemDetails handleNotFoundException(NotFoundException exception) {
+        NotFoundProblemDetails notFoundProblemDetails = new NotFoundProblemDetails();
+        notFoundProblemDetails.setDetail(exception.getMessage());
+        return notFoundProblemDetails;
+    }
+
+    @ExceptionHandler({AuthenticationException.class})
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public AuthenticationProblemDetails handleAuthenticationException() {
+        return new AuthenticationProblemDetails();
+    }
+
+    @ExceptionHandler({AuthorizationException.class})
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public AuthorizationProblemDetails handleAuthorizationException() {
+        return new AuthorizationProblemDetails();
+    }
+
     @ExceptionHandler({MethodArgumentNotValidException.class})
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     public ValidationProblemDetails handleValidationException(MethodArgumentNotValidException exception) {
         Map<String, String> validationErrors = new HashMap<>();
         exception.getBindingResult().getFieldErrors().forEach(error ->
@@ -33,5 +52,19 @@ public class GlobalExceptionHandler {
         ValidationProblemDetails validationProblemDetails = new ValidationProblemDetails();
         validationProblemDetails.setErrors(validationErrors);
         return validationProblemDetails;
+    }
+
+    @ExceptionHandler({ValidationException.class})
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public ValidationProblemDetails handleValidationException(ValidationException exception) {
+        ValidationProblemDetails validationProblemDetails = new ValidationProblemDetails();
+        validationProblemDetails.setErrors(exception.getErrors());
+        return validationProblemDetails;
+    }
+
+    @ExceptionHandler({Exception.class})
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public InternalServerProblemDetails handleException() {
+        return new InternalServerProblemDetails();
     }
 }

@@ -10,7 +10,7 @@ public class ValidationProblemDetails extends ProblemDetails {
         setTitle("Validation Rule Violation");
         setDetail("Validation Problem");
         setType("http://mydomain.com/exceptions/validation");
-        setStatus("400");
+        setStatus("422");
     }
 
     private Map<String, String> errors;

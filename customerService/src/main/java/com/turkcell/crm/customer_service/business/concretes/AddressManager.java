@@ -5,11 +5,9 @@ import com.turkcell.crm.customer_service.business.abstracts.CityService;
 import com.turkcell.crm.customer_service.business.dtos.requests.addresses.ChangeDefaultAddressRequest;
 import com.turkcell.crm.customer_service.business.dtos.requests.addresses.CheckAddressAndCustomerMatchRequest;
 import com.turkcell.crm.customer_service.business.dtos.requests.addresses.CreateAddressRequest;
+import com.turkcell.crm.customer_service.business.dtos.requests.addresses.GetValidatedCustomerAddressesRequest;
 import com.turkcell.crm.customer_service.business.dtos.requests.customers.AddressDto;
-import com.turkcell.crm.customer_service.business.dtos.responses.addresses.ChangedDefaultAddressResponse;
-import com.turkcell.crm.customer_service.business.dtos.responses.addresses.CreatedAddressResponse;
-import com.turkcell.crm.customer_service.business.dtos.responses.addresses.DeletedAddressResponse;
-import com.turkcell.crm.customer_service.business.dtos.responses.addresses.GetByIdAddressResponse;
+import com.turkcell.crm.customer_service.business.dtos.responses.addresses.*;
 import com.turkcell.crm.customer_service.business.mappers.AddressMapper;
 import com.turkcell.crm.customer_service.business.rules.AddressBusinessRules;
 import com.turkcell.crm.customer_service.business.rules.CustomerBusinessRules;
@@ -65,9 +63,11 @@ public class AddressManager implements AddressService {
     }
 
     @Override
-    public List<Address> getAllByCustomerAndIds(int customerId, List<Integer> ids) {
-
-        return this.addressRepository.findAllByCustomerIdAndIdIsIn(customerId, ids);
+    public List<GetValidatedCustomerAddressesListItemDto> getAllByCustomerAndIds(GetValidatedCustomerAddressesRequest request) {
+        return this.addressRepository.findAllByCustomerIdAndIdIsIn(request.customerId(), request.addressIds())
+                .stream()
+                .map(address -> new GetValidatedCustomerAddressesListItemDto(address.getId()))
+                .toList();
     }
 
     @Override
@@ -119,6 +119,11 @@ public class AddressManager implements AddressService {
 
         Address updatedAddress = this.changeState(newDefaultAddress, true);
         return this.addressMapper.toChangedDefaultAddressResponse(updatedAddress);
+    }
+
+    @Override
+    public void checkIfAddressExists(int addressId) {
+        this.addressBusinessRules.addressShouldBeExist(addressId);
     }
 
     private Address getDefault(Customer customer) {
