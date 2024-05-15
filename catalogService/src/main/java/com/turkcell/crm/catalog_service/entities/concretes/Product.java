@@ -33,7 +33,7 @@ public class Product extends BaseEntity<Integer> {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @OneToMany(mappedBy = "products", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<ProductProperty> properties;
 
     public Product(int id){

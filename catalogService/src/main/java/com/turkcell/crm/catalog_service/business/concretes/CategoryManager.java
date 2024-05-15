@@ -44,4 +44,9 @@ public class CategoryManager implements CategoryService {
     public DeletedCategoryResponse delete(int id) {
         return null;
     }
+
+    @Override
+    public Category getByIdForPropertyService(int id) {
+        return this.categoryRepository.findById(id).get();
+    }
 }
