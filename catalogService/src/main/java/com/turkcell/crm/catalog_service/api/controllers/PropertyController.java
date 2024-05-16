@@ -3,12 +3,10 @@ package com.turkcell.crm.catalog_service.api.controllers;
 import com.turkcell.crm.catalog_service.business.abstracts.PropertyService;
 import com.turkcell.crm.catalog_service.business.dtos.requests.property.CreatePropertyRequest;
 import com.turkcell.crm.catalog_service.business.dtos.responses.property.CreatedPropertyResponse;
+import com.turkcell.crm.catalog_service.business.dtos.responses.property.GetAllPropertiesByCategoryIdResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,8 +17,12 @@ public class PropertyController {
 
     private final PropertyService propertyService;
 
+    @GetMapping("{categoryId}")
+    public List<GetAllPropertiesByCategoryIdResponse> getAll(@PathVariable  int categoryId){
+        return this.propertyService.getAll(categoryId);
+    }
     @PostMapping
-    public List<CreatedPropertyResponse> add(@Valid @RequestBody List<CreatePropertyRequest> createPropertyRequest){
+    public CreatedPropertyResponse add(@Valid @RequestBody CreatePropertyRequest createPropertyRequest){
         return this.propertyService.add(createPropertyRequest);
     }
 }

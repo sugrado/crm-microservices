@@ -27,17 +27,17 @@ public class ProductPropertyManager implements ProductPropertyService {
 
     @Override
     public void add(int productId, CreateProductPropertyRequest request) {
-        productBusinessRules.productIdShouldBeExist(productId);
-        propertyBusinessRules.propertyIdShouldBeExist(request.propertyId());
-        ProductProperty productPropertyToSave =productPropertyMapper.toProductProperty(request);
+        this.productBusinessRules.productIdShouldBeExist(productId);
+        this.propertyBusinessRules.propertyIdShouldBeExist(request.propertyId());
+        ProductProperty productPropertyToSave = this.productPropertyMapper.toProductProperty(request);
         productPropertyToSave.setProduct(new Product(productId));
         //productPropertyToSave.setProperty(new Property(request.propertyId()));
-        productPropertyRepository.save(productPropertyToSave);
+        this.productPropertyRepository.save(productPropertyToSave);
     }
     //TODO:Database'e çift kayıt atıyor.ilk atadıklarının foreign keyleri nulll geliyor.
     @Override
     public void add (List<ProductPropertyDto> productPropertyDtoList, Product product) {
-        List<Integer> validatedProperties = propertyService
+        List<Integer> validatedProperties = this.propertyService
                 .getAllById(productPropertyDtoList.stream().map(ProductPropertyDto::propertyId).toList())
                 .stream()
                 .map(Property::getId)
