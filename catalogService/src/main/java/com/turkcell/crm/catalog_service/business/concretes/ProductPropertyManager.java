@@ -31,9 +31,10 @@ public class ProductPropertyManager implements ProductPropertyService {
         propertyBusinessRules.propertyIdShouldBeExist(request.propertyId());
         ProductProperty productPropertyToSave =productPropertyMapper.toProductProperty(request);
         productPropertyToSave.setProduct(new Product(productId));
+        //productPropertyToSave.setProperty(new Property(request.propertyId()));
         productPropertyRepository.save(productPropertyToSave);
     }
-
+    //TODO:Database'e çift kayıt atıyor.ilk atadıklarının foreign keyleri nulll geliyor.
     @Override
     public void add (List<ProductPropertyDto> productPropertyDtoList, Product product) {
         List<Integer> validatedProperties = propertyService

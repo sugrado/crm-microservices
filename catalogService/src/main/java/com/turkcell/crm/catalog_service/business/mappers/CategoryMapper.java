@@ -10,4 +10,5 @@ import org.mapstruct.Mapper;
 public interface CategoryMapper {
     Category toCategory(CreateCategoryRequest request);
     CreatedCategoryResponse toCreatedCategoryResponse(Category category);
+
 }

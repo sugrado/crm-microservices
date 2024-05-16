@@ -12,8 +12,9 @@ import java.util.List;
 @Mapper(config = MapstructService.class)
 public interface PropertyMapper {
     List<Property> toProperty(List<CreatePropertyRequest> request);
-
+    @Mapping(source = "categoryId", target = "category.id")
     Property toProperty(CreatePropertyRequest request);
     List<CreatedPropertyResponse> toCreatedPropertyResponse(List<Property> properties);
+    @Mapping(source = "category.name", target = "categoryName")
     CreatedPropertyResponse toCreatedPropertyResponse(Property property);
 }

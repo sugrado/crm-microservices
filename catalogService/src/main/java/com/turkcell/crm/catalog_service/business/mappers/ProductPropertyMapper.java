@@ -14,6 +14,6 @@ import java.util.List;
 public interface ProductPropertyMapper {
     @Mapping(source = "propertyId", target = "property.id")
     ProductProperty toProductProperty(ProductPropertyDto productPropertyDto);
-
+    @Mapping(source = "propertyId", target = "property.id")
     ProductProperty toProductProperty(CreateProductPropertyRequest request);
 }

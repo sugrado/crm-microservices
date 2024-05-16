@@ -10,8 +10,8 @@ import jakarta.validation.constraints.Size;
 import java.util.List;
 
 public record UpdateProductRequest(
-        @NotNull
-        int id,
+//        @NotNull
+//        int id,
         @NotNull
         @Size(min = 3)
         String title,

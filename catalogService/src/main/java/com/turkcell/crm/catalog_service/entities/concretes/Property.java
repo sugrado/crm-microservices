@@ -21,9 +21,14 @@ public class Property extends BaseEntity<Integer> {
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "category_id",nullable = false)
+    @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
     @OneToMany(mappedBy = "property", cascade = CascadeType.ALL)
     private List<ProductProperty> productProperties;
+
+    public Property(int id) {
+        setId(id);
+    }
 }
+

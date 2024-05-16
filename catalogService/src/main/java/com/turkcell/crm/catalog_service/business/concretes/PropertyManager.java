@@ -28,7 +28,7 @@ public class PropertyManager implements PropertyService {
         List<Property> propertyList=request.stream().map(x-> {
                     Property property = this.propertyMapper.toProperty(x);
                     Category category = categoryService.getByIdForPropertyService(x.categoryId());
-                    property.setCategory(category);
+                    //property.setCategory(category);
                     return property;
                 }).toList();
 
@@ -36,7 +36,7 @@ public class PropertyManager implements PropertyService {
 
         List<CreatedPropertyResponse> createdPropertyResponseList = createdProperties.stream().map(x->{
             CreatedPropertyResponse createdPropertyResponse = this.propertyMapper.toCreatedPropertyResponse(x);
-            createdPropertyResponse.setCategoryName(x.getCategory().getName());
+            //createdPropertyResponse.setCategoryName(x.getCategory().getName());
             return createdPropertyResponse;
         }).toList();
         return createdPropertyResponseList;
