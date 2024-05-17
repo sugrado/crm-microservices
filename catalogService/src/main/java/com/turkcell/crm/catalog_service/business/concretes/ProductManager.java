@@ -31,7 +31,7 @@ public class ProductManager implements ProductService {
 
         Product product = this.productMapper.toProduct(request);
         Product createdProduct = this.productRepository.save(product);
-        this.productPropertyService.add(request.properties(), product);
+        this.productPropertyService.add(request.properties(), createdProduct);
 
         return this.productMapper.toCreatedProductResponse(createdProduct);
     }

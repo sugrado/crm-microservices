@@ -16,6 +16,7 @@ public record CreatedProductResponse(
         String title,
         String description,
         double price,
-        int unitsInStock
+        int unitsInStock,
+        int categoryId
 ) {
 }

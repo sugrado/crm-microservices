@@ -30,7 +30,7 @@ public class Product extends BaseEntity<Integer> {
     private int unitsInStock;
 
     @ManyToOne
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)

@@ -13,10 +13,13 @@ import java.util.List;
 
 @Mapper(config = MapstructService.class)
 public interface ProductMapper {
+    @Mapping(source = "categoryId", target = "category.id")
     Product toProduct(CreateProductRequest createProductRequest);
 
+    @Mapping(source = "category.id", target = "categoryId")
     CreatedProductResponse toCreatedProductResponse(Product product);
 
+    @Mapping(source = "category.id", target = "categoryId")
     List<GetAllProductsResponse> toGetAllProductsResponse(List<Product> products);
 
     @Mapping(source = "property.name", target = "propertyName")

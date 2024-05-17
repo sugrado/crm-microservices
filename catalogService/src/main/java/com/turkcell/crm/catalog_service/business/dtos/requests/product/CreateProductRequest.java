@@ -20,6 +20,8 @@ public record CreateProductRequest(
         double price,
         @NotNull
         int unitsInStock,
+        @NotNull
+        int categoryId,
         @Valid
         @NotEmpty
         List<ProductPropertyDto> properties
