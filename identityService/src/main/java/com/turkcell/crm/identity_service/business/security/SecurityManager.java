@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class SecurityManager implements SecurityService {
     private static final String[] WHITE_LIST_URLS = {
-            "/identity-service/swagger-ui/**",
-            "/identity-service/v2/api-docs",
-            "/identity-service/v3/api-docs",
-            "/identity-service/v3/api-docs/**",
+            "/swagger-ui/**",
+            "/v2/api-docs",
+            "/v3/api-docs",
+            "/v3/api-docs/**",
             "/identity-service/api/v1/auth/login",
             "/identity-service/api/v1/auth/register",
             "/identity-service/api/v1/auth/refresh",

@@ -1,6 +1,6 @@
 package com.turkcell.crm.customer_service.out_services;
 
-import com.turkcell.crm.customer_service.core.utilities.exceptions.types.BusinessException;
+import com.turkcell.crm.common.exceptions.types.BusinessException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
