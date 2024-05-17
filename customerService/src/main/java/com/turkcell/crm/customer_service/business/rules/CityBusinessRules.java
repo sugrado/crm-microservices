@@ -1,8 +1,8 @@
 package com.turkcell.crm.customer_service.business.rules;
 
+import com.turkcell.crm.common.exceptions.types.NotFoundException;
 import com.turkcell.crm.customer_service.business.constants.messages.Messages;
 import com.turkcell.crm.customer_service.core.business.abstracts.MessageService;
-import com.turkcell.crm.customer_service.core.utilities.exceptions.types.NotFoundException;
 import com.turkcell.crm.customer_service.data_access.abstracts.CityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
