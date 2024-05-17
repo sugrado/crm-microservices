@@ -14,14 +14,21 @@ import java.util.List;
 @Mapper(config = MapstructService.class)
 public interface ProductMapper {
     Product toProduct(CreateProductRequest createProductRequest);
+
     CreatedProductResponse toCreatedProductResponse(Product product);
-    List<GetAllProductsResponse> toGetAllProductsResponse (List<Product> products);
-    @Mapping(source = "product.properties",target = "propertiesDto")
-    GetByIdProductResponse toGetByIdProductResponse (Product product);
+
+    List<GetAllProductsResponse> toGetAllProductsResponse(List<Product> products);
+
+    @Mapping(source = "property.name", target = "propertyName")
+    ProductPropertyDto toProductPropertyDto(ProductProperty productProperty);
+
+    @Mapping(source = "product.properties", target = "propertiesDto")
+    GetByIdProductResponse toGetByIdProductResponse(Product product);
+
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateProductFromRequest(UpdateProductRequest updateProductRequest, @MappingTarget Product product);
+
     UpdatedProductResponse toUpdatedProductResponse(Product product);
 
     DeletedProductResponse toDeletedProductResponse(Product product);
-
 }
