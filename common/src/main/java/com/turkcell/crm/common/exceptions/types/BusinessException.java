@@ -1,4 +1,4 @@
-package com.turkcell.crm.catalog_service.core.utilities.exceptions.types;
+package com.turkcell.crm.common.exceptions.types;
 
 public class BusinessException extends RuntimeException {
     public BusinessException(String message) {

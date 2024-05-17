@@ -1,4 +1,4 @@
-package com.turkcell.crm.identity_service.core.utilities.exceptions.problemDetails;
+package com.turkcell.crm.common.exceptions.problem_details;
 
 public class BusinessProblemDetails extends ProblemDetails {
     public BusinessProblemDetails() {

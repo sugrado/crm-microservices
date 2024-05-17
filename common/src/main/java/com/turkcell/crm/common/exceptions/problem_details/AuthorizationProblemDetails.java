@@ -1,4 +1,4 @@
-package com.turkcell.crm.account_service.core.utilities.exceptions.problem_details;
+package com.turkcell.crm.common.exceptions.problem_details;
 
 public class AuthorizationProblemDetails extends ProblemDetails {
     public AuthorizationProblemDetails() {

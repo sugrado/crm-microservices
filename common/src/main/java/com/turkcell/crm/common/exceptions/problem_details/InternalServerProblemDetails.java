@@ -1,4 +1,4 @@
-package com.turkcell.crm.customer_service.core.utilities.exceptions.problem_details;
+package com.turkcell.crm.common.exceptions.problem_details;
 
 public class InternalServerProblemDetails extends ProblemDetails {
     public InternalServerProblemDetails() {

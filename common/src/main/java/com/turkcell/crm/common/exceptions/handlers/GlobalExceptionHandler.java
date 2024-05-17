@@ -1,10 +1,10 @@
-package com.turkcell.crm.customer_service.core.utilities.exceptions.handlers;
+package com.turkcell.crm.common.exceptions.handlers;
 
-import com.turkcell.crm.customer_service.core.utilities.exceptions.problem_details.*;
-import com.turkcell.crm.customer_service.core.utilities.exceptions.types.AuthenticationException;
-import com.turkcell.crm.customer_service.core.utilities.exceptions.types.AuthorizationException;
-import com.turkcell.crm.customer_service.core.utilities.exceptions.types.BusinessException;
-import com.turkcell.crm.customer_service.core.utilities.exceptions.types.NotFoundException;
+import com.turkcell.crm.common.exceptions.problem_details.*;
+import com.turkcell.crm.common.exceptions.types.AuthorizationException;
+import com.turkcell.crm.common.exceptions.types.BusinessException;
+import com.turkcell.crm.common.exceptions.types.NotFoundException;
+import com.turkcell.crm.common.exceptions.types.ValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -32,12 +32,6 @@ public class GlobalExceptionHandler {
         return notFoundProblemDetails;
     }
 
-    @ExceptionHandler({AuthenticationException.class})
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public AuthenticationProblemDetails handleAuthenticationException() {
-        return new AuthenticationProblemDetails();
-    }
-
     @ExceptionHandler({AuthorizationException.class})
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public AuthorizationProblemDetails handleAuthorizationException() {
@@ -54,6 +48,14 @@ public class GlobalExceptionHandler {
 
         ValidationProblemDetails validationProblemDetails = new ValidationProblemDetails();
         validationProblemDetails.setErrors(validationErrors);
+        return validationProblemDetails;
+    }
+
+    @ExceptionHandler({ValidationException.class})
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public ValidationProblemDetails handleValidationException(ValidationException exception) {
+        ValidationProblemDetails validationProblemDetails = new ValidationProblemDetails();
+        validationProblemDetails.setErrors(exception.getErrors());
         return validationProblemDetails;
     }
 
