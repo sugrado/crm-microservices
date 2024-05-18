@@ -1,6 +1,6 @@
 package com.turkcell.crm.catalog_service.business.dtos.responses.product;
 
-import com.turkcell.crm.catalog_service.business.dtos.responses.productProperty.ProductPropertyDto;
+import com.turkcell.crm.catalog_service.business.dtos.responses.product_property.ProductPropertyDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,6 +13,6 @@ public record GetByIdProductResponse(
         String description,
         double price,
         int unitsInStock,
-        List<ProductPropertyDto> propertiesDto
+        List<ProductPropertyDto> properties
 ) {
 }

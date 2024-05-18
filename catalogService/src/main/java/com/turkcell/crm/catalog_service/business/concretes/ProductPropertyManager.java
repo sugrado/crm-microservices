@@ -1,56 +1,49 @@
 package com.turkcell.crm.catalog_service.business.concretes;
 
 import com.turkcell.crm.catalog_service.business.abstracts.ProductPropertyService;
+import com.turkcell.crm.catalog_service.business.abstracts.ProductService;
 import com.turkcell.crm.catalog_service.business.abstracts.PropertyService;
-import com.turkcell.crm.catalog_service.business.dtos.requests.productProperty.CreateProductPropertyRequest;
-import com.turkcell.crm.catalog_service.business.dtos.requests.productProperty.ProductPropertyDto;
+import com.turkcell.crm.catalog_service.business.dtos.requests.product_property.CreateProductPropertyRequest;
+import com.turkcell.crm.catalog_service.business.dtos.responses.product_property.DeletedProductPropertyResponse;
 import com.turkcell.crm.catalog_service.business.mappers.ProductPropertyMapper;
-import com.turkcell.crm.catalog_service.business.rules.ProductBusinessRules;
-import com.turkcell.crm.catalog_service.business.rules.PropertyBusinessRules;
+import com.turkcell.crm.catalog_service.business.rules.ProductPropertyBusinessRules;
 import com.turkcell.crm.catalog_service.data_access.abstracts.ProductPropertyRepository;
 import com.turkcell.crm.catalog_service.entities.concretes.Product;
 import com.turkcell.crm.catalog_service.entities.concretes.ProductProperty;
-import com.turkcell.crm.catalog_service.entities.concretes.Property;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class ProductPropertyManager implements ProductPropertyService {
     private final ProductPropertyRepository productPropertyRepository;
     private final ProductPropertyMapper productPropertyMapper;
+    private final ProductService productService;
     private final PropertyService propertyService;
-    private final ProductBusinessRules productBusinessRules;
-    private final PropertyBusinessRules propertyBusinessRules;
+    private final ProductPropertyBusinessRules productPropertyBusinessRules;
 
     @Override
     public void add(int productId, CreateProductPropertyRequest request) {
-        this.productBusinessRules.productIdShouldBeExist(productId);
-        this.propertyBusinessRules.propertyIdShouldBeExist(request.propertyId());
+        this.productService.getById(productId);
+        this.propertyService.getById(request.propertyId());
+        this.productPropertyBusinessRules.productPropertyShouldBeUnique(productId, request.propertyId());
         ProductProperty productPropertyToSave = this.productPropertyMapper.toProductProperty(request);
         productPropertyToSave.setProduct(new Product(productId));
-        //productPropertyToSave.setProperty(new Property(request.propertyId()));
         this.productPropertyRepository.save(productPropertyToSave);
     }
-    //TODO:Database'e çift kayıt atıyor.ilk atadıklarının foreign keyleri nulll geliyor.
+
     @Override
-    public void add (List<ProductPropertyDto> productPropertyDtoList, Product product) {
-        List<Integer> validatedProperties = this.propertyService
-                .getAllById(productPropertyDtoList.stream().map(ProductPropertyDto::propertyId).toList())
-                .stream()
-                .map(Property::getId)
-                .toList();
-        List<ProductProperty> productPropertiesToCreate = productPropertyDtoList
-                .stream()
-                .filter(a -> validatedProperties.contains(a.propertyId()))
-                .map(x -> {
-                    ProductProperty productProperty = this.productPropertyMapper.toProductProperty(x);
-                    productProperty.setProduct(product);
-                    return productProperty;
-                })
-                .toList();
-        this.productPropertyRepository.saveAll(productPropertiesToCreate);
+    public DeletedProductPropertyResponse delete(int id) {
+        Optional<ProductProperty> optionalProduct = this.productPropertyRepository.findById(id);
+        this.productPropertyBusinessRules.productPropertyShouldBeExists(optionalProduct);
+
+        ProductProperty productPropertyToDelete = optionalProduct.get();
+        productPropertyToDelete.setDeletedDate(LocalDateTime.now());
+        ProductProperty deletedProduct = this.productPropertyRepository.save(productPropertyToDelete);
+
+        return this.productPropertyMapper.toDeletedProductPropertyResponse(deletedProduct);
     }
 }

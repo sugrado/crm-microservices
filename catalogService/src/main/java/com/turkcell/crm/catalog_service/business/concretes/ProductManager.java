@@ -1,6 +1,5 @@
 package com.turkcell.crm.catalog_service.business.concretes;
 
-import com.turkcell.crm.catalog_service.business.abstracts.ProductPropertyService;
 import com.turkcell.crm.catalog_service.business.abstracts.ProductService;
 import com.turkcell.crm.catalog_service.business.dtos.requests.product.CreateProductRequest;
 import com.turkcell.crm.catalog_service.business.dtos.requests.product.UpdateProductRequest;
@@ -23,15 +22,14 @@ public class ProductManager implements ProductService {
 
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
-    private final ProductPropertyService productPropertyService;
     private final ProductBusinessRules productBusinessRules;
+
     @Override
     @Transactional
     public CreatedProductResponse add(CreateProductRequest request) {
 
         Product product = this.productMapper.toProduct(request);
         Product createdProduct = this.productRepository.save(product);
-        this.productPropertyService.add(request.properties(), createdProduct);
 
         return this.productMapper.toCreatedProductResponse(createdProduct);
     }
@@ -47,7 +45,7 @@ public class ProductManager implements ProductService {
     @Override
     public GetByIdProductResponse getById(int id) {
         Optional<Product> optionalProduct = this.productRepository.findById(id);
-        this.productBusinessRules.productIdShouldBeExist(optionalProduct);
+        this.productBusinessRules.productShouldBeExist(optionalProduct);
         GetByIdProductResponse getByIdProductResponse = this.productMapper.toGetByIdProductResponse(optionalProduct.get());
         return getByIdProductResponse;
     }
@@ -56,7 +54,7 @@ public class ProductManager implements ProductService {
     @Transactional
     public UpdatedProductResponse update(int id, UpdateProductRequest updateProductRequest) {
         Optional<Product> optionalProduct = this.productRepository.findById(id);
-        this.productBusinessRules.productIdShouldBeExist(optionalProduct);
+        this.productBusinessRules.productShouldBeExist(optionalProduct);
         Product product = optionalProduct.get();
 
         this.productMapper.updateProductFromRequest(updateProductRequest, product);
@@ -69,7 +67,7 @@ public class ProductManager implements ProductService {
     @Transactional
     public DeletedProductResponse delete(int id) {
         Optional<Product> optionalProduct = this.productRepository.findById(id);
-        this.productBusinessRules.productIdShouldBeExist(optionalProduct);
+        this.productBusinessRules.productShouldBeExist(optionalProduct);
 
         Product productToDelete = optionalProduct.get();
         productToDelete.setDeletedDate(LocalDateTime.now());
