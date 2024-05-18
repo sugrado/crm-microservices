@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("catalog-service/api/v1/products/categories")
-public class CategoryController {
+@RequestMapping("catalog-service/api/v1/categories")
+public class CategoriesController {
     private final CategoryService categoryService;
 
     @PostMapping
-    public CreatedCategoryResponse add(@Valid @RequestBody CreateCategoryRequest createCategoryRequest){
-       return this.categoryService.add(createCategoryRequest);
+    public CreatedCategoryResponse add(@Valid @RequestBody CreateCategoryRequest createCategoryRequest) {
+        return this.categoryService.add(createCategoryRequest);
     }
 }

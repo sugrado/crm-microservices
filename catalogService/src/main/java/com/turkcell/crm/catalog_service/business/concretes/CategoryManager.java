@@ -11,12 +11,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class CategoryManager implements CategoryService {
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
+
     @Override
     public CreatedCategoryResponse add(CreateCategoryRequest request) {
 
@@ -27,26 +29,30 @@ public class CategoryManager implements CategoryService {
 
     @Override
     public List<GetAllCategoriesResponse> getAll() {
-        return null;
+
+        List<Category> categories = this.categoryRepository.findAll();
+        return this.categoryMapper.toGetAllCategoriesResponseList(categories);
     }
 
     @Override
     public GetByIdCategoryResponse getById(int id) {
-        return null;
+
+        Optional<Category> optionalCategory = this.categoryRepository.findById(id);
+
+        return this.categoryMapper.toGetByIdCategoryResponse(optionalCategory.get());
     }
 
     @Override
     public UpdatedCategoryResponse update(int id, UpdateCategoryRequest updateCategoryRequest) {
-        return null;
+        Optional<Category> optionalCategory = this.categoryRepository.findById(id);
+
+        Category category = optionalCategory.get();
+        Category updatedCategory = this.categoryRepository.save(category);
+        return this.categoryMapper.toUpdatedCategoryResponse(updatedCategory);
     }
 
     @Override
     public DeletedCategoryResponse delete(int id) {
         return null;
-    }
-
-    @Override
-    public Category getByIdForPropertyService(int id) {
-        return this.categoryRepository.findById(id).get();
     }
 }
