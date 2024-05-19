@@ -34,9 +34,11 @@ public class IndividualCustomerManager implements IndividualCustomerService {
     @Override
     @Transactional
     public CreatedIndividualCustomerResponse add(CreateIndividualCustomerRequest request) {
+
         IndividualCustomer individualCustomer = individualCustomerMapper.toIndividualCustomer(request);
         individualCustomerBusinessRules.nationalityIdShouldBeUnique(individualCustomer.getNationalityId());
         individualCustomerBusinessRules.nationalityIdShouldBeValid(individualCustomer);
+
         Customer customer = customerService.add(request.customer());
         individualCustomer.setCustomer(customer);
         IndividualCustomer createdIndividualCustomer = this.individualCustomerRepository.save(individualCustomer);
@@ -49,12 +51,14 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 
     @Override
     public List<GetAllIndividualCustomersResponse> getAll() {
+
         List<IndividualCustomer> individualCustomers = this.individualCustomerRepository.findAll();
         return individualCustomerMapper.toGetAllIndividualCustomersResponseList(individualCustomers);
     }
 
     @Override
     public GetByIdIndividualCustomerResponse getById(int id) {
+
         Optional<IndividualCustomer> individualCustomerOptional = this.individualCustomerRepository.findById(id);
         this.individualCustomerBusinessRules.individualCustomerShouldBeExist(individualCustomerOptional);
 
@@ -65,6 +69,7 @@ public class IndividualCustomerManager implements IndividualCustomerService {
     @Override
     @Transactional
     public UpdatedIndividualCustomerResponse update(int id, UpdateIndividualCustomerRequest updateIndividualCustomerRequest) {
+
         Optional<IndividualCustomer> individualCustomerOptional = this.individualCustomerRepository.findById(id);
         this.individualCustomerBusinessRules.individualCustomerShouldBeExist(individualCustomerOptional);
         IndividualCustomer individualCustomer = individualCustomerOptional.get();
@@ -81,6 +86,7 @@ public class IndividualCustomerManager implements IndividualCustomerService {
     @Override
     @Transactional
     public DeletedIndividualCustomerResponse delete(int id) {
+
         Optional<IndividualCustomer> individualCustomerOptional = this.individualCustomerRepository.findById(id);
         this.individualCustomerBusinessRules.individualCustomerShouldBeExist(individualCustomerOptional);
 

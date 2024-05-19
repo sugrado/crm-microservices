@@ -1,14 +1,7 @@
 package com.turkcell.crm.catalog_service.business.dtos.requests.product;
 
-import com.turkcell.crm.catalog_service.business.dtos.requests.productProperty.ProductPropertyDto;
-import com.turkcell.crm.catalog_service.entities.concretes.ProductProperty;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-
-import java.time.LocalDate;
-import java.util.List;
 
 public record CreateProductRequest(
         @NotNull
@@ -20,10 +13,7 @@ public record CreateProductRequest(
         double price,
         @NotNull
         int unitsInStock,
-        @Valid
-        @NotEmpty
-        List<ProductPropertyDto> properties
+        @NotNull
+        int categoryId
 ) {
-
-
 }
