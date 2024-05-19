@@ -14,7 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "property")
+@Table(name = "properties")
 public class Property extends BaseEntity<Integer> {
 
     @Column(name = "name", nullable = false)

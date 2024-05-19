@@ -40,5 +40,4 @@ public class ProductsController {
     public DeletedProductResponse delete(@PathVariable int id) {
         return this.productService.delete(id);
     }
-
 }

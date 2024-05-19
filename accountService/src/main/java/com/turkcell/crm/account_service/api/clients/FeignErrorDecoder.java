@@ -1,8 +1,8 @@
 package com.turkcell.crm.account_service.api.clients;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.turkcell.crm.account_service.core.utilities.exceptions.problem_details.*;
-import com.turkcell.crm.account_service.core.utilities.exceptions.types.*;
+import com.turkcell.crm.common.exceptions.problem_details.*;
+import com.turkcell.crm.common.exceptions.types.*;
 import feign.Response;
 import feign.codec.ErrorDecoder;
 import lombok.extern.slf4j.Slf4j;

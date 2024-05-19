@@ -1,8 +1,8 @@
 package com.turkcell.crm.catalog_service.business.rules;
 
 import com.turkcell.crm.catalog_service.business.constants.messages.Messages;
-import com.turkcell.crm.catalog_service.core.utilities.exceptions.types.BusinessException;
 import com.turkcell.crm.catalog_service.entities.concretes.Product;
+import com.turkcell.crm.common.exceptions.types.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

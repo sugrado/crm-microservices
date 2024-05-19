@@ -15,10 +15,12 @@ import com.turkcell.crm.identity_service.entities.concretes.RefreshToken;
 import com.turkcell.crm.identity_service.entities.concretes.User;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -79,6 +81,8 @@ public class AuthManager implements AuthService {
         Map<String, Object> claims = new HashMap<>();
         claims.put("id", user.getId());
         claims.put("username", user.getEmail());
+        List<String> authorities = user.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
+        claims.put("roles", authorities);
         return jwtService.generateToken(user.getEmail(), claims);
     }
 }

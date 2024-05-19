@@ -2,13 +2,13 @@ package com.turkcell.crm.catalog_service.api.controllers;
 
 import com.turkcell.crm.catalog_service.business.abstracts.CategoryService;
 import com.turkcell.crm.catalog_service.business.dtos.requests.category.CreateCategoryRequest;
-import com.turkcell.crm.catalog_service.business.dtos.responses.category.CreatedCategoryResponse;
+import com.turkcell.crm.catalog_service.business.dtos.requests.category.UpdateCategoryRequest;
+import com.turkcell.crm.catalog_service.business.dtos.responses.category.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,5 +19,25 @@ public class CategoriesController {
     @PostMapping
     public CreatedCategoryResponse add(@Valid @RequestBody CreateCategoryRequest createCategoryRequest) {
         return this.categoryService.add(createCategoryRequest);
+    }
+
+    @GetMapping
+    public List<GetAllCategoriesResponse> getAll() {
+        return this.categoryService.getAll();
+    }
+
+    @GetMapping("{id}")
+    public GetByIdCategoryResponse getById(@PathVariable int id) {
+        return this.categoryService.getById(id);
+    }
+
+    @PatchMapping("{id}")
+    public UpdatedCategoryResponse update(@PathVariable int id, @Valid @RequestBody UpdateCategoryRequest updateCategoryRequest) {
+        return this.categoryService.update(id, updateCategoryRequest);
+    }
+
+    @DeleteMapping("{id}")
+    public DeletedCategoryResponse delete(@PathVariable int id) {
+        return this.categoryService.delete(id);
     }
 }

@@ -4,6 +4,7 @@ import com.turkcell.crm.catalog_service.business.abstracts.ProductPropertyServic
 import com.turkcell.crm.catalog_service.business.abstracts.ProductService;
 import com.turkcell.crm.catalog_service.business.abstracts.PropertyService;
 import com.turkcell.crm.catalog_service.business.dtos.requests.product_property.CreateProductPropertyRequest;
+import com.turkcell.crm.catalog_service.business.dtos.responses.product_property.CreatedProductPropertyResponse;
 import com.turkcell.crm.catalog_service.business.dtos.responses.product_property.DeletedProductPropertyResponse;
 import com.turkcell.crm.catalog_service.business.mappers.ProductPropertyMapper;
 import com.turkcell.crm.catalog_service.business.rules.ProductPropertyBusinessRules;
@@ -26,7 +27,7 @@ public class ProductPropertyManager implements ProductPropertyService {
     private final ProductPropertyBusinessRules productPropertyBusinessRules;
 
     @Override
-    public void add(int productId, CreateProductPropertyRequest request) {
+    public CreatedProductPropertyResponse add(int productId, CreateProductPropertyRequest request) {
         this.productService.getById(productId);
         this.propertyService.getById(request.propertyId());
         this.productPropertyBusinessRules.productPropertyShouldBeUnique(productId, request.propertyId());
@@ -34,7 +35,8 @@ public class ProductPropertyManager implements ProductPropertyService {
         ProductProperty productPropertyToSave = this.productPropertyMapper.toProductProperty(request);
         productPropertyToSave.setProduct(new Product(productId));
 
-        this.productPropertyRepository.save(productPropertyToSave);
+        ProductProperty productProperty = this.productPropertyRepository.save(productPropertyToSave);
+        return this.productPropertyMapper.toCreatedProductPropertyResponse(productProperty);
     }
 
     @Override

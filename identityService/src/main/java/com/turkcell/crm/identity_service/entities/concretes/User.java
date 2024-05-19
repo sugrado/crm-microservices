@@ -11,6 +11,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 @NoArgsConstructor
@@ -59,6 +60,8 @@ public class User extends BaseEntity<Integer> implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (this.authorities == null)
+            return new HashSet<>();
         return authorities.stream()
                 .map(UserRole::getRole)
                 .toList();
