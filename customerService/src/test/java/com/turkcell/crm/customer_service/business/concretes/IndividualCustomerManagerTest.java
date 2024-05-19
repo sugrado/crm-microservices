@@ -3,6 +3,7 @@ package com.turkcell.crm.customer_service.business.concretes;
 import com.turkcell.crm.common.kafka.events.CustomerCreatedEvent;
 import com.turkcell.crm.common.kafka.events.CustomerDeletedEvent;
 import com.turkcell.crm.common.kafka.events.CustomerUpdatedEvent;
+import com.turkcell.crm.customer_service.adapters.mernis.CheckNationalityService;
 import com.turkcell.crm.customer_service.business.abstracts.CustomerService;
 import com.turkcell.crm.customer_service.business.dtos.requests.customers.AddressDto;
 import com.turkcell.crm.customer_service.business.dtos.requests.customers.CreateCustomerRequest;
@@ -13,8 +14,9 @@ import com.turkcell.crm.customer_service.business.dtos.responses.customers.Custo
 import com.turkcell.crm.customer_service.business.dtos.responses.individual_customers.*;
 import com.turkcell.crm.customer_service.business.mappers.IndividualCustomerMapper;
 import com.turkcell.crm.customer_service.business.rules.IndividualCustomerBusinessRules;
+import com.turkcell.crm.customer_service.core.business.abstracts.MessageService;
+import com.turkcell.crm.customer_service.core.utilities.exceptions.types.NotFoundException;
 import com.turkcell.crm.customer_service.data_access.abstracts.IndividualCustomerRepository;
-import com.turkcell.crm.customer_service.entities.concretes.Address;
 import com.turkcell.crm.customer_service.entities.concretes.Customer;
 import com.turkcell.crm.customer_service.entities.concretes.IndividualCustomer;
 import com.turkcell.crm.customer_service.entities.enums.Gender;
@@ -54,6 +56,8 @@ class IndividualCustomerManagerTest {
     @Mock
     private CustomerProducer customerProducer;
 
+
+
     @InjectMocks
     private IndividualCustomerManager individualCustomerManager;
 
@@ -62,6 +66,7 @@ class IndividualCustomerManagerTest {
     private IndividualCustomer individualCustomer;
     private Customer customer;
     private CustomerDto customerDto;
+
     @BeforeEach
     void setUp() {
 
@@ -268,4 +273,30 @@ class IndividualCustomerManagerTest {
         verify(customerProducer, times(1)).send(any(CustomerDeletedEvent.class));
         verify(individualCustomerMapper, times(1)).toDeletedIndividualCustomerResponse(any(IndividualCustomer.class));
     }
+
+    @Test
+    void individualCustomerShouldBeExist_ShouldNotThrowException_WhenCustomerExists(){
+
+        Optional<IndividualCustomer> optionalIndividualCustomer = Optional.of(individualCustomer);
+
+        individualCustomerBusinessRules.individualCustomerShouldBeExist(optionalIndividualCustomer);
+
+    }
+
+    @Test
+    void individualCustomerShouldBeExist_ShouldThrowNotFoundException_WhenCustomerDoesNotExist(){
+
+        IndividualCustomerRepository individualCustomerRepository = mock(IndividualCustomerRepository.class);
+        CheckNationalityService checkNationalityService = mock(CheckNationalityService.class);
+        MessageService messageService = mock(MessageService.class);
+        IndividualCustomerBusinessRules individualCustomerBusinessRules1 = new IndividualCustomerBusinessRules(individualCustomerRepository,checkNationalityService,messageService);
+
+        assertThrows(NotFoundException.class, () -> {
+            individualCustomerBusinessRules1.individualCustomerShouldBeExist(Optional.empty());
+        });
+    }
+
+
+
+
 }
