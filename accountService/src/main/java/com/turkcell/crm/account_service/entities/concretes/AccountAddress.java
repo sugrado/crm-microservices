@@ -14,10 +14,10 @@ import lombok.Setter;
 @Entity
 @Table(name = "account_addresses")
 public class AccountAddress extends BaseEntity<Integer> {
-    @Column(name = "address_id")
+    @Column(name = "address_id",nullable = false)
     private int addressId;
 
     @ManyToOne
-    @JoinColumn(name = "account_id")
+    @JoinColumn(name = "account_id",nullable = false)
     private Account account;
 }

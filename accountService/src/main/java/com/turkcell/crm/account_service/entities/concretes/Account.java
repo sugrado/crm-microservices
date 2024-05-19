@@ -30,7 +30,7 @@ public class Account extends BaseEntity<Integer> {
     private int customerId;
 
     @ManyToOne
-    @JoinColumn(name = "type_id")
+    @JoinColumn(name = "type_id",nullable = false)
     private AccountType type;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
