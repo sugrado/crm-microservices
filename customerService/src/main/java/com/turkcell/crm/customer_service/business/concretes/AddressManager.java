@@ -1,13 +1,17 @@
 package com.turkcell.crm.customer_service.business.concretes;
 
+import com.turkcell.crm.common.dtos.customers.CheckAddressAndCustomerMatchRequest;
+import com.turkcell.crm.common.dtos.customers.GetValidatedCustomerAddressesListItemDto;
+import com.turkcell.crm.common.dtos.customers.GetValidatedCustomerAddressesRequest;
 import com.turkcell.crm.customer_service.business.abstracts.AddressService;
 import com.turkcell.crm.customer_service.business.abstracts.CityService;
 import com.turkcell.crm.customer_service.business.dtos.requests.addresses.ChangeDefaultAddressRequest;
-import com.turkcell.crm.customer_service.business.dtos.requests.addresses.CheckAddressAndCustomerMatchRequest;
 import com.turkcell.crm.customer_service.business.dtos.requests.addresses.CreateAddressRequest;
-import com.turkcell.crm.customer_service.business.dtos.requests.addresses.GetValidatedCustomerAddressesRequest;
 import com.turkcell.crm.customer_service.business.dtos.requests.customers.AddressDto;
-import com.turkcell.crm.customer_service.business.dtos.responses.addresses.*;
+import com.turkcell.crm.customer_service.business.dtos.responses.addresses.ChangedDefaultAddressResponse;
+import com.turkcell.crm.customer_service.business.dtos.responses.addresses.CreatedAddressResponse;
+import com.turkcell.crm.customer_service.business.dtos.responses.addresses.DeletedAddressResponse;
+import com.turkcell.crm.customer_service.business.dtos.responses.addresses.GetByIdAddressResponse;
 import com.turkcell.crm.customer_service.business.mappers.AddressMapper;
 import com.turkcell.crm.customer_service.business.rules.AddressBusinessRules;
 import com.turkcell.crm.customer_service.business.rules.CustomerBusinessRules;

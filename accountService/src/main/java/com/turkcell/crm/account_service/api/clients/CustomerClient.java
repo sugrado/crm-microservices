@@ -1,8 +1,8 @@
 package com.turkcell.crm.account_service.api.clients;
 
-import com.turkcell.crm.account_service.api.clients.dtos.customers.CheckAddressAndCustomerMatchRequest;
-import com.turkcell.crm.account_service.api.clients.dtos.customers.GetValidatedCustomerAddressesListItemDto;
-import com.turkcell.crm.account_service.api.clients.dtos.customers.GetValidatedCustomerAddressesRequest;
+import com.turkcell.crm.common.dtos.customers.CheckAddressAndCustomerMatchRequest;
+import com.turkcell.crm.common.dtos.customers.GetValidatedCustomerAddressesListItemDto;
+import com.turkcell.crm.common.dtos.customers.GetValidatedCustomerAddressesRequest;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
