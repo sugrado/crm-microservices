@@ -1,8 +1,6 @@
 package com.turkcell.crm.account_service.business.concretes;
 
 import com.turkcell.crm.account_service.api.clients.CustomerClient;
-import com.turkcell.crm.account_service.api.clients.dtos.customers.GetValidatedCustomerAddressesListItemDto;
-import com.turkcell.crm.account_service.api.clients.dtos.customers.GetValidatedCustomerAddressesRequest;
 import com.turkcell.crm.account_service.business.abstracts.AccountAddressService;
 import com.turkcell.crm.account_service.business.dtos.requests.account_addresses.CreateAccountAddressRequest;
 import com.turkcell.crm.account_service.business.dtos.requests.accounts.AccountAddressDto;
@@ -13,6 +11,8 @@ import com.turkcell.crm.account_service.business.rules.AccountBusinessRules;
 import com.turkcell.crm.account_service.data_access.abstracts.AccountAddressRepository;
 import com.turkcell.crm.account_service.entities.concretes.Account;
 import com.turkcell.crm.account_service.entities.concretes.AccountAddress;
+import com.turkcell.crm.common.dtos.customers.GetValidatedCustomerAddressesListItemDto;
+import com.turkcell.crm.common.dtos.customers.GetValidatedCustomerAddressesRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

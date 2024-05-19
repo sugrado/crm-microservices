@@ -1,4 +1,4 @@
-package com.turkcell.crm.account_service.api.clients.dtos.customers;
+package com.turkcell.crm.common.dtos.customers;
 
 public record CheckAddressAndCustomerMatchRequest(
         int customerId,

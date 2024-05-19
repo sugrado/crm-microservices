@@ -1,4 +1,4 @@
-package com.turkcell.crm.customer_service.business.dtos.requests.addresses;
+package com.turkcell.crm.common.dtos.customers;
 
 import java.util.List;
 
