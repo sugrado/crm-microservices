@@ -14,7 +14,6 @@ import java.util.List;
 @Mapper(config = MapstructService.class)
 public interface ProductMapper {
     @Mapping(source = "categoryId", target = "category.id")
-//    @Mapping(target = "properties", ignore = true)
     Product toProduct(CreateProductRequest createProductRequest);
 
     @Mapping(source = "category.id", target = "categoryId")
