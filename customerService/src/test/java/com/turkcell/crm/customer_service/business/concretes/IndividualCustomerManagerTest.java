@@ -28,6 +28,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -115,38 +116,88 @@ class IndividualCustomerManagerTest {
         verify(customerProducer).send(any(CustomerCreatedEvent.class));
     }
 
-//    @Test
-//    void getAll_ShouldReturnAllIndividualCustomers() {
-//
-//        // Arrange
-//        List<IndividualCustomer> individualCustomers = List.of(individualCustomer);
-//        when(individualCustomerRepository.findAll()).thenReturn(individualCustomers);
-//        when(individualCustomerMapper.toGetAllIndividualCustomersResponseList(anyList()))
-//                .thenReturn(List.of(any(GetAllIndividualCustomersResponse.class)));
-//
-//        // Act
-//        List<GetAllIndividualCustomersResponse> response = individualCustomerManager.getAll();
-//
-//        // Assert
-//        assertNotNull(response);
-//        assertFalse(response.isEmpty());
-//        verify(individualCustomerRepository).findAll();
-//    }
+    @Test
+    void getAll_ShouldReturnAllIndividualCustomers() {
 
-//    @Test
-//    void getById_ShouldReturnIndividualCustomer() {
-//        // Arrange
-//        when(individualCustomerRepository.findById(anyInt())).thenReturn(Optional.of(individualCustomer));
-//        when(individualCustomerMapper.toGetByIdIndividualCustomerResponse(any(IndividualCustomer.class)))
-//                .thenReturn(any(GetByIdIndividualCustomerResponse.class));
-//
-//        // Act
-//        GetByIdIndividualCustomerResponse response = individualCustomerManager.getById(1);
-//
-//        // Assert
-//        assertNotNull(response);
-//        verify(individualCustomerBusinessRules).individualCustomerShouldBeExist(any());
-//    }
+        IndividualCustomer individualCustomer1 = new IndividualCustomer();
+        individualCustomer1.setId(1);
+        individualCustomer1.setFirstName("Engin");
+
+        IndividualCustomer individualCustomer2 = new IndividualCustomer();
+        individualCustomer1.setId(2);
+        individualCustomer1.setFirstName("Zengin");
+
+        GetAllIndividualCustomersResponse response1 = new GetAllIndividualCustomersResponse(
+                1, LocalDateTime.now(), LocalDateTime.now(),"Engin",
+                " ",
+                "Demiroğ",
+                "1234567890123",
+                "12345678910",
+                LocalDate.now(),
+                "Mother",
+                "Father",
+                Gender.MALE,
+                customerDto);
+
+        GetAllIndividualCustomersResponse response2 = new GetAllIndividualCustomersResponse(
+                2, LocalDateTime.now(), LocalDateTime.now(),"Zengin",
+                " ",
+                "Demiroğ",
+                "1234567890123",
+                "12345678910",
+                LocalDate.now(),
+                "Mother",
+                "Father",
+                Gender.MALE,
+                customerDto);
+
+        List<IndividualCustomer> customers = Arrays.asList(individualCustomer1, individualCustomer2);
+        List<GetAllIndividualCustomersResponse> responses = Arrays.asList(response1, response2);
+
+        when(individualCustomerRepository.findAll()).thenReturn(customers);
+        when(individualCustomerMapper.toGetAllIndividualCustomersResponseList(customers)).thenReturn(responses);
+
+        List<GetAllIndividualCustomersResponse> result = individualCustomerManager.getAll();
+
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        assertEquals(response1, result.get(0));
+        assertEquals(response2, result.get(1));
+
+        verify(individualCustomerRepository, times(1)).findAll();
+        verify(individualCustomerMapper, times(1)).toGetAllIndividualCustomersResponseList(customers);
+    }
+
+    @Test
+    void getById_ShouldReturnIndividualCustomer(){
+
+        GetByIdIndividualCustomerResponse getByIdIndividualCustomerResponse = new GetByIdIndividualCustomerResponse(
+                1, LocalDateTime.now(), LocalDateTime.now(),"Engin",
+                " ",
+                "Demiroğ",
+                "1234567890123",
+                "12345678910",
+                LocalDate.now(),
+                "Mother",
+                "Father",
+                Gender.MALE,
+                customerDto);
+        int customerId = 1;
+        Optional<IndividualCustomer> customerOptional = Optional.of(individualCustomer);
+
+        when(individualCustomerRepository.findById(customerId)).thenReturn(customerOptional);
+        doNothing().when(individualCustomerBusinessRules).individualCustomerShouldBeExist(customerOptional);
+        when(individualCustomerMapper.toGetByIdIndividualCustomerResponse(individualCustomer)).thenReturn(getByIdIndividualCustomerResponse);
+
+        GetByIdIndividualCustomerResponse response = individualCustomerManager.getById(customerId);
+
+        assertNotNull(response);
+        assertEquals(getByIdIndividualCustomerResponse, response);
+
+        verify(individualCustomerRepository, times(1)).findById(customerId);
+        verify(individualCustomerBusinessRules, times(1)).individualCustomerShouldBeExist(customerOptional);
+        verify(individualCustomerMapper, times(1)).toGetByIdIndividualCustomerResponse(individualCustomer);
+    }
 
     @Test
     void update_ShouldUpdateIndividualCustomer() {
