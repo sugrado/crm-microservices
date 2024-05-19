@@ -189,75 +189,32 @@ class IndividualCustomerManagerTest {
         verify(customerProducer).send(any(CustomerUpdatedEvent.class));
     }
     @Test
-    void delete_ShouldDeleteIndividualCustomer() {
-        // Arrange
-        CustomerDto customerDto = new CustomerDto("test@test.com", "1234567891023");
-        IndividualCustomer individualCustomer = new IndividualCustomer();
-        individualCustomer.setCustomer(new Customer());
+    public void delete_ShouldDeleteIndividualCustomer(){
 
-        // Mock repository findById method
-        when(individualCustomerRepository.findById(anyInt())).thenReturn(Optional.of(individualCustomer));
+        individualCustomer.setId(1);
+        individualCustomer.setDeletedDate(null);
 
-        // Mock mapper methods
-        doReturn(new CustomerDeletedEvent()).when(individualCustomerMapper).toCustomerDeletedEvent(any(IndividualCustomer.class));
-        doReturn(new DeletedIndividualCustomerResponse(
-                1,
-                LocalDateTime.now(),
-                LocalDateTime.now(),
-                LocalDateTime.now(),
-                "Engin",
-                null,
-                "Demiroğ",
-                null,
-                "12345678910",
-                LocalDate.of(2001, 1, 20),
-                "sdasdsa",
-                "asfdsadd",
-                Gender.MALE,
-                customerDto
-        )).when(individualCustomerMapper).toDeletedIndividualCustomerResponse(any(IndividualCustomer.class));
+        DeletedIndividualCustomerResponse deletedIndividualCustomerResponse = new DeletedIndividualCustomerResponse(
+                1,LocalDateTime.now(),LocalDateTime.now(),LocalDateTime.now(),"Engin","","Demiroğ",
+        "1234567890123","12345678901",LocalDate.now(),"Mother","Father",Gender.MALE, customerDto);
+        CustomerDeletedEvent customerDeletedEvent = new CustomerDeletedEvent();
 
-        // Act
+        when(individualCustomerRepository.findById(1)).thenReturn(Optional.of(individualCustomer));
+        doNothing().when(individualCustomerBusinessRules).individualCustomerShouldBeExist(any());
+        when(individualCustomerRepository.save(any(IndividualCustomer.class))).thenReturn(individualCustomer);
+        when(individualCustomerMapper.toCustomerDeletedEvent(any(IndividualCustomer.class))).thenReturn(customerDeletedEvent);
+        when(individualCustomerMapper.toDeletedIndividualCustomerResponse(any(IndividualCustomer.class))).thenReturn(deletedIndividualCustomerResponse);
+
         DeletedIndividualCustomerResponse response = individualCustomerManager.delete(1);
 
-        // Assert
         assertNotNull(response);
-        verify(individualCustomerRepository).save(individualCustomer);
-        verify(customerProducer).send(any(CustomerDeletedEvent.class));
+        assertEquals(deletedIndividualCustomerResponse, response);
+        assertNotNull(individualCustomer.getDeletedDate());
+        verify(individualCustomerRepository, times(1)).findById(1);
+        verify(individualCustomerBusinessRules, times(1)).individualCustomerShouldBeExist(any());
+        verify(individualCustomerRepository, times(1)).save(any(IndividualCustomer.class));
+        verify(individualCustomerMapper, times(1)).toCustomerDeletedEvent(any(IndividualCustomer.class));
+        verify(customerProducer, times(1)).send(any(CustomerDeletedEvent.class));
+        verify(individualCustomerMapper, times(1)).toDeletedIndividualCustomerResponse(any(IndividualCustomer.class));
     }
-
-
-//    @Test
-//    void delete_ShouldDeleteIndividualCustomer() {
-//
-//        // Arrange
-//        when(individualCustomerRepository.findById(anyInt())).thenReturn(Optional.of(individualCustomer));
-//        when(individualCustomerMapper.toCustomerDeletedEvent(any(IndividualCustomer.class)))
-//                .thenReturn(new CustomerDeletedEvent());
-//        when(individualCustomerMapper.toDeletedIndividualCustomerResponse(any(IndividualCustomer.class)))
-//                .thenReturn(new DeletedIndividualCustomerResponse(
-//                        1,
-//                        LocalDateTime.now(),
-//                        LocalDateTime.now(),
-//                        LocalDateTime.now(),
-//                        "Engin",
-//                        null,
-//                        "Demiroğ",
-//                        null,
-//                        "12345678910",
-//                        LocalDate.of(2001,1,20),
-//                        "sdasdsa",
-//                        "asfdsadd",
-//                        Gender.MALE,
-//                        customerDto
-//                        ));
-//
-//        // Act
-//        DeletedIndividualCustomerResponse response = individualCustomerManager.delete(1);
-//
-//        // Assert
-//        assertNotNull(response);
-//        verify(individualCustomerRepository).save(any(IndividualCustomer.class));
-//        verify(customerProducer).send(any(CustomerDeletedEvent.class));
-//    }
 }
