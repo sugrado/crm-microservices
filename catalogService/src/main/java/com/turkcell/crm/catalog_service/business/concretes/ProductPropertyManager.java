@@ -30,8 +30,10 @@ public class ProductPropertyManager implements ProductPropertyService {
         this.productService.getById(productId);
         this.propertyService.getById(request.propertyId());
         this.productPropertyBusinessRules.productPropertyShouldBeUnique(productId, request.propertyId());
+
         ProductProperty productPropertyToSave = this.productPropertyMapper.toProductProperty(request);
         productPropertyToSave.setProduct(new Product(productId));
+
         this.productPropertyRepository.save(productPropertyToSave);
     }
 

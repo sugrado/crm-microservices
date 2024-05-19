@@ -48,7 +48,6 @@ public class PropertyManager implements PropertyService {
     public CreatedPropertyResponse add(CreatePropertyRequest request) {
 
         Property property = this.propertyMapper.toProperty(request);
-
         Property createdProperty = this.propertyRepository.save(property);
 
         return this.propertyMapper.toCreatedPropertyResponse(createdProperty);

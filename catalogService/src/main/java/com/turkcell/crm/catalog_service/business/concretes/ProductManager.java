@@ -38,20 +38,17 @@ public class ProductManager implements ProductService {
     public List<GetAllProductsResponse> getAll() {
 
         List<Product> productList = this.productRepository.findAll();
-        List<GetAllProductsResponse> getAllProductsResponseList = this.productMapper.toGetAllProductsResponse(productList);
-        return getAllProductsResponseList;
+        return this.productMapper.toGetAllProductsResponse(productList);
     }
 
     @Override
     public GetByIdProductResponse getById(int id) {
         Optional<Product> optionalProduct = this.productRepository.findById(id);
         this.productBusinessRules.productShouldBeExist(optionalProduct);
-        GetByIdProductResponse getByIdProductResponse = this.productMapper.toGetByIdProductResponse(optionalProduct.get());
-        return getByIdProductResponse;
+        return this.productMapper.toGetByIdProductResponse(optionalProduct.get());
     }
 
     @Override
-    @Transactional
     public UpdatedProductResponse update(int id, UpdateProductRequest updateProductRequest) {
         Optional<Product> optionalProduct = this.productRepository.findById(id);
         this.productBusinessRules.productShouldBeExist(optionalProduct);
@@ -64,7 +61,6 @@ public class ProductManager implements ProductService {
     }
 
     @Override
-    @Transactional
     public DeletedProductResponse delete(int id) {
         Optional<Product> optionalProduct = this.productRepository.findById(id);
         this.productBusinessRules.productShouldBeExist(optionalProduct);

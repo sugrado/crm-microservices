@@ -13,4 +13,9 @@ public class Messages {
         public static final String ALREADY_EXISTS = "productPropertyAlreadyExists";
         public static final String NOT_FOUND = "productPropertyNotFound";
     }
+
+    public static class CategoryMessages {
+        public static final String NOT_FOUND = "categoryNotFound";
+        public static final String ALREADY_EXISTS = "categoryAlreadyExists";
+    }
 }

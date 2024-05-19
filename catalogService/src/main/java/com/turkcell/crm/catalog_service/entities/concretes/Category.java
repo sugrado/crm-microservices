@@ -29,7 +29,7 @@ public class Category extends BaseEntity<Integer> {
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<Property> properties;
 
-    public Category(int id){
+    public Category(int id) {
         setId(id);
     }
 

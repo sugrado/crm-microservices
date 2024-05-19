@@ -17,27 +17,27 @@ public class ProductsController {
     private final ProductService productService;
 
     @PostMapping
-    public CreatedProductResponse add(@Valid @RequestBody CreateProductRequest createProductRequest){
+    public CreatedProductResponse add(@Valid @RequestBody CreateProductRequest createProductRequest) {
         return this.productService.add(createProductRequest);
     }
 
     @GetMapping
-    public List<GetAllProductsResponse> getAll(){
+    public List<GetAllProductsResponse> getAll() {
         return this.productService.getAll();
     }
 
     @GetMapping("{id}")
-    public GetByIdProductResponse getById(@PathVariable int id){
+    public GetByIdProductResponse getById(@PathVariable int id) {
         return this.productService.getById(id);
     }
 
     @PatchMapping("{id}")
-    public UpdatedProductResponse update(@PathVariable int id, @Valid @RequestBody UpdateProductRequest updateProductRequest){
-        return this.productService.update(id,updateProductRequest);
+    public UpdatedProductResponse update(@PathVariable int id, @Valid @RequestBody UpdateProductRequest updateProductRequest) {
+        return this.productService.update(id, updateProductRequest);
     }
 
     @DeleteMapping("{id}")
-    public DeletedProductResponse delete(@PathVariable int id){
+    public DeletedProductResponse delete(@PathVariable int id) {
         return this.productService.delete(id);
     }
 

@@ -36,7 +36,7 @@ public class Product extends BaseEntity<Integer> {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<ProductProperty> properties;
 
-    public Product(int id){
+    public Product(int id) {
         setId(id);
     }
 }
