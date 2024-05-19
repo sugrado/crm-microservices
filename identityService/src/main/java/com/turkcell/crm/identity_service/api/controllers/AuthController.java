@@ -8,6 +8,7 @@ import com.turkcell.crm.identity_service.business.dtos.responses.auth.RefreshedT
 import com.turkcell.crm.identity_service.business.dtos.responses.auth.RegisteredResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -24,14 +25,14 @@ public class AuthController extends BaseController {
     private int refreshTokenExpirationDays;
 
     @PostMapping("/register")
-    public String register(@RequestBody RegisterRequest request, HttpServletResponse response) {
+    public String register(@RequestBody @Valid RegisterRequest request, HttpServletResponse response) {
         RegisteredResponse registeredResponse = authService.register(request);
         setCookie(refreshTokenCookieKey, registeredResponse.getRefreshToken(), calculateCookieExpirationSeconds(refreshTokenExpirationDays), response);
         return registeredResponse.getAccessToken();
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody LoginRequest loginRequest, HttpServletResponse response, HttpServletRequest request) {
+    public String login(@RequestBody @Valid LoginRequest loginRequest, HttpServletResponse response, HttpServletRequest request) {
         LoggedInResponse loggedInResponse = authService.login(loginRequest, getIpAddress(request));
         setCookie(refreshTokenCookieKey, loggedInResponse.getRefreshToken(), calculateCookieExpirationSeconds(refreshTokenExpirationDays), response);
         return loggedInResponse.getAccessToken();

@@ -12,7 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "product_property")
+@Table(name = "product_properties")
 public class ProductProperty extends BaseEntity<Integer> {
 
     @Column(name = "value", nullable = false)

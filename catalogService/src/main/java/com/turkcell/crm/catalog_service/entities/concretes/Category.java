@@ -14,7 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "category")
+@Table(name = "categories")
 public class Category extends BaseEntity<Integer> {
 
     @Column(name = "name", nullable = false)
