@@ -74,6 +74,7 @@
             <groupId>com.turkcell.crm</groupId>
             <artifactId>common</artifactId>
             <version>0.0.1</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.turkcell.crm</groupId>

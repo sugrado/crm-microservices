@@ -8,7 +8,7 @@ public class SecurityManager implements SecurityService {
     @Override
     public HttpSecurity configureSecurity(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(x -> x
-                .requestMatchers(HttpMethod.GET, "/customer-service/api/v1/individual-customers").hasAuthority("admin")
+                .requestMatchers(HttpMethod.POST, "/customer-service/api/v1/addresses").hasAuthority("admin")
                 .anyRequest().authenticated());
         return http;
     }

@@ -6,6 +6,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 public class SecurityManager implements SecurityService {
     @Override
     public HttpSecurity configureSecurity(HttpSecurity http) throws Exception {
-        return null;
+        return http;
     }
 }

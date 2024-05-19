@@ -1,5 +1,6 @@
 package com.turkcell.crm.customer_service;
 
+import com.turkcell.crm.common.utils.constants.Paths;
 import com.turkcell.crm.core.annotations.EnableSecurity;
 import com.turkcell.crm.core.services.SecurityService;
 import com.turkcell.crm.customer_service.business.security.SecurityManager;
@@ -8,7 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {Paths.CommonBasePackage, Paths.Customer.BasePackage})
 @EnableSecurity
 public class CustomerServiceApplication {
     public static void main(String[] args) {
