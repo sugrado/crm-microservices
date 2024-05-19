@@ -1,4 +1,4 @@
-package com.turkcell.crm.catalog_service.business.dtos.requests.productProperty;
+package com.turkcell.crm.catalog_service.business.dtos.requests.product_property;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

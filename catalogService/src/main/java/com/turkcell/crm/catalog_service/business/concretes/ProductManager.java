@@ -1,19 +1,20 @@
 package com.turkcell.crm.catalog_service.business.concretes;
 
-import com.turkcell.crm.catalog_service.business.abstracts.ProductPropertyService;
 import com.turkcell.crm.catalog_service.business.abstracts.ProductService;
 import com.turkcell.crm.catalog_service.business.dtos.requests.product.CreateProductRequest;
 import com.turkcell.crm.catalog_service.business.dtos.requests.product.UpdateProductRequest;
 import com.turkcell.crm.catalog_service.business.dtos.responses.product.*;
 import com.turkcell.crm.catalog_service.business.mappers.ProductMapper;
+import com.turkcell.crm.catalog_service.business.rules.ProductBusinessRules;
 import com.turkcell.crm.catalog_service.data_access.abstracts.ProductRepository;
 import com.turkcell.crm.catalog_service.entities.concretes.Product;
-import com.turkcell.crm.catalog_service.entities.concretes.ProductProperty;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
-
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,34 +22,53 @@ public class ProductManager implements ProductService {
 
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
-    private final ProductPropertyService productPropertyService;
+    private final ProductBusinessRules productBusinessRules;
+
     @Override
+    @Transactional
     public CreatedProductResponse add(CreateProductRequest request) {
 
         Product product = this.productMapper.toProduct(request);
         Product createdProduct = this.productRepository.save(product);
-        this.productPropertyService.add(request.properties(), product);
 
         return this.productMapper.toCreatedProductResponse(createdProduct);
     }
 
     @Override
     public List<GetAllProductsResponse> getAll() {
-        return null;
+
+        List<Product> productList = this.productRepository.findAll();
+        return this.productMapper.toGetAllProductsResponse(productList);
     }
 
     @Override
     public GetByIdProductResponse getById(int id) {
-        return null;
+        Optional<Product> optionalProduct = this.productRepository.findById(id);
+        this.productBusinessRules.productShouldBeExist(optionalProduct);
+        return this.productMapper.toGetByIdProductResponse(optionalProduct.get());
     }
 
     @Override
     public UpdatedProductResponse update(int id, UpdateProductRequest updateProductRequest) {
-        return null;
+        Optional<Product> optionalProduct = this.productRepository.findById(id);
+        this.productBusinessRules.productShouldBeExist(optionalProduct);
+        Product product = optionalProduct.get();
+
+        this.productMapper.updateProductFromRequest(updateProductRequest, product);
+        Product updatedProduct = this.productRepository.save(product);
+
+        return this.productMapper.toUpdatedProductResponse(updatedProduct);
     }
 
     @Override
     public DeletedProductResponse delete(int id) {
-        return null;
+        Optional<Product> optionalProduct = this.productRepository.findById(id);
+        this.productBusinessRules.productShouldBeExist(optionalProduct);
+
+        Product productToDelete = optionalProduct.get();
+        productToDelete.setDeletedDate(LocalDateTime.now());
+        Product deletedProduct = this.productRepository.save(productToDelete);
+
+        return this.productMapper.toDeletedProductResponse(deletedProduct);
     }
 }

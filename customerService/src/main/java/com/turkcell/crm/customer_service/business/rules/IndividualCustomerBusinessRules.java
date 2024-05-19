@@ -16,7 +16,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class IndividualCustomerBusinessRules {
-    private final IndividualCustomerRepository customerRepository;
+    private final IndividualCustomerRepository individualCustomerRepository;
     private final CheckNationalityService checkNationalityService;
     private final MessageService messageService;
 
@@ -27,7 +27,7 @@ public class IndividualCustomerBusinessRules {
     }
 
     public void nationalityIdShouldBeUnique(String nationalityId) {
-        Optional<IndividualCustomer> customer = customerRepository.findByNationalityId(nationalityId);
+        Optional<IndividualCustomer> customer = individualCustomerRepository.findByNationalityId(nationalityId);
         if (customer.isPresent()) {
             throw new BusinessException(messageService.getMessage(Messages.IndividualCustomerMessages.NATIONALITY_ID_ALREADY_EXISTS));
         }

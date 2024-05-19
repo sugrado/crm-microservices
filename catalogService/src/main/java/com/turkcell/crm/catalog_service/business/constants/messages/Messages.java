@@ -8,4 +8,14 @@ public class Messages {
     public static class PropertyMessages {
         public static final String NOT_FOUND = "propertyNotFound";
     }
+
+    public static class ProductPropertyMessages {
+        public static final String ALREADY_EXISTS = "productPropertyAlreadyExists";
+        public static final String NOT_FOUND = "productPropertyNotFound";
+    }
+
+    public static class CategoryMessages {
+        public static final String NOT_FOUND = "categoryNotFound";
+        public static final String ALREADY_EXISTS = "categoryAlreadyExists";
+    }
 }
