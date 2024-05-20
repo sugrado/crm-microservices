@@ -16,13 +16,6 @@ public class AccountTypeBusinessRules {
     private final MessageService messageService;
     private final AccountTypeRepository accountTypeRepository;
 
-    public void accountTypeShouldBeExist(int accountTypeId) {
-        Optional<AccountType> accountType = accountTypeRepository.findById(accountTypeId);
-        if (accountType.isEmpty()) {
-            throw new BusinessException(messageService.getMessage(Messages.AccountTypeMessages.NOT_FOUND));
-        }
-    }
-
     public void accountTypeShouldBeExist(Optional<AccountType> accountType) {
         if (accountType.isEmpty()) {
             throw new BusinessException(messageService.getMessage(Messages.AccountTypeMessages.NOT_FOUND));

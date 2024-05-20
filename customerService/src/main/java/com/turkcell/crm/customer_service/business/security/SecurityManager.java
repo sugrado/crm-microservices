@@ -7,9 +7,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 public class SecurityManager implements SecurityService {
     @Override
     public HttpSecurity configureSecurity(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(x -> x
-                .requestMatchers(HttpMethod.POST, "/customer-service/api/v1/addresses").hasAuthority("admin")
-                .anyRequest().authenticated());
         return http;
     }
 }

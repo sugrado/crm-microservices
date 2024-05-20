@@ -2,6 +2,7 @@ package com.turkcell.crm.account_service.business.concretes;
 
 import com.turkcell.crm.account_service.api.clients.CustomerClient;
 import com.turkcell.crm.account_service.business.abstracts.AccountAddressService;
+import com.turkcell.crm.account_service.business.abstracts.AccountService;
 import com.turkcell.crm.account_service.business.dtos.requests.account_addresses.CreateAccountAddressRequest;
 import com.turkcell.crm.account_service.business.dtos.requests.accounts.AccountAddressDto;
 import com.turkcell.crm.account_service.business.dtos.responses.account_addresses.CreatedAccountAddressResponse;
@@ -24,20 +25,20 @@ public class AccountAddressManager implements AccountAddressService {
     private final AccountAddressRepository accountAddressRepository;
     private final AccountAddressMapper accountAddressMapper;
     private final AccountAddressBusinessRules accountAddressBusinessRules;
-    private final AccountBusinessRules accountBusinessRules;
     private final CustomerClient customerClient;
+    private final AccountService accountService;
 
     @Override
     public CreatedAccountAddressResponse add(int accountId, CreateAccountAddressRequest createAccountAddressRequest) {
-        accountBusinessRules.addressShouldBeExist(createAccountAddressRequest.addressId());
-        accountBusinessRules.accountShouldBeExist(accountId);
-        accountAddressBusinessRules.addressShouldNotBeExistInAccount(accountId, createAccountAddressRequest.addressId());
-        accountAddressBusinessRules.addressMustBelongToAccountOwner(accountId, createAccountAddressRequest.addressId());
+        this.accountAddressBusinessRules.addressShouldBeExist(createAccountAddressRequest.addressId());
+        this.accountService.getById(accountId);
+        this.accountAddressBusinessRules.addressShouldNotBeExistInAccount(accountId, createAccountAddressRequest.addressId());
+        this.accountAddressBusinessRules.addressMustBelongToAccountOwner(accountId, createAccountAddressRequest.addressId());
 
-        AccountAddress accountAddress = accountAddressMapper.toAccountAddress(createAccountAddressRequest);
+        AccountAddress accountAddress = this.accountAddressMapper.toAccountAddress(createAccountAddressRequest);
         accountAddress.setAccount(new Account(accountId));
-        accountAddressRepository.save(accountAddress);
-        return accountAddressMapper.toCreatedAccountAddressResponse(accountAddress);
+        this.accountAddressRepository.save(accountAddress);
+        return this.accountAddressMapper.toCreatedAccountAddressResponse(accountAddress);
     }
 
     @Override

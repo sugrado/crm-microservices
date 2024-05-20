@@ -1,15 +1,12 @@
 package com.turkcell.crm.customer_service.business.mappers;
 
 import com.turkcell.crm.customer_service.business.dtos.requests.addresses.CreateAddressRequest;
+import com.turkcell.crm.customer_service.business.dtos.requests.addresses.UpdateAddressRequest;
 import com.turkcell.crm.customer_service.business.dtos.requests.customers.AddressDto;
-import com.turkcell.crm.customer_service.business.dtos.responses.addresses.ChangedDefaultAddressResponse;
-import com.turkcell.crm.customer_service.business.dtos.responses.addresses.CreatedAddressResponse;
-import com.turkcell.crm.customer_service.business.dtos.responses.addresses.DeletedAddressResponse;
-import com.turkcell.crm.customer_service.business.dtos.responses.addresses.GetByIdAddressResponse;
+import com.turkcell.crm.customer_service.business.dtos.responses.addresses.*;
 import com.turkcell.crm.customer_service.core.utilities.mapping.MapstructService;
 import com.turkcell.crm.customer_service.entities.concretes.Address;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.*;
 
 @Mapper(config = MapstructService.class)
 public interface AddressMapper {
@@ -25,6 +22,11 @@ public interface AddressMapper {
 
     @Mapping(target = "cityId", source = "city.id")
     GetByIdAddressResponse toGetByIdAddressResponse(Address address);
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void updateAddressFromRequest(UpdateAddressRequest updateAddressRequest, @MappingTarget Address address);
+
+    @Mapping(target ="cityId",source = "city.id")
+    UpdatedAddressResponse toUpdateAddressResponse(Address address);
 
     @Mapping(target = "cityId", source = "city.id")
     ChangedDefaultAddressResponse toChangedDefaultAddressResponse(Address address);

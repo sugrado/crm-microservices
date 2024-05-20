@@ -5,11 +5,9 @@ import com.turkcell.crm.common.dtos.customers.GetValidatedCustomerAddressesListI
 import com.turkcell.crm.common.dtos.customers.GetValidatedCustomerAddressesRequest;
 import com.turkcell.crm.customer_service.business.dtos.requests.addresses.ChangeDefaultAddressRequest;
 import com.turkcell.crm.customer_service.business.dtos.requests.addresses.CreateAddressRequest;
+import com.turkcell.crm.customer_service.business.dtos.requests.addresses.UpdateAddressRequest;
 import com.turkcell.crm.customer_service.business.dtos.requests.customers.AddressDto;
-import com.turkcell.crm.customer_service.business.dtos.responses.addresses.ChangedDefaultAddressResponse;
-import com.turkcell.crm.customer_service.business.dtos.responses.addresses.CreatedAddressResponse;
-import com.turkcell.crm.customer_service.business.dtos.responses.addresses.DeletedAddressResponse;
-import com.turkcell.crm.customer_service.business.dtos.responses.addresses.GetByIdAddressResponse;
+import com.turkcell.crm.customer_service.business.dtos.responses.addresses.*;
 import com.turkcell.crm.customer_service.entities.concretes.Customer;
 
 import java.util.List;
@@ -24,6 +22,8 @@ public interface AddressService {
     void checkAddressAndCustomerMatch(CheckAddressAndCustomerMatchRequest checkAddressAndCustomerMatchRequest);
 
     CreatedAddressResponse add(CreateAddressRequest createAddressRequest);
+
+    UpdatedAddressResponse update(int id, UpdateAddressRequest updateAddressRequest);
 
     DeletedAddressResponse delete(int id);
 

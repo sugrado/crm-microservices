@@ -6,9 +6,11 @@ import com.turkcell.crm.common.dtos.customers.GetValidatedCustomerAddressesReque
 import com.turkcell.crm.customer_service.business.abstracts.AddressService;
 import com.turkcell.crm.customer_service.business.dtos.requests.addresses.ChangeDefaultAddressRequest;
 import com.turkcell.crm.customer_service.business.dtos.requests.addresses.CreateAddressRequest;
+import com.turkcell.crm.customer_service.business.dtos.requests.addresses.UpdateAddressRequest;
 import com.turkcell.crm.customer_service.business.dtos.responses.addresses.ChangedDefaultAddressResponse;
 import com.turkcell.crm.customer_service.business.dtos.responses.addresses.CreatedAddressResponse;
 import com.turkcell.crm.customer_service.business.dtos.responses.addresses.DeletedAddressResponse;
+import com.turkcell.crm.customer_service.business.dtos.responses.addresses.UpdatedAddressResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,6 +28,11 @@ public class AddressesController {
     @ResponseStatus(HttpStatus.CREATED)
     public CreatedAddressResponse add(@Valid @RequestBody CreateAddressRequest createAddressRequest) {
         return this.addressService.add(createAddressRequest);
+    }
+
+    @PatchMapping("{id}")
+    public UpdatedAddressResponse update(@PathVariable int id, @Valid @RequestBody UpdateAddressRequest updateAddressRequest) {
+        return this.addressService.update(id, updateAddressRequest);
     }
 
     @PatchMapping("default")

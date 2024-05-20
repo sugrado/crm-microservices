@@ -4,9 +4,11 @@ import com.turkcell.crm.account_service.entities.enums.Status;
 
 import java.time.LocalDateTime;
 
-public record CreatedAccountResponse(
+public record DeleteAccountResponse(
         int id,
         LocalDateTime createdDate,
+        LocalDateTime updatedDate,
+        LocalDateTime deletedDate,
         Status status,
         String name,
         String number,

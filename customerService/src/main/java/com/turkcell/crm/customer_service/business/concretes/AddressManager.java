@@ -7,11 +7,10 @@ import com.turkcell.crm.customer_service.business.abstracts.AddressService;
 import com.turkcell.crm.customer_service.business.abstracts.CityService;
 import com.turkcell.crm.customer_service.business.dtos.requests.addresses.ChangeDefaultAddressRequest;
 import com.turkcell.crm.customer_service.business.dtos.requests.addresses.CreateAddressRequest;
+import com.turkcell.crm.customer_service.business.dtos.requests.addresses.UpdateAddressRequest;
 import com.turkcell.crm.customer_service.business.dtos.requests.customers.AddressDto;
-import com.turkcell.crm.customer_service.business.dtos.responses.addresses.ChangedDefaultAddressResponse;
-import com.turkcell.crm.customer_service.business.dtos.responses.addresses.CreatedAddressResponse;
-import com.turkcell.crm.customer_service.business.dtos.responses.addresses.DeletedAddressResponse;
-import com.turkcell.crm.customer_service.business.dtos.responses.addresses.GetByIdAddressResponse;
+import com.turkcell.crm.customer_service.business.dtos.responses.addresses.*;
+import com.turkcell.crm.customer_service.business.dtos.responses.cities.GetByIdCityResponse;
 import com.turkcell.crm.customer_service.business.mappers.AddressMapper;
 import com.turkcell.crm.customer_service.business.rules.AddressBusinessRules;
 import com.turkcell.crm.customer_service.business.rules.CustomerBusinessRules;
@@ -95,6 +94,20 @@ public class AddressManager implements AddressService {
         }
 
         return this.addressMapper.toCreateAddressResponse(this.addressRepository.save(address));
+    }
+
+    @Override
+    public UpdatedAddressResponse update(int id, UpdateAddressRequest updateAddressRequest) {
+        Optional<Address> addressOptional = this.addressRepository.findById(id);
+        this.addressBusinessRules.addressShouldBeExist(addressOptional);
+        GetByIdCityResponse getByIdCityResponse = this.cityService.getById(updateAddressRequest.cityId());
+        Address address = addressOptional.get();
+
+        addressMapper.updateAddressFromRequest(updateAddressRequest, address);
+        address.setCity(new City(getByIdCityResponse.id()));
+        Address updatedAddress = this.addressRepository.save(address);
+
+        return addressMapper.toUpdateAddressResponse(updatedAddress);
     }
 
     @Override

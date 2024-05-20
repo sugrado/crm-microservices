@@ -27,4 +27,7 @@ public class AccountAddressBusinessRules {
             throw new BusinessException("Address is already exist in account");
         }
     }
+    public void addressShouldBeExist(int addressId) {
+        this.customerClient.checkIfAddressExists(addressId);
+    }
 }

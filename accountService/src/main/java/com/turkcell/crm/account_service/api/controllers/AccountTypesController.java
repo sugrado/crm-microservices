@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("customer-service/api/v1/account-types")
+@RequestMapping("account-service/api/v1/account-types")
 public class AccountTypesController {
     private AccountTypeService accountTypeService;
 

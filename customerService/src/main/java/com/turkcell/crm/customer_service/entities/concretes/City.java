@@ -22,4 +22,8 @@ public class City extends BaseEntity<Integer> {
 
     @OneToMany(mappedBy = "city", cascade = CascadeType.ALL)
     private List<Address> addresses;
+
+    public City (int id){
+        setId(id);
+    }
 }
