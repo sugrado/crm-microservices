@@ -6,6 +6,8 @@ import com.turkcell.crm.account_service.business.abstracts.AccountService;
 import com.turkcell.crm.account_service.business.dtos.requests.account_addresses.CreateAccountAddressRequest;
 import com.turkcell.crm.account_service.business.dtos.requests.accounts.AccountAddressDto;
 import com.turkcell.crm.account_service.business.dtos.responses.account_addresses.CreatedAccountAddressResponse;
+import com.turkcell.crm.account_service.business.dtos.responses.account_addresses.DeletedAcountAddressResponse;
+import com.turkcell.crm.account_service.business.dtos.responses.account_addresses.GetAllByAccountIdResponse;
 import com.turkcell.crm.account_service.business.mappers.AccountAddressMapper;
 import com.turkcell.crm.account_service.business.rules.AccountAddressBusinessRules;
 import com.turkcell.crm.account_service.business.rules.AccountBusinessRules;
@@ -17,7 +19,9 @@ import com.turkcell.crm.common.dtos.customers.GetValidatedCustomerAddressesReque
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,12 +30,13 @@ public class AccountAddressManager implements AccountAddressService {
     private final AccountAddressMapper accountAddressMapper;
     private final AccountAddressBusinessRules accountAddressBusinessRules;
     private final CustomerClient customerClient;
-    private final AccountService accountService;
+    //private final AccountService accountService; Accoun managerla loop'a giriyor mecbur businessrule ekledim
+    private final AccountBusinessRules accountBusinessRules;
 
     @Override
     public CreatedAccountAddressResponse add(int accountId, CreateAccountAddressRequest createAccountAddressRequest) {
         this.accountAddressBusinessRules.addressShouldBeExist(createAccountAddressRequest.addressId());
-        this.accountService.getById(accountId);
+        this.accountBusinessRules.accountShouldBeExist(accountId);
         this.accountAddressBusinessRules.addressShouldNotBeExistInAccount(accountId, createAccountAddressRequest.addressId());
         this.accountAddressBusinessRules.addressMustBelongToAccountOwner(accountId, createAccountAddressRequest.addressId());
 
@@ -67,5 +72,28 @@ public class AccountAddressManager implements AccountAddressService {
                 .toList();
 
         accountAddressRepository.saveAll(addressesToSave);
+    }
+
+    @Override
+    public DeletedAcountAddressResponse delete(int id) {
+        Optional<AccountAddress> optionalAccountAddress = this.accountAddressRepository.findById(id);
+
+        this.accountAddressBusinessRules.accountAddressShouldBeExist(optionalAccountAddress);
+        this.accountAddressBusinessRules.accountAddressShouldBeNotDeleted(optionalAccountAddress);
+
+        AccountAddress deletedAccountAddress = optionalAccountAddress.get();
+        deletedAccountAddress.setDeletedDate(LocalDateTime.now());
+        this.accountAddressRepository.save(deletedAccountAddress);
+
+        return this.accountAddressMapper.toDeletedAcountAddressResponse(deletedAccountAddress);
+    }
+
+    @Override
+    public List<GetAllByAccountIdResponse> getAllByAccountId(int accountId) {
+        this.accountBusinessRules.accountShouldBeExist(accountId);
+
+        List<AccountAddress> accountAddressList = this.accountAddressRepository.findAllAccountAddressesByAccountId(accountId);
+
+        return this.accountAddressMapper.toGetAllByAccountIdResponse(accountAddressList);
     }
 }

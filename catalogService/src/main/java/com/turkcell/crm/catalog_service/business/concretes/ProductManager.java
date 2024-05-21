@@ -38,20 +38,27 @@ public class ProductManager implements ProductService {
     public List<GetAllProductsResponse> getAll() {
 
         List<Product> productList = this.productRepository.findAll();
+
         return this.productMapper.toGetAllProductsResponse(productList);
     }
 
     @Override
     public GetByIdProductResponse getById(int id) {
         Optional<Product> optionalProduct = this.productRepository.findById(id);
+
         this.productBusinessRules.productShouldBeExist(optionalProduct);
+        this.productBusinessRules.productShouldNotBeDeleted(optionalProduct);
+
         return this.productMapper.toGetByIdProductResponse(optionalProduct.get());
     }
 
     @Override
     public UpdatedProductResponse update(int id, UpdateProductRequest updateProductRequest) {
         Optional<Product> optionalProduct = this.productRepository.findById(id);
+
         this.productBusinessRules.productShouldBeExist(optionalProduct);
+        this.productBusinessRules.productShouldNotBeDeleted(optionalProduct);
+
         Product product = optionalProduct.get();
 
         this.productMapper.updateProductFromRequest(updateProductRequest, product);
@@ -63,12 +70,24 @@ public class ProductManager implements ProductService {
     @Override
     public DeletedProductResponse delete(int id) {
         Optional<Product> optionalProduct = this.productRepository.findById(id);
+
         this.productBusinessRules.productShouldBeExist(optionalProduct);
+        this.productBusinessRules.productShouldNotBeDeleted(optionalProduct);
 
         Product productToDelete = optionalProduct.get();
         productToDelete.setDeletedDate(LocalDateTime.now());
         Product deletedProduct = this.productRepository.save(productToDelete);
 
         return this.productMapper.toDeletedProductResponse(deletedProduct);
+    }
+
+    @Override
+    public Product getByIdForProductPropertyManager(int id) {
+        Optional<Product> optionalProduct = this.productRepository.findById(id);
+
+        this.productBusinessRules.productShouldBeExist(optionalProduct);
+        this.productBusinessRules.productShouldNotBeDeleted(optionalProduct);
+
+        return optionalProduct.get();
     }
 }

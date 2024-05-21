@@ -23,9 +23,18 @@ public class AccountBusinessRules {
             throw new BusinessException(this.messageService.getMessage(Messages.AccountMessages.NOT_FOUND));
         }
     }
+    public void accountShouldBeExist(int id) {
+        Optional<Account> accountOptional = this.accountRepository.findById(id);
+        accountShouldBeExist(accountOptional);
+    }
 
     public void customerShouldBeExists(int customerId) {
         customerClient.checkIfCustomerExists(customerId);
+    }
+    public void accountShouldBeNotDeleted(Optional<Account> account){
+        if(account.get().getDeletedDate() != null){
+            throw new BusinessException(messageService.getMessage(Messages.AccountMessages.DELETED));
+        }
     }
 
 

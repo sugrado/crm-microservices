@@ -2,10 +2,7 @@ package com.turkcell.crm.catalog_service.business.concretes;
 
 import com.turkcell.crm.catalog_service.business.abstracts.PropertyService;
 import com.turkcell.crm.catalog_service.business.dtos.requests.property.CreatePropertyRequest;
-import com.turkcell.crm.catalog_service.business.dtos.responses.property.CreatedPropertyResponse;
-import com.turkcell.crm.catalog_service.business.dtos.responses.property.GetAllPropertiesByCategoryIdResponse;
-import com.turkcell.crm.catalog_service.business.dtos.responses.property.GetAllPropertiesResponse;
-import com.turkcell.crm.catalog_service.business.dtos.responses.property.GetByIdPropertyResponse;
+import com.turkcell.crm.catalog_service.business.dtos.responses.property.*;
 import com.turkcell.crm.catalog_service.business.mappers.PropertyMapper;
 import com.turkcell.crm.catalog_service.business.rules.PropertyBusinessRules;
 import com.turkcell.crm.catalog_service.data_access.abstracts.PropertyRepository;
@@ -13,6 +10,7 @@ import com.turkcell.crm.catalog_service.entities.concretes.Property;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,6 +44,7 @@ public class PropertyManager implements PropertyService {
 
     @Override
     public CreatedPropertyResponse add(CreatePropertyRequest request) {
+        this.propertyBusinessRules.propertyCanNotDuplicated(request);
 
         Property property = this.propertyMapper.toProperty(request);
         Property createdProperty = this.propertyRepository.save(property);
@@ -55,21 +54,54 @@ public class PropertyManager implements PropertyService {
 
     @Override
     public List<GetAllPropertiesResponse> getAll() {
+
         List<Property> propertyList = this.propertyRepository.findAll();
+
         return this.propertyMapper.toGetAllPropertiesResponse(propertyList);
+    }
+
+    @Override
+    public DeletePropertyResponse delete(int id) {
+        Optional<Property> optionalProperty = this.propertyRepository.findById(id);
+
+        this.propertyBusinessRules.propertyShouldBeExist(optionalProperty);
+        this.propertyBusinessRules.propertyShouldNotBeDeleted(optionalProperty);
+
+        Property property = optionalProperty.get();
+        property.setDeletedDate(LocalDateTime.now());
+
+        Property deletedProperty = this.propertyRepository.save(property);
+
+        return this.propertyMapper.toDeletePropertyResponse(deletedProperty);
+    }
+
+    @Override
+    public Property getByIdForProductPropertyManager(int id) {
+        Optional<Property> propertyOptional = this.propertyRepository.findById(id);
+
+        this.propertyBusinessRules.propertyShouldBeExist(propertyOptional);
+        this.propertyBusinessRules.propertyShouldNotBeDeleted(propertyOptional);
+
+        return propertyOptional.get();
     }
 
     @Override
     public List<GetAllPropertiesByCategoryIdResponse> getAllByCategoryId(int categoryId) {
 
         List<Property> propertyList = this.propertyRepository.findAllByCategoryId(categoryId);
+
         return this.propertyMapper.toGetAllPropertiesByCategoryIdResponse(propertyList);
     }
+    //TODO:update methodu eklenilecek mi?
 
     @Override
     public GetByIdPropertyResponse getById(int id) {
+
         Optional<Property> propertyOptional = this.propertyRepository.findById(id);
+
         this.propertyBusinessRules.propertyShouldBeExist(propertyOptional);
+        this.propertyBusinessRules.propertyShouldNotBeDeleted(propertyOptional);
+
         return this.propertyMapper.toGetByIdPropertyResponse(propertyOptional.get());
     }
 }

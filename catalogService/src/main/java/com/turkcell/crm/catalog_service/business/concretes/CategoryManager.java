@@ -41,7 +41,10 @@ public class CategoryManager implements CategoryService {
     public GetByIdCategoryResponse getById(int id) {
 
         Optional<Category> optionalCategory = this.categoryRepository.findById(id);
+
         this.categoryBusinessRules.categoryShouldBeExist(optionalCategory);
+        this.categoryBusinessRules.categoryShouldNotBeDeleted(optionalCategory);
+
         Category category = optionalCategory.get();
         return this.categoryMapper.toGetByIdCategoryResponse(category);
     }
@@ -49,7 +52,9 @@ public class CategoryManager implements CategoryService {
     @Override
     public UpdatedCategoryResponse update(int id, UpdateCategoryRequest updateCategoryRequest) {
         Optional<Category> optionalCategory = this.categoryRepository.findById(id);
+
         this.categoryBusinessRules.categoryShouldBeExist(optionalCategory);
+        this.categoryBusinessRules.categoryShouldNotBeDeleted(optionalCategory);
         this.categoryBusinessRules.categoryNameCannotBeDuplicatedWhenUpdated(id, updateCategoryRequest.name());
         Category category = optionalCategory.get();
 
@@ -61,7 +66,9 @@ public class CategoryManager implements CategoryService {
     @Override
     public DeletedCategoryResponse delete(int id) {
         Optional<Category> optionalCategory = this.categoryRepository.findById(id);
+
         this.categoryBusinessRules.categoryShouldBeExist(optionalCategory);
+        this.categoryBusinessRules.categoryShouldNotBeDeleted(optionalCategory);
 
         Category category = optionalCategory.get();
         category.setDeletedDate(LocalDateTime.now());

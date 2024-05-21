@@ -2,11 +2,12 @@ package com.turkcell.crm.catalog_service.business.dtos.responses.product_propert
 
 import java.time.LocalDateTime;
 
-public record CreatedProductPropertyResponse(
+public record GetByIdProductPropertyResponse(
         int id,
         int productId,
         int propertyId,
         LocalDateTime createdDate,
+        LocalDateTime updatedDate,
         String value
 ) {
 }

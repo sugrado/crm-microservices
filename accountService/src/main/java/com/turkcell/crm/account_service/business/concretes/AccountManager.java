@@ -11,6 +11,7 @@ import com.turkcell.crm.account_service.business.rules.AccountBusinessRules;
 import com.turkcell.crm.account_service.business.rules.AccountTypeBusinessRules;
 import com.turkcell.crm.account_service.data_access.abstracts.AccountRepository;
 import com.turkcell.crm.account_service.entities.concretes.Account;
+import com.turkcell.crm.account_service.entities.enums.Status;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -54,7 +55,9 @@ public class AccountManager implements AccountService {
     @Override
     public GetByIdAccountResponse getById(int id) {
         Optional<Account> accountOptional = this.accountRepository.findById(id);
+
         this.accountBusinessRules.accountShouldBeExist(accountOptional);
+        this.accountBusinessRules.accountShouldBeNotDeleted(accountOptional);
 
         return this.accountMapper.toGetByIdAccountResponse(accountOptional.get());
     }
@@ -62,7 +65,9 @@ public class AccountManager implements AccountService {
     @Override
     public UpdatedAccountResponse update(int id, UpdateAccountRequest updateAccountRequest) {
         Optional<Account> accountOptional = this.accountRepository.findById(id);
+
         this.accountBusinessRules.accountShouldBeExist(accountOptional);
+        this.accountBusinessRules.accountShouldBeNotDeleted(accountOptional);
         Account account = accountOptional.get();
 
         this.accountMapper.updateAccountFromRequest(updateAccountRequest,account);
@@ -77,10 +82,13 @@ public class AccountManager implements AccountService {
     @Override
     public DeleteAccountResponse delete(int id) {
         Optional<Account> accountOptional = this.accountRepository.findById(id);
+
         this.accountBusinessRules.accountShouldBeExist(accountOptional);
+        this.accountBusinessRules.accountShouldBeNotDeleted(accountOptional);
 
         Account deletedAccount = accountOptional.get();
         deletedAccount.setDeletedDate(LocalDateTime.now());
+        deletedAccount.setStatus(Status.PASSIVE);
 
         this.accountRepository.save(deletedAccount);
 

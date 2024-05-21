@@ -20,6 +20,7 @@ public interface ProductMapper {
     CreatedProductResponse toCreatedProductResponse(Product product);
 
     @Mapping(source = "category.id", target = "categoryId")
+    GetAllProductsResponse toGetAllProductResponse(Product product);
     List<GetAllProductsResponse> toGetAllProductsResponse(List<Product> products);
 
     @Mapping(source = "property.name", target = "propertyName")

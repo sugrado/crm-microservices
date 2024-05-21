@@ -3,6 +3,7 @@ package com.turkcell.crm.catalog_service.business.abstracts;
 import com.turkcell.crm.catalog_service.business.dtos.requests.product.CreateProductRequest;
 import com.turkcell.crm.catalog_service.business.dtos.requests.product.UpdateProductRequest;
 import com.turkcell.crm.catalog_service.business.dtos.responses.product.*;
+import com.turkcell.crm.catalog_service.entities.concretes.Product;
 
 import java.util.List;
 
@@ -16,4 +17,6 @@ public interface ProductService {
     UpdatedProductResponse update(int id, UpdateProductRequest updateProductRequest);
 
     DeletedProductResponse delete(int id);
+
+    Product getByIdForProductPropertyManager(int id);
 }
