@@ -76,4 +76,14 @@ public class CategoryManager implements CategoryService {
 
         return this.categoryMapper.toDeletedCategoryResponse(deletedCategory);
     }
+
+    @Override
+    public Category getByIdForProductManager(int id) {
+        Optional<Category> optionalCategory = this.categoryRepository.findById(id);
+
+        this.categoryBusinessRules.categoryShouldBeExist(optionalCategory);
+        this.categoryBusinessRules.categoryShouldNotBeDeleted(optionalCategory);
+
+        return optionalCategory.get();
+    }
 }

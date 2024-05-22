@@ -38,14 +38,12 @@ public interface ProductMapper {
 
     DeletedProductResponse toDeletedProductResponse(Product product);
 
-    @Mapping(target = "categoryId", source = "category.id")
-    @Mapping(target = "categoryName", source = "category.name")
-    @Mapping(target = "categoryDescription", source = "category.description")
+    @Mapping(target = "categoryId",source = "category.id")
+    @Mapping(target = "categoryName",source = "category.name")
     ProductCreatedEvent toProductCreatedEvent(Product product);
 
-    @Mapping(target = "categoryId", source = "category.id")
-    @Mapping(target = "categoryName", source = "category.name")
-    @Mapping(target = "categoryDescription", source = "category.description")
+    @Mapping(target = "categoryId",source = "category.id")
+    @Mapping(target = "categoryName",source = "category.name")
     ProductUpdatedEvent toProductUpdatedEvent(Product product);
 
     ProductDeletedEvent toProductDeletedEvent(Product product);
