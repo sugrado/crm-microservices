@@ -173,7 +173,7 @@ class IndividualCustomerManagerTest {
     }
 
     @Test
-    void getById_ShouldReturnIndividualCustomer() {
+    void getById_ShouldReturnIndividualCustomerForSpecificId() {
 
         int customerId = 1;
         GetByIdIndividualCustomerResponse getByIdIndividualCustomerResponse = new GetByIdIndividualCustomerResponse(
@@ -204,7 +204,7 @@ class IndividualCustomerManagerTest {
     }
 
     @Test
-    void update_ShouldUpdateIndividualCustomer() {
+    void update_ShouldUpdateIndividualCustomerForSpecificId() {
         int customerId = 1;
         UpdateCustomerRequest updateCustomerRequest = new UpdateCustomerRequest("test@test.com", "1234567891023");
         updateIndividualCustomerRequest = new UpdateIndividualCustomerRequest("Engin",
@@ -246,7 +246,7 @@ class IndividualCustomerManagerTest {
     }
 
     @Test
-    public void delete_ShouldDeleteIndividualCustomer() {
+    public void delete_ShouldDeleteIndividualCustomerForSpecificId() {
         int customerId = 1;
         individualCustomer.setId(customerId);
         individualCustomer.setDeletedDate(null);
