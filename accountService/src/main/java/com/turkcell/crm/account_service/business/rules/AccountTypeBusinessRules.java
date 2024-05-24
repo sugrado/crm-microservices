@@ -16,16 +16,22 @@ public class AccountTypeBusinessRules {
     private final MessageService messageService;
     private final AccountTypeRepository accountTypeRepository;
 
-    public void accountTypeShouldBeExist(int accountTypeId) {
-        Optional<AccountType> accountType = accountTypeRepository.findById(accountTypeId);
+    public void accountTypeShouldBeExist(Optional<AccountType> accountType) {
         if (accountType.isEmpty()) {
             throw new BusinessException(messageService.getMessage(Messages.AccountTypeMessages.NOT_FOUND));
         }
     }
 
-    public void accountTypeShouldBeExist(Optional<AccountType> accountType) {
-        if (accountType.isEmpty()) {
-            throw new BusinessException(messageService.getMessage(Messages.AccountTypeMessages.NOT_FOUND));
+    public void accountTypeNameCannotBeDuplicatedWhenInserted(String name) {
+        Optional<AccountType> optionalAccountType = this.accountTypeRepository.findByName(name);
+        if (optionalAccountType.isPresent()) {
+            throw new BusinessException(Messages.AccountTypeMessages.ALREADY_EXISTS);
+        }
+    }
+
+    public void accountTypeShouldBeNotDeleted(Optional<AccountType> accountType) {
+        if (accountType.get().getDeletedDate() != null) {
+            throw new BusinessException(messageService.getMessage(Messages.AccountTypeMessages.DELETED));
         }
     }
 }

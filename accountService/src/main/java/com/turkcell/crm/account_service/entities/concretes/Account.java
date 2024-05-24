@@ -1,6 +1,7 @@
 package com.turkcell.crm.account_service.entities.concretes;
 
 import com.turkcell.crm.account_service.core.entities.BaseEntity;
+import com.turkcell.crm.account_service.entities.enums.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,8 +18,8 @@ import java.util.List;
 @Table(name = "accounts")
 public class Account extends BaseEntity<Integer> {
     // TODO: videoya bakalım
-    @Column(name = "status")
-    private String status;
+    @Column(name = "status", nullable = false)
+    private Status status;
 
     @Column(name = "name")
     private String name;
@@ -30,7 +31,7 @@ public class Account extends BaseEntity<Integer> {
     private int customerId;
 
     @ManyToOne
-    @JoinColumn(name = "type_id")
+    @JoinColumn(name = "type_id", nullable = false)
     private AccountType type;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)

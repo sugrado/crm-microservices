@@ -2,10 +2,8 @@ package com.turkcell.crm.catalog_service.business.abstracts;
 
 
 import com.turkcell.crm.catalog_service.business.dtos.requests.property.CreatePropertyRequest;
-import com.turkcell.crm.catalog_service.business.dtos.responses.property.CreatedPropertyResponse;
-import com.turkcell.crm.catalog_service.business.dtos.responses.property.GetAllPropertiesByCategoryIdResponse;
-import com.turkcell.crm.catalog_service.business.dtos.responses.property.GetAllPropertiesResponse;
-import com.turkcell.crm.catalog_service.business.dtos.responses.property.GetByIdPropertyResponse;
+import com.turkcell.crm.catalog_service.business.dtos.responses.property.*;
+import com.turkcell.crm.catalog_service.entities.concretes.Property;
 
 import java.util.List;
 
@@ -17,4 +15,8 @@ public interface PropertyService {
     GetByIdPropertyResponse getById(int id);
 
     List<GetAllPropertiesResponse> getAll();
+
+    DeletePropertyResponse delete(int id);
+
+    Property getByIdForProductPropertyManager(int id);
 }

@@ -19,17 +19,17 @@ public class CustomerConsumer {
     @KafkaListener(topics = "customer-created", groupId = "customer.group")
     public void consume(CustomerCreatedEvent customerCreatedEvent) {
         Customer customer = customerMapper.toCustomer(customerCreatedEvent);
-        customerSearchService.add(customer);
+        this.customerSearchService.add(customer);
     }
 
     @KafkaListener(topics = "customer-updated", groupId = "customer.group")
     public void consume(CustomerUpdatedEvent customerUpdatedEvent) {
         Customer customer = customerMapper.toCustomer(customerUpdatedEvent);
-        customerSearchService.update(customer);
+        this.customerSearchService.update(customer);
     }
 
     @KafkaListener(topics = "customer-deleted", groupId = "customer.group")
     public void consume(CustomerDeletedEvent customerDeletedEvent) {
-        customerSearchService.delete(customerDeletedEvent.getId());
+        this.customerSearchService.delete(customerDeletedEvent.getId());
     }
 }

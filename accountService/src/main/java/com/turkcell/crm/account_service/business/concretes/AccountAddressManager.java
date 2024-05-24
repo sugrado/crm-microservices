@@ -5,6 +5,8 @@ import com.turkcell.crm.account_service.business.abstracts.AccountAddressService
 import com.turkcell.crm.account_service.business.dtos.requests.account_addresses.CreateAccountAddressRequest;
 import com.turkcell.crm.account_service.business.dtos.requests.accounts.AccountAddressDto;
 import com.turkcell.crm.account_service.business.dtos.responses.account_addresses.CreatedAccountAddressResponse;
+import com.turkcell.crm.account_service.business.dtos.responses.account_addresses.DeletedAcountAddressResponse;
+import com.turkcell.crm.account_service.business.dtos.responses.account_addresses.GetAllByAccountIdResponse;
 import com.turkcell.crm.account_service.business.mappers.AccountAddressMapper;
 import com.turkcell.crm.account_service.business.rules.AccountAddressBusinessRules;
 import com.turkcell.crm.account_service.business.rules.AccountBusinessRules;
@@ -16,7 +18,9 @@ import com.turkcell.crm.common.dtos.customers.GetValidatedCustomerAddressesReque
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,20 +28,21 @@ public class AccountAddressManager implements AccountAddressService {
     private final AccountAddressRepository accountAddressRepository;
     private final AccountAddressMapper accountAddressMapper;
     private final AccountAddressBusinessRules accountAddressBusinessRules;
-    private final AccountBusinessRules accountBusinessRules;
     private final CustomerClient customerClient;
+    //TODO: AccountService loop'a giriyor imiş. İlgilenilecek.
+    private final AccountBusinessRules accountBusinessRules;
 
     @Override
     public CreatedAccountAddressResponse add(int accountId, CreateAccountAddressRequest createAccountAddressRequest) {
-        accountBusinessRules.addressShouldBeExist(createAccountAddressRequest.addressId());
-        accountBusinessRules.accountShouldBeExist(accountId);
-        accountAddressBusinessRules.addressShouldNotBeExistInAccount(accountId, createAccountAddressRequest.addressId());
-        accountAddressBusinessRules.addressMustBelongToAccountOwner(accountId, createAccountAddressRequest.addressId());
+        this.accountAddressBusinessRules.addressShouldBeExist(createAccountAddressRequest.addressId());
+        this.accountBusinessRules.accountShouldBeExist(accountId);
+        this.accountAddressBusinessRules.addressShouldNotBeExistInAccount(accountId, createAccountAddressRequest.addressId());
+        this.accountAddressBusinessRules.addressMustBelongToAccountOwner(accountId, createAccountAddressRequest.addressId());
 
-        AccountAddress accountAddress = accountAddressMapper.toAccountAddress(createAccountAddressRequest);
+        AccountAddress accountAddress = this.accountAddressMapper.toAccountAddress(createAccountAddressRequest);
         accountAddress.setAccount(new Account(accountId));
-        accountAddressRepository.save(accountAddress);
-        return accountAddressMapper.toCreatedAccountAddressResponse(accountAddress);
+        this.accountAddressRepository.save(accountAddress);
+        return this.accountAddressMapper.toCreatedAccountAddressResponse(accountAddress);
     }
 
     @Override
@@ -66,5 +71,30 @@ public class AccountAddressManager implements AccountAddressService {
                 .toList();
 
         accountAddressRepository.saveAll(addressesToSave);
+    }
+
+    @Override
+    public DeletedAcountAddressResponse delete(int accountId, int addressId) {
+        accountBusinessRules.accountShouldBeExist(accountId);
+        accountAddressBusinessRules.addressShouldBeExist(addressId);
+        Optional<AccountAddress> optionalAccountAddress = this.accountAddressRepository.findByAccountIdAndAddressId(accountId, addressId);
+
+        this.accountAddressBusinessRules.accountAddressShouldBeExist(optionalAccountAddress);
+        AccountAddress accountAddressToDelete = optionalAccountAddress.get();
+        this.accountAddressBusinessRules.accountAddressShouldBeNotDeleted(accountAddressToDelete);
+
+        accountAddressToDelete.setDeletedDate(LocalDateTime.now());
+        AccountAddress deletedAccountAddress = this.accountAddressRepository.save(accountAddressToDelete);
+
+        return this.accountAddressMapper.toDeletedAcountAddressResponse(deletedAccountAddress);
+    }
+
+    @Override
+    public List<GetAllByAccountIdResponse> getAllByAccountId(int accountId) {
+        this.accountBusinessRules.accountShouldBeExist(accountId);
+
+        List<AccountAddress> accountAddressList = this.accountAddressRepository.findAllAccountAddressesByAccountId(accountId);
+
+        return this.accountAddressMapper.toGetAllByAccountIdResponse(accountAddressList);
     }
 }

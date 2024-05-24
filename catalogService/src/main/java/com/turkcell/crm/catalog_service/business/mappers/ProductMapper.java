@@ -7,6 +7,9 @@ import com.turkcell.crm.catalog_service.business.dtos.responses.product_property
 import com.turkcell.crm.catalog_service.core.utilities.mapping.MapstructService;
 import com.turkcell.crm.catalog_service.entities.concretes.Product;
 import com.turkcell.crm.catalog_service.entities.concretes.ProductProperty;
+import com.turkcell.crm.common.kafka.events.ProductCreatedEvent;
+import com.turkcell.crm.common.kafka.events.ProductDeletedEvent;
+import com.turkcell.crm.common.kafka.events.ProductUpdatedEvent;
 import org.mapstruct.*;
 
 import java.util.List;
@@ -20,6 +23,8 @@ public interface ProductMapper {
     CreatedProductResponse toCreatedProductResponse(Product product);
 
     @Mapping(source = "category.id", target = "categoryId")
+    GetAllProductsResponse toGetAllProductResponse(Product product);
+
     List<GetAllProductsResponse> toGetAllProductsResponse(List<Product> products);
 
     @Mapping(source = "property.name", target = "propertyName")
@@ -33,4 +38,14 @@ public interface ProductMapper {
     UpdatedProductResponse toUpdatedProductResponse(Product product);
 
     DeletedProductResponse toDeletedProductResponse(Product product);
+
+    @Mapping(target = "categoryId", source = "category.id")
+    @Mapping(target = "categoryName", source = "category.name")
+    ProductCreatedEvent toProductCreatedEvent(Product product);
+
+    @Mapping(target = "categoryId", source = "category.id")
+    @Mapping(target = "categoryName", source = "category.name")
+    ProductUpdatedEvent toProductUpdatedEvent(Product product);
+
+    ProductDeletedEvent toProductDeletedEvent(Product product);
 }

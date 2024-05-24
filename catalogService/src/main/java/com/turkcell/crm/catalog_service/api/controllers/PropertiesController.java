@@ -2,9 +2,7 @@ package com.turkcell.crm.catalog_service.api.controllers;
 
 import com.turkcell.crm.catalog_service.business.abstracts.PropertyService;
 import com.turkcell.crm.catalog_service.business.dtos.requests.property.CreatePropertyRequest;
-import com.turkcell.crm.catalog_service.business.dtos.responses.property.CreatedPropertyResponse;
-import com.turkcell.crm.catalog_service.business.dtos.responses.property.GetAllPropertiesByCategoryIdResponse;
-import com.turkcell.crm.catalog_service.business.dtos.responses.property.GetAllPropertiesResponse;
+import com.turkcell.crm.catalog_service.business.dtos.responses.property.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -31,5 +29,15 @@ public class PropertiesController {
     @PostMapping
     public CreatedPropertyResponse add(@Valid @RequestBody CreatePropertyRequest createPropertyRequest) {
         return this.propertyService.add(createPropertyRequest);
+    }
+
+    @GetMapping("{id}")
+    public GetByIdPropertyResponse getById(@PathVariable int id) {
+        return this.propertyService.getById(id);
+    }
+
+    @DeleteMapping("{id}")
+    public DeletePropertyResponse delete(@PathVariable int id) {
+        return this.propertyService.delete(id);
     }
 }
