@@ -34,18 +34,19 @@ public class AccountAddressBusinessRules {
             throw new BusinessException("Address is already exist in account");
         }
     }
+
     public void addressShouldBeExist(int addressId) {
         this.customerClient.checkIfAddressExists(addressId);
     }
 
-    public void accountAddressShouldBeExist(Optional<AccountAddress> accountAddress){
-        if (accountAddress.isEmpty()){
+    public void accountAddressShouldBeExist(Optional<AccountAddress> accountAddress) {
+        if (accountAddress.isEmpty()) {
             throw new NotFoundException(messageService.getMessage(Messages.AccountAddressMessages.NOT_FOUND));
         }
     }
 
-    public void accountAddressShouldBeNotDeleted(Optional<AccountAddress> accountAddress){
-        if(accountAddress.get().getDeletedDate() != null){
+    public void accountAddressShouldBeNotDeleted(Optional<AccountAddress> accountAddress) {
+        if (accountAddress.get().getDeletedDate() != null) {
             throw new BusinessException(messageService.getMessage(Messages.AccountAddressMessages.DELETED));
         }
     }

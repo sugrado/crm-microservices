@@ -4,9 +4,9 @@ import com.turkcell.crm.common.kafka.events.ProductCreatedEvent;
 import com.turkcell.crm.common.kafka.events.ProductDeletedEvent;
 import com.turkcell.crm.common.kafka.events.ProductUpdatedEvent;
 import lombok.RequiredArgsConstructor;
-import org.springframework.messaging.Message;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.KafkaHeaders;
+import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +16,7 @@ public class ProductProducer {
 
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
-    public void send(ProductCreatedEvent productCreatedEvent){
+    public void send(ProductCreatedEvent productCreatedEvent) {
 
         System.out.println("Product created event sent to Kafka: " + productCreatedEvent);
 
@@ -27,7 +27,7 @@ public class ProductProducer {
         kafkaTemplate.send(message);
     }
 
-    public void send(ProductUpdatedEvent productUpdatedEvent){
+    public void send(ProductUpdatedEvent productUpdatedEvent) {
 
         System.out.println("Product updated event sent to Kafka: " + productUpdatedEvent);
         Message<ProductUpdatedEvent> message = MessageBuilder.withPayload(productUpdatedEvent)
@@ -37,7 +37,7 @@ public class ProductProducer {
         kafkaTemplate.send(message);
     }
 
-    public void send(ProductDeletedEvent productDeletedEvent){
+    public void send(ProductDeletedEvent productDeletedEvent) {
 
         System.out.println("Product deleted event sent to Kafka: " + productDeletedEvent);
 

@@ -22,10 +22,11 @@ public interface AddressMapper {
 
     @Mapping(target = "cityId", source = "city.id")
     GetByIdAddressResponse toGetByIdAddressResponse(Address address);
+
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateAddressFromRequest(UpdateAddressRequest updateAddressRequest, @MappingTarget Address address);
 
-    @Mapping(target ="cityId",source = "city.id")
+    @Mapping(target = "cityId", source = "city.id")
     UpdatedAddressResponse toUpdateAddressResponse(Address address);
 
     @Mapping(target = "cityId", source = "city.id")

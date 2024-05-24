@@ -14,7 +14,8 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("account-service/api/v1/accounts/addresses")//Pathten accoun ıd kaldırıldı çünkü alttada olduğu için kızıyordu
+@RequestMapping("account-service/api/v1/accounts/addresses")
+//Pathten accoun ıd kaldırıldı çünkü alttada olduğu için kızıyordu
 public class AccountAddressesController {
     private final AccountAddressService accountAddressService;
 
@@ -25,12 +26,12 @@ public class AccountAddressesController {
     }
 
     @GetMapping("{accountId}")
-    public List<GetAllByAccountIdResponse> getAllByAccountId(@PathVariable int accountId){
+    public List<GetAllByAccountIdResponse> getAllByAccountId(@PathVariable int accountId) {
         return this.accountAddressService.getAllByAccountId(accountId);
     }
 
     @DeleteMapping("{id}")
-    public DeletedAcountAddressResponse delete(@PathVariable int id){
+    public DeletedAcountAddressResponse delete(@PathVariable int id) {
         return this.accountAddressService.delete(id);
     }
 }

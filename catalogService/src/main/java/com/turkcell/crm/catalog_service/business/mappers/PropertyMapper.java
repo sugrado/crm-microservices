@@ -17,6 +17,7 @@ public interface PropertyMapper {
 
     @Mapping(source = "category.id", target = "categoryId")
     CreatedPropertyResponse toCreatedPropertyResponse(Property property);
+
     @Mapping(source = "category.id", target = "categoryId")
     GetAllPropertiesResponse toGetAllPropertiesResponse(Property property);
 

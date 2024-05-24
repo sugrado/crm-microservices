@@ -8,9 +8,14 @@ import java.util.List;
 
 public interface AccountService {
     CreatedAccountResponse add(CreateAccountRequest createAccountRequest);
-    List<GetAllAccountsResponse>getAll();
+
+    List<GetAllAccountsResponse> getAll();
+
     GetByIdAccountResponse getById(int id);
+
     UpdatedAccountResponse update(int id, UpdateAccountRequest updateAccountRequest);
+
     DeleteAccountResponse delete(int id);
+
     List<GetAllByCustomerIdResponse> getAllByCustomerId(int customerId);
 }

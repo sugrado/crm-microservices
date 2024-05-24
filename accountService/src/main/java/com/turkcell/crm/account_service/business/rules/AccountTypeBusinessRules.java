@@ -21,14 +21,16 @@ public class AccountTypeBusinessRules {
             throw new BusinessException(messageService.getMessage(Messages.AccountTypeMessages.NOT_FOUND));
         }
     }
+
     public void accountTypeNameCannotBeDuplicatedWhenInserted(String name) {
         Optional<AccountType> optionalAccountType = this.accountTypeRepository.findByName(name);
         if (optionalAccountType.isPresent()) {
             throw new BusinessException(Messages.AccountTypeMessages.ALREADY_EXISTS);
         }
     }
-    public void accountTypeShouldBeNotDeleted(Optional<AccountType> accountType){
-        if(accountType.get().getDeletedDate() != null){
+
+    public void accountTypeShouldBeNotDeleted(Optional<AccountType> accountType) {
+        if (accountType.get().getDeletedDate() != null) {
             throw new BusinessException(messageService.getMessage(Messages.AccountTypeMessages.DELETED));
         }
     }

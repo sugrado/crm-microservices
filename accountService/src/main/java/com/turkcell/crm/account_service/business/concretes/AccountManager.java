@@ -8,7 +8,6 @@ import com.turkcell.crm.account_service.business.dtos.requests.accounts.UpdateAc
 import com.turkcell.crm.account_service.business.dtos.responses.accounts.*;
 import com.turkcell.crm.account_service.business.mappers.AccountMapper;
 import com.turkcell.crm.account_service.business.rules.AccountBusinessRules;
-import com.turkcell.crm.account_service.business.rules.AccountTypeBusinessRules;
 import com.turkcell.crm.account_service.data_access.abstracts.AccountRepository;
 import com.turkcell.crm.account_service.entities.concretes.Account;
 import com.turkcell.crm.account_service.entities.enums.Status;
@@ -70,7 +69,7 @@ public class AccountManager implements AccountService {
         this.accountBusinessRules.accountShouldBeNotDeleted(accountOptional);
         Account account = accountOptional.get();
 
-        this.accountMapper.updateAccountFromRequest(updateAccountRequest,account);
+        this.accountMapper.updateAccountFromRequest(updateAccountRequest, account);
 
         this.accountTypeService.getById(account.getType().getId());
 

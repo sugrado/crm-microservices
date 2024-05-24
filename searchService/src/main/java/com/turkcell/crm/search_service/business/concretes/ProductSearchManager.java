@@ -15,6 +15,7 @@ import java.util.List;
 public class ProductSearchManager implements ProductSearchService {
     private final ProductRepository productRepository;
     private final SearchService searchService;
+
     @Override
     public void add(Product product) {
         this.productRepository.save(product);

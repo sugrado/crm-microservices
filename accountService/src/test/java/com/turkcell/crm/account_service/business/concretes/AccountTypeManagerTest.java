@@ -1,7 +1,6 @@
 package com.turkcell.crm.account_service.business.concretes;
 
 import com.turkcell.crm.account_service.business.dtos.requests.account_types.CreateAccountTypeRequest;
-import com.turkcell.crm.account_service.business.dtos.responses.account_addresses.GetAllByAccountIdResponse;
 import com.turkcell.crm.account_service.business.dtos.responses.account_types.CreatedAccountTypeResponse;
 import com.turkcell.crm.account_service.business.dtos.responses.account_types.DeletedAccountTypeResponse;
 import com.turkcell.crm.account_service.business.dtos.responses.account_types.GetAllAccountTypeResponse;
@@ -130,7 +129,7 @@ class AccountTypeManagerTest {
         GetAllAccountTypeResponse getAllAccountTypeResponse1 = new GetAllAccountTypeResponse(1, LocalDateTime.now(), "Test2");
 
         List<AccountType> accountTypeList = Arrays.asList(accountType1, accountType2);
-        List<GetAllAccountTypeResponse> getAllAccountTypeResponseList = Arrays.asList(getAllAccountTypeResponse,getAllAccountTypeResponse1);
+        List<GetAllAccountTypeResponse> getAllAccountTypeResponseList = Arrays.asList(getAllAccountTypeResponse, getAllAccountTypeResponse1);
         when(accountTypeRepository.findAll()).thenReturn(accountTypeList);
         when(accountTypeMapper.toGetAllAccountTypeResponse(accountTypeList)).thenReturn(getAllAccountTypeResponseList);
 
