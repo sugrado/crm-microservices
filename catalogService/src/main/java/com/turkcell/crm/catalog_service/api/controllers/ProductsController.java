@@ -4,6 +4,7 @@ import com.turkcell.crm.catalog_service.business.abstracts.ProductService;
 import com.turkcell.crm.catalog_service.business.dtos.requests.product.CreateProductRequest;
 import com.turkcell.crm.catalog_service.business.dtos.requests.product.UpdateProductRequest;
 import com.turkcell.crm.catalog_service.business.dtos.responses.product.*;
+import com.turkcell.crm.catalog_service.business.dtos.responses.property.GetAllPropertiesByCategoryIdResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,12 @@ public class ProductsController {
     public CreatedProductResponse add(@Valid @RequestBody CreateProductRequest createProductRequest) {
         return this.productService.add(createProductRequest);
     }
+
+    @GetMapping("getAllByCategoryId/{categoryId}")
+    public List<GetAllProductsByCategoryIdResponse> getAllByCategoryId(@PathVariable int categoryId) {
+        return this.productService.getAllByCategoryId(categoryId);
+    }
+
 
     @GetMapping
     public List<GetAllProductsResponse> getAll() {

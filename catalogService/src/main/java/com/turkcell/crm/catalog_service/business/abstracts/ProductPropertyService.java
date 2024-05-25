@@ -11,7 +11,9 @@ public interface ProductPropertyService {
 
     List<GetAllProductPropertyResponse> getAll();
 
-    GetByIdProductPropertyResponse getById(int id);
+    public List<GetAllProductPropertiesByProductIdResponse> getAllByProductId(int productId);
+
+    GetByIdProductPropertyResponse getById(int productId, int id);
 
     UpdatedProductPropertyResponse update(int id, UpdateProductPropertyRequest updateProductPropertyRequest);
 

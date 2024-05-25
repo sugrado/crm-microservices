@@ -51,8 +51,18 @@ public class ProductPropertyManager implements ProductPropertyService {
     }
 
     @Override
-    public GetByIdProductPropertyResponse getById(int id) {
-        Optional<ProductProperty> optionalProductProperty = this.productPropertyRepository.findById(id);
+    public List<GetAllProductPropertiesByProductIdResponse> getAllByProductId(int productId) {
+
+        List<ProductProperty> productPropertiesProductId = this.productPropertyRepository.findAllByProductId(productId);
+
+        return this.productPropertyMapper.toGetAllProductPropertiesByProductIdResponse(productPropertiesProductId);
+    }
+
+
+
+    @Override
+    public GetByIdProductPropertyResponse getById(int productId, int id) {
+        Optional<ProductProperty> optionalProductProperty = this.productPropertyRepository.findByProductIdAndId(productId ,id);
 
         this.productPropertyBusinessRules.productPropertyShouldBeExists(optionalProductProperty);
         this.productPropertyBusinessRules.productPropertyShouldNotBeDeleted(optionalProductProperty);

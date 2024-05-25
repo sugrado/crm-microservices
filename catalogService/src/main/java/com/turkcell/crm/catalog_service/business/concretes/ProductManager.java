@@ -5,11 +5,13 @@ import com.turkcell.crm.catalog_service.business.abstracts.ProductService;
 import com.turkcell.crm.catalog_service.business.dtos.requests.product.CreateProductRequest;
 import com.turkcell.crm.catalog_service.business.dtos.requests.product.UpdateProductRequest;
 import com.turkcell.crm.catalog_service.business.dtos.responses.product.*;
+import com.turkcell.crm.catalog_service.business.dtos.responses.property.GetAllPropertiesByCategoryIdResponse;
 import com.turkcell.crm.catalog_service.business.mappers.ProductMapper;
 import com.turkcell.crm.catalog_service.business.rules.ProductBusinessRules;
 import com.turkcell.crm.catalog_service.data_access.abstracts.ProductRepository;
 import com.turkcell.crm.catalog_service.entities.concretes.Category;
 import com.turkcell.crm.catalog_service.entities.concretes.Product;
+import com.turkcell.crm.catalog_service.entities.concretes.Property;
 import com.turkcell.crm.catalog_service.kafka.producers.ProductProducer;
 import com.turkcell.crm.common.kafka.events.ProductCreatedEvent;
 import com.turkcell.crm.common.kafka.events.ProductDeletedEvent;
@@ -99,6 +101,14 @@ public class ProductManager implements ProductService {
         productProducer.send(productDeletedEvent);
 
         return this.productMapper.toDeletedProductResponse(deletedProduct);
+    }
+
+    @Override
+    public List<GetAllProductsByCategoryIdResponse> getAllByCategoryId(int categoryId) {
+
+        List<Product> propertyList = this.productRepository.findAllByCategoryId(categoryId);
+
+        return this.productMapper.toGetAllProductsByCategoryIdResponse(propertyList);
     }
 
     @Override
