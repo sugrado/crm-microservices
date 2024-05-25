@@ -35,6 +35,7 @@ public class AccountAddressBusinessRules {
         }
     }
 
+
     public void addressShouldBeExist(int addressId) {
         this.customerClient.checkIfAddressExists(addressId);
     }

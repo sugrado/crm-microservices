@@ -27,6 +27,11 @@ public interface ProductMapper {
 
     List<GetAllProductsResponse> toGetAllProductsResponse(List<Product> products);
 
+    @Mapping(source = "category.id", target = "categoryId")
+    GetAllProductsByCategoryIdResponse toGetAllProductsByCategoryIdResponse(Product products);
+
+    List<GetAllProductsByCategoryIdResponse> toGetAllProductsByCategoryIdResponse(List<Product> products);
+
     @Mapping(source = "property.name", target = "propertyName")
     ProductPropertyDto toProductPropertyDto(ProductProperty productProperty);
 

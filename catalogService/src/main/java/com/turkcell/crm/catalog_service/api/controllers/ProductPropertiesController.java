@@ -22,22 +22,22 @@ public class ProductPropertiesController {
     }
 
     @GetMapping
-    public List<GetAllProductPropertyResponse> getAll() {
-        return this.productPropertyService.getAll();
+    public List<GetAllProductPropertiesByProductIdResponse> getAllByProductId(@PathVariable int productId) {
+        return this.productPropertyService.getAllByProductId(productId);
     }
 
     @GetMapping("{id}")
-    public GetByIdProductPropertyResponse geyById(@PathVariable int id) {
-        return this.productPropertyService.getById(id);
+    public GetByIdProductPropertyResponse geyById(@PathVariable int productId, @PathVariable int id) {
+        return this.productPropertyService.getById(productId, id);
     }
 
     @PatchMapping("{id}")
-    public UpdatedProductPropertyResponse update(@PathVariable int id, @Valid @RequestBody UpdateProductPropertyRequest updateProductPropertyRequest) {
+    public UpdatedProductPropertyResponse update(@PathVariable int productId, @PathVariable int id, @Valid @RequestBody UpdateProductPropertyRequest updateProductPropertyRequest) {
         return this.productPropertyService.update(id, updateProductPropertyRequest);
     }
 
     @DeleteMapping("{id}")
-    public DeletedProductPropertyResponse delete(@PathVariable int id) {
+    public DeletedProductPropertyResponse delete(@PathVariable int id, int productId) {
         return this.productPropertyService.delete(id);
     }
 }

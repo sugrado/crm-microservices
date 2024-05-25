@@ -32,6 +32,13 @@ public interface ProductPropertyMapper {
 
     List<GetAllProductPropertyResponse> toGetAllProductPropertyResponse(List<ProductProperty> productProperties);
 
+
+    @Mapping(source = "property.id", target = "propertyId")
+    @Mapping(source = "product.id", target = "productId")
+    GetAllProductPropertiesByProductIdResponse toGetAllProductPropertiesByProductIdResponse(ProductProperty productProperty);
+
+    List<GetAllProductPropertiesByProductIdResponse> toGetAllProductPropertiesByProductIdResponse(List<ProductProperty> productProperties);
+
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateProductPropertyFromRequest(UpdateProductPropertyRequest updateProductPropertyRequest, @MappingTarget ProductProperty productProperty);
 

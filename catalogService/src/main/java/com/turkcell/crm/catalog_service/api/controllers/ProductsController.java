@@ -21,6 +21,12 @@ public class ProductsController {
         return this.productService.add(createProductRequest);
     }
 
+    @GetMapping("getAllByCategoryId/{categoryId}")
+    public List<GetAllProductsByCategoryIdResponse> getAllByCategoryId(@PathVariable int categoryId) {
+        return this.productService.getAllByCategoryId(categoryId);
+    }
+
+
     @GetMapping
     public List<GetAllProductsResponse> getAll() {
         return this.productService.getAll();

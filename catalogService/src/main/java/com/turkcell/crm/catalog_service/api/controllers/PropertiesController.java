@@ -16,7 +16,7 @@ public class PropertiesController {
 
     private final PropertyService propertyService;
 
-    @GetMapping("{categoryId}")
+    @GetMapping("getAllByCategoryId/{categoryId}")
     public List<GetAllPropertiesByCategoryIdResponse> getAllByCategoryId(@PathVariable int categoryId) {
         return this.propertyService.getAllByCategoryId(categoryId);
     }

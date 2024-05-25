@@ -101,6 +101,14 @@ public class ProductManager implements ProductService {
     }
 
     @Override
+    public List<GetAllProductsByCategoryIdResponse> getAllByCategoryId(int categoryId) {
+
+        List<Product> propertyList = this.productRepository.findAllByCategoryId(categoryId);
+
+        return this.productMapper.toGetAllProductsByCategoryIdResponse(propertyList);
+    }
+
+    @Override
     public Product getByIdForProductPropertyManager(int id) {
         Optional<Product> optionalProduct = this.productRepository.findById(id);
 

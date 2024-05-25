@@ -12,6 +12,8 @@ public interface ProductService {
 
     List<GetAllProductsResponse> getAll();
 
+    public List<GetAllProductsByCategoryIdResponse> getAllByCategoryId(int categoryId);
+
     GetByIdProductResponse getById(int id);
 
     UpdatedProductResponse update(int id, UpdateProductRequest updateProductRequest);
