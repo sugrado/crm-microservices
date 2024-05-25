@@ -41,8 +41,8 @@ public class AccountAddressManager implements AccountAddressService {
 
         AccountAddress accountAddress = this.accountAddressMapper.toAccountAddress(createAccountAddressRequest);
         accountAddress.setAccount(new Account(accountId));
-        this.accountAddressRepository.save(accountAddress);
-        return this.accountAddressMapper.toCreatedAccountAddressResponse(accountAddress);
+        AccountAddress createdAccount = this.accountAddressRepository.save(accountAddress);
+        return this.accountAddressMapper.toCreatedAccountAddressResponse(createdAccount);
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.turkcell.crm.account_service.core.business.abstracts.MessageService;
 import com.turkcell.crm.account_service.data_access.abstracts.AccountTypeRepository;
 import com.turkcell.crm.account_service.entities.concretes.AccountType;
 import com.turkcell.crm.common.exceptions.types.BusinessException;
+import com.turkcell.crm.common.exceptions.types.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,7 @@ public class AccountTypeBusinessRules {
 
     public void accountTypeShouldBeExist(Optional<AccountType> accountType) {
         if (accountType.isEmpty()) {
-            throw new BusinessException(messageService.getMessage(Messages.AccountTypeMessages.NOT_FOUND));
+            throw new NotFoundException(messageService.getMessage(Messages.AccountTypeMessages.NOT_FOUND));
         }
     }
 
