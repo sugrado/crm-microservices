@@ -60,8 +60,8 @@ public class ProductPropertyManager implements ProductPropertyService {
 
 
     @Override
-    public GetByIdProductPropertyResponse getById(int productId, int id) {
-        Optional<ProductProperty> optionalProductProperty = this.productPropertyRepository.findByProductIdAndId(productId, id);
+    public GetByIdProductPropertyResponse getById(int productId, int propertyId) {
+        Optional<ProductProperty> optionalProductProperty = this.productPropertyRepository.findByProductIdAndPropertyId(productId, propertyId);
 
         this.productPropertyBusinessRules.productPropertyShouldBeExists(optionalProductProperty);
         this.productPropertyBusinessRules.productPropertyShouldNotBeDeleted(optionalProductProperty);
@@ -70,8 +70,8 @@ public class ProductPropertyManager implements ProductPropertyService {
     }
 
     @Override
-    public UpdatedProductPropertyResponse update(int id, UpdateProductPropertyRequest updateProductPropertyRequest) {
-        Optional<ProductProperty> optionalProductProperty = this.productPropertyRepository.findById(id);
+    public UpdatedProductPropertyResponse update(int productId, int propertyId, UpdateProductPropertyRequest updateProductPropertyRequest) {
+        Optional<ProductProperty> optionalProductProperty = this.productPropertyRepository.findByProductIdAndPropertyId(productId, propertyId);
 
         this.productPropertyBusinessRules.productPropertyShouldBeExists(optionalProductProperty);
         this.productPropertyBusinessRules.productPropertyShouldNotBeDeleted(optionalProductProperty);
@@ -80,14 +80,14 @@ public class ProductPropertyManager implements ProductPropertyService {
 
         this.productPropertyMapper.updateProductPropertyFromRequest(updateProductPropertyRequest, productProperty);
 
-        ProductProperty updatedProductPorperty = this.productPropertyRepository.save(productProperty);
+        ProductProperty updatedProductProperty = this.productPropertyRepository.save(productProperty);
 
-        return this.productPropertyMapper.toUpdatedProductPropertyResponse(updatedProductPorperty);
+        return this.productPropertyMapper.toUpdatedProductPropertyResponse(updatedProductProperty);
     }
 
     @Override
-    public DeletedProductPropertyResponse delete(int id) {
-        Optional<ProductProperty> optionalProductProperty = this.productPropertyRepository.findById(id);
+    public DeletedProductPropertyResponse delete(int productId, int propertyId) {
+        Optional<ProductProperty> optionalProductProperty = this.productPropertyRepository.findByProductIdAndPropertyId(productId, propertyId);
 
         this.productPropertyBusinessRules.productPropertyShouldBeExists(optionalProductProperty);
         this.productPropertyBusinessRules.productPropertyShouldNotBeDeleted(optionalProductProperty);

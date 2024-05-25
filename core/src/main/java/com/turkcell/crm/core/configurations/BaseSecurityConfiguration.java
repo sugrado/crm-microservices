@@ -15,6 +15,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class BaseSecurityConfiguration {
     private final JwtAuthFilter jwtAuthFilter;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     private final SecurityService securityService;
 
     @Bean
@@ -22,6 +24,7 @@ public class BaseSecurityConfiguration {
         http.csrf(AbstractHttpConfigurer::disable);
         securityService.configureSecurity(http);
         http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+        http.exceptionHandling(ex -> ex.authenticationEntryPoint(customAuthenticationEntryPoint).accessDeniedHandler(customAccessDeniedHandler));
         return http.build();
     }
 }

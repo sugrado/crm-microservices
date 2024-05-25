@@ -15,8 +15,7 @@ public interface ProductPropertyService {
 
     GetByIdProductPropertyResponse getById(int productId, int id);
 
-    UpdatedProductPropertyResponse update(int id, UpdateProductPropertyRequest updateProductPropertyRequest);
+    UpdatedProductPropertyResponse update(int productId, int propertyId, UpdateProductPropertyRequest updateProductPropertyRequest);
 
-    DeletedProductPropertyResponse delete(int id);
-
+    DeletedProductPropertyResponse delete(int productId, int propertyId);
 }

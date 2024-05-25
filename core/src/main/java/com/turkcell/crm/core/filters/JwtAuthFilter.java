@@ -1,5 +1,7 @@
 package com.turkcell.crm.core.filters;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.turkcell.crm.core.responses.SecurityResponse;
 import com.turkcell.crm.core.services.JwtService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
@@ -23,38 +25,51 @@ import java.util.List;
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
+    private final ObjectMapper objectMapper;
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain)
             throws ServletException, IOException {
-        String jwtHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (jwtHeader == null || !jwtHeader.startsWith("Bearer ")) {
+        try {
+            String jwtHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+            if (jwtHeader == null || !jwtHeader.startsWith("Bearer ")) {
+                filterChain.doFilter(request, response);
+                return;
+            }
+
+            String jwt = jwtHeader.substring(7);
+            if (Boolean.FALSE.equals(jwtService.validateToken(jwt))) {
+                filterChain.doFilter(request, response);
+                return;
+            }
+
+            List<String> roles = jwtService.extractRoles(jwt);
+
+            List<SimpleGrantedAuthority> authorities = roles.stream()
+                    .map(SimpleGrantedAuthority::new)
+                    .toList();
+
+            Claims claims = jwtService.getClaims(jwt);
+            String username = claims.getSubject();
+
+            UsernamePasswordAuthenticationToken authenticationToken =
+                    new UsernamePasswordAuthenticationToken(username, null, authorities);
+            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+
             filterChain.doFilter(request, response);
-            return;
+        } catch (Exception ex) {
+            SecurityResponse securityResponse = new SecurityResponse(
+                    "Authentication Error",
+                    "Invalid token or token expired",
+                    "401",
+                    "http://mydomain.com/exceptions/authentication"
+            );
+            response.setContentType("application/json");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write(objectMapper.writeValueAsString(securityResponse));
         }
-
-        String jwt = jwtHeader.substring(7);
-        if (Boolean.FALSE.equals(jwtService.validateToken(jwt))) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
-        List<String> roles = jwtService.extractRoles(jwt);
-
-        List<SimpleGrantedAuthority> authorities = roles.stream()
-                .map(SimpleGrantedAuthority::new)
-                .toList();
-
-        Claims claims = jwtService.getClaims(jwt);
-        String username = claims.getSubject();
-
-        UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(username, null, authorities);
-        authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-
-        filterChain.doFilter(request, response);
     }
 }
