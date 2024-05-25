@@ -17,7 +17,7 @@ public class Messages {
         public static final String NOT_FOUND = "productPropertyNotFound";
         public static final String DELETED = "productPropertyIsDeleted";
 
-        public static final String PRODUCT_AND_PROPERTY_CATEGORY_ID_SHOULD_BE_MATCH ="productAndPropertyCategoryIdShouldBeMatch";
+        public static final String PRODUCT_AND_PROPERTY_CATEGORY_ID_SHOULD_BE_MATCH = "productAndPropertyCategoryIdShouldBeMatch";
     }
 
     public static class CategoryMessages {

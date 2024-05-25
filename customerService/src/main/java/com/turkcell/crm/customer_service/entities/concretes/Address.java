@@ -28,10 +28,10 @@ public class Address extends BaseEntity<Integer> {
     private boolean defaultAddress;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id",nullable = false)
+    @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 
     @ManyToOne
-    @JoinColumn(name = "city_id",nullable = false)
+    @JoinColumn(name = "city_id", nullable = false)
     private City city;
 }

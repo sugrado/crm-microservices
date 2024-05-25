@@ -1,6 +1,5 @@
 package com.turkcell.crm.customer_service.business.rules;
 
-import com.turkcell.crm.common.exceptions.types.BusinessException;
 import com.turkcell.crm.common.exceptions.types.NotFoundException;
 import com.turkcell.crm.customer_service.business.constants.messages.Messages;
 import com.turkcell.crm.customer_service.core.business.abstracts.MessageService;
@@ -18,7 +17,7 @@ public class CityBusinessRules {
     private final CityRepository cityRepository;
 
     public void cityShouldBeExist(Optional<City> city) {
-        if (city.isEmpty()){
+        if (city.isEmpty()) {
             throw new NotFoundException(messageService.getMessage(Messages.CityMessages.NOT_FOUND));
         }
     }

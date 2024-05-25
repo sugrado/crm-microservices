@@ -9,9 +9,9 @@ import org.mapstruct.Mapping;
 
 @Mapper(config = MapstructService.class)
 public interface ProductMapper {
-    @Mapping(source = "title",target = "productName")
+    @Mapping(source = "title", target = "productName")
     Product toProduct(ProductCreatedEvent productCreatedEvent);
 
-    @Mapping(source = "title",target = "productName")
+    @Mapping(source = "title", target = "productName")
     Product toProduct(ProductUpdatedEvent productUpdatedEvent);
 }

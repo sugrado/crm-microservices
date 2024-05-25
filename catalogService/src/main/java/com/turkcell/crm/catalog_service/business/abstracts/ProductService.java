@@ -3,7 +3,6 @@ package com.turkcell.crm.catalog_service.business.abstracts;
 import com.turkcell.crm.catalog_service.business.dtos.requests.product.CreateProductRequest;
 import com.turkcell.crm.catalog_service.business.dtos.requests.product.UpdateProductRequest;
 import com.turkcell.crm.catalog_service.business.dtos.responses.product.*;
-import com.turkcell.crm.catalog_service.business.dtos.responses.property.GetAllPropertiesByCategoryIdResponse;
 import com.turkcell.crm.catalog_service.entities.concretes.Product;
 
 import java.util.List;

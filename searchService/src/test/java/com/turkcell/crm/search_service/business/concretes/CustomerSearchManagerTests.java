@@ -1,6 +1,5 @@
 package com.turkcell.crm.search_service.business.concretes;
 
-import com.turkcell.crm.search_service.business.concretes.CustomerSearchManager;
 import com.turkcell.crm.search_service.core.services.search.SearchService;
 import com.turkcell.crm.search_service.core.services.search.enums.FilterOperator;
 import com.turkcell.crm.search_service.core.services.search.enums.SortDirection;
@@ -18,7 +17,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;

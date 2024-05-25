@@ -27,12 +27,13 @@ public class PropertyBusinessRules {
     public void propertyCanNotDuplicated(CreatePropertyRequest request) {
         Optional<Property> optionalProperty = this.propertyRepository.findByNameAndCategoryId(request.name(), request.categoryId());
 
-        if (optionalProperty.isPresent()){
+        if (optionalProperty.isPresent()) {
             throw new BusinessException(messageService.getMessage(Messages.PropertyMessages.ALREADY_EXISTS));
         }
     }
-    public void propertyShouldNotBeDeleted(Optional<Property> property){
-        if(property.get().getDeletedDate() != null){
+
+    public void propertyShouldNotBeDeleted(Optional<Property> property) {
+        if (property.get().getDeletedDate() != null) {
             throw new BusinessException(messageService.getMessage(Messages.PropertyMessages.DELETED));
         }
     }

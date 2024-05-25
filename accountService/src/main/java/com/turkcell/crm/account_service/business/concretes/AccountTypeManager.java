@@ -2,7 +2,6 @@ package com.turkcell.crm.account_service.business.concretes;
 
 import com.turkcell.crm.account_service.business.abstracts.AccountTypeService;
 import com.turkcell.crm.account_service.business.dtos.requests.account_types.CreateAccountTypeRequest;
-import com.turkcell.crm.account_service.business.dtos.responses.account_addresses.GetAllByAccountIdResponse;
 import com.turkcell.crm.account_service.business.dtos.responses.account_types.CreatedAccountTypeResponse;
 import com.turkcell.crm.account_service.business.dtos.responses.account_types.DeletedAccountTypeResponse;
 import com.turkcell.crm.account_service.business.dtos.responses.account_types.GetAllAccountTypeResponse;

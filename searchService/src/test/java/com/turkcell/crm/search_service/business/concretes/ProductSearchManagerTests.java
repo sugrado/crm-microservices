@@ -8,7 +8,6 @@ import com.turkcell.crm.search_service.core.services.search.models.DynamicQuery;
 import com.turkcell.crm.search_service.core.services.search.models.DynamicSort;
 import com.turkcell.crm.search_service.data_access.abstracts.ProductRepository;
 import com.turkcell.crm.search_service.entities.concretes.Product;
-import com.turkcell.crm.search_service.entities.concretes.Product;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

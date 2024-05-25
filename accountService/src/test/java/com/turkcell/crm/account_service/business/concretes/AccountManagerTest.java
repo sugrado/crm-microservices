@@ -20,7 +20,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -52,7 +54,7 @@ class AccountManagerTest {
     }
 
     void add_ShouldCreateAccountAndReturnCreatedAccountResponse() {
-        AccountAddressDto accountAddressDto=new AccountAddressDto(1);
+        AccountAddressDto accountAddressDto = new AccountAddressDto(1);
         List<AccountAddressDto> accountAddressDtoList = Arrays.asList(accountAddressDto);
         // Prepare
         CreateAccountRequest createAccountRequest = new CreateAccountRequest(
@@ -93,11 +95,11 @@ class AccountManagerTest {
 
     @Test
     void add_ShouldCreateAccountAndAddAddressesWhenAddressesAreNotEmpty() {
-        AccountAddressDto accountAddressDto=new AccountAddressDto(1);
+        AccountAddressDto accountAddressDto = new AccountAddressDto(1);
         List<AccountAddressDto> accountAddressDtoList = Arrays.asList(accountAddressDto);
         // Prepare
         CreateAccountRequest createAccountRequest = new CreateAccountRequest(
-                 Status.ACTIVE,
+                Status.ACTIVE,
                 "Test",
                 "123456",
                 1,
@@ -141,12 +143,12 @@ class AccountManagerTest {
         account.setId(1);
         Account account1 = new Account();
         account1.setId(2);
-        List<Account> accountList = Arrays.asList(account,account1);
+        List<Account> accountList = Arrays.asList(account, account1);
         when(accountRepository.findAll()).thenReturn(accountList);
 
-        GetAllAccountsResponse getAllAccountsResponse = new GetAllAccountsResponse(1, LocalDateTime.now(), LocalDateTime.now(),Status.ACTIVE, "Test","123456",1,1);
-        GetAllAccountsResponse getAllAccountsResponse1 = new GetAllAccountsResponse(2, LocalDateTime.now(), LocalDateTime.now(),Status.ACTIVE, "Test","123456",2,2);
-        List<GetAllAccountsResponse> getAllAccountsResponseList = Arrays.asList(getAllAccountsResponse,getAllAccountsResponse1);
+        GetAllAccountsResponse getAllAccountsResponse = new GetAllAccountsResponse(1, LocalDateTime.now(), LocalDateTime.now(), Status.ACTIVE, "Test", "123456", 1, 1);
+        GetAllAccountsResponse getAllAccountsResponse1 = new GetAllAccountsResponse(2, LocalDateTime.now(), LocalDateTime.now(), Status.ACTIVE, "Test", "123456", 2, 2);
+        List<GetAllAccountsResponse> getAllAccountsResponseList = Arrays.asList(getAllAccountsResponse, getAllAccountsResponse1);
 
         when(accountMapper.toGetAllAccountsResponse(accountList)).thenReturn(getAllAccountsResponseList);
 
@@ -156,8 +158,8 @@ class AccountManagerTest {
         // Verify
         assertNotNull(response);
         assertEquals(accountList.size(), response.size());
-        assertEquals(accountList.get(0).getId(),response.get(0).id());
-        assertEquals(accountList.get(1).getId(),response.get(1).id());
+        assertEquals(accountList.get(0).getId(), response.get(0).id());
+        assertEquals(accountList.get(1).getId(), response.get(1).id());
     }
 
     @Test
@@ -282,12 +284,12 @@ class AccountManagerTest {
         account.setId(1);
         Account account1 = new Account();
         account1.setId(2);
-        List<Account> accountList = Arrays.asList(account,account1);
+        List<Account> accountList = Arrays.asList(account, account1);
         when(accountRepository.findAllByCustomerId(customerId)).thenReturn(accountList);
 
-        GetAllByCustomerIdResponse getAllByCustomerIdResponse = new GetAllByCustomerIdResponse(1,Status.ACTIVE, "Test","123456",1);
-        GetAllByCustomerIdResponse getAllByCustomerIdResponse1 = new GetAllByCustomerIdResponse(2,Status.ACTIVE, "Test","123456",2);
-        List<GetAllByCustomerIdResponse> getAllByCustomerIdResponseList = Arrays.asList(getAllByCustomerIdResponse,getAllByCustomerIdResponse1);
+        GetAllByCustomerIdResponse getAllByCustomerIdResponse = new GetAllByCustomerIdResponse(1, Status.ACTIVE, "Test", "123456", 1);
+        GetAllByCustomerIdResponse getAllByCustomerIdResponse1 = new GetAllByCustomerIdResponse(2, Status.ACTIVE, "Test", "123456", 2);
+        List<GetAllByCustomerIdResponse> getAllByCustomerIdResponseList = Arrays.asList(getAllByCustomerIdResponse, getAllByCustomerIdResponse1);
 
         when(accountMapper.toGetAllByCustomerIdResponse(accountList)).thenReturn(getAllByCustomerIdResponseList);
 
@@ -299,7 +301,7 @@ class AccountManagerTest {
 
         assertNotNull(response);
         assertEquals(accountList.size(), response.size());
-        assertEquals(accountList.get(0).getId(),response.get(0).id());
-        assertEquals(accountList.get(1).getId() ,response.get(1).id());
+        assertEquals(accountList.get(0).getId(), response.get(0).id());
+        assertEquals(accountList.get(1).getId(), response.get(1).id());
     }
 }

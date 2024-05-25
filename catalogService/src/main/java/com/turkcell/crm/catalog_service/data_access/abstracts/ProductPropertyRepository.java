@@ -8,8 +8,11 @@ import java.util.Optional;
 
 public interface ProductPropertyRepository extends JpaRepository<ProductProperty, Integer> {
     boolean existsByProductIdAndPropertyId(int productId, int propertyId);
+
     List<ProductProperty> findAllByProductId(int productId);
+
     Optional<ProductProperty> findByProductIdAndId(int productId, int id);
+
     List<ProductProperty> findByPropertyIdAndProductId(int propertyId, int productId);
 
 }

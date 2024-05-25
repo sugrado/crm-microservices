@@ -18,7 +18,7 @@ import java.util.List;
 @Table(name = "accounts")
 public class Account extends BaseEntity<Integer> {
     // TODO: videoya bakalım
-    @Column(name = "status",nullable = false)
+    @Column(name = "status", nullable = false)
     private Status status;
 
     @Column(name = "name")
@@ -31,7 +31,7 @@ public class Account extends BaseEntity<Integer> {
     private int customerId;
 
     @ManyToOne
-    @JoinColumn(name = "type_id",nullable = false)
+    @JoinColumn(name = "type_id", nullable = false)
     private AccountType type;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)

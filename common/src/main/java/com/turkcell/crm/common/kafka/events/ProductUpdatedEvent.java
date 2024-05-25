@@ -1,7 +1,5 @@
 package com.turkcell.crm.common.kafka.events;
 
-import java.time.LocalDateTime;
-
 public class ProductUpdatedEvent {
     private int id;
     String title;
@@ -15,7 +13,7 @@ public class ProductUpdatedEvent {
         this.categoryName = categoryName;
     }
 
-    public ProductUpdatedEvent(){
+    public ProductUpdatedEvent() {
 
     }
 

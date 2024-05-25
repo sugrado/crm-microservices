@@ -1,7 +1,6 @@
 package com.turkcell.crm.account_service.business.mappers;
 
 import com.turkcell.crm.account_service.business.dtos.requests.account_types.CreateAccountTypeRequest;
-import com.turkcell.crm.account_service.business.dtos.responses.account_addresses.GetAllByAccountIdResponse;
 import com.turkcell.crm.account_service.business.dtos.responses.account_types.CreatedAccountTypeResponse;
 import com.turkcell.crm.account_service.business.dtos.responses.account_types.DeletedAccountTypeResponse;
 import com.turkcell.crm.account_service.business.dtos.responses.account_types.GetAllAccountTypeResponse;
@@ -22,7 +21,7 @@ public interface AccountTypeMapper {
 
     DeletedAccountTypeResponse toDeletedAccountTypeResponse(AccountType accountType);
 
-    GetAllAccountTypeResponse toGetAllAccountTypeResponse (AccountType accountType);
+    GetAllAccountTypeResponse toGetAllAccountTypeResponse(AccountType accountType);
 
-    List<GetAllAccountTypeResponse> toGetAllAccountTypeResponse (List<AccountType> accountTypeList);
+    List<GetAllAccountTypeResponse> toGetAllAccountTypeResponse(List<AccountType> accountTypeList);
 }

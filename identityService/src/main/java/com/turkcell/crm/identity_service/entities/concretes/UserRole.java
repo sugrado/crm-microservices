@@ -18,10 +18,10 @@ import lombok.Setter;
 @Table(name = "user_roles")
 public class UserRole extends BaseEntity<Integer> {
     @ManyToOne
-    @JoinColumn(name = "user_id",nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "role_id",nullable = false)
+    @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 }

@@ -4,7 +4,6 @@ import com.turkcell.crm.catalog_service.business.constants.messages.Messages;
 import com.turkcell.crm.catalog_service.core.business.abstracts.MessageService;
 import com.turkcell.crm.catalog_service.data_access.abstracts.CategoryRepository;
 import com.turkcell.crm.catalog_service.entities.concretes.Category;
-import com.turkcell.crm.catalog_service.entities.concretes.Property;
 import com.turkcell.crm.common.exceptions.types.BusinessException;
 import com.turkcell.crm.common.exceptions.types.NotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -38,8 +37,9 @@ public class CategoryBusinessRules {
             throw new BusinessException(messageService.getMessage(Messages.CategoryMessages.ALREADY_EXISTS));
         }
     }
-    public void categoryShouldNotBeDeleted(Optional<Category> category){
-        if(category.get().getDeletedDate() != null){
+
+    public void categoryShouldNotBeDeleted(Optional<Category> category) {
+        if (category.get().getDeletedDate() != null) {
             throw new BusinessException(messageService.getMessage(Messages.CategoryMessages.DELETED));
         }
     }

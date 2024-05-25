@@ -7,13 +7,12 @@ import com.turkcell.crm.account_service.business.dtos.responses.account_addresse
 import com.turkcell.crm.account_service.business.dtos.responses.account_addresses.DeletedAcountAddressResponse;
 import com.turkcell.crm.account_service.business.dtos.responses.account_addresses.GetAllByAccountIdResponse;
 import com.turkcell.crm.account_service.business.mappers.AccountAddressMapper;
+import com.turkcell.crm.account_service.business.rules.AccountAddressBusinessRules;
+import com.turkcell.crm.account_service.business.rules.AccountBusinessRules;
 import com.turkcell.crm.account_service.data_access.abstracts.AccountAddressRepository;
 import com.turkcell.crm.account_service.entities.concretes.Account;
 import com.turkcell.crm.account_service.entities.concretes.AccountAddress;
 import com.turkcell.crm.common.dtos.customers.GetValidatedCustomerAddressesListItemDto;
-import com.turkcell.crm.common.dtos.customers.GetValidatedCustomerAddressesRequest;
-import com.turkcell.crm.account_service.business.rules.AccountAddressBusinessRules;
-import com.turkcell.crm.account_service.business.rules.AccountBusinessRules;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

@@ -20,11 +20,12 @@ public interface AccountAddressMapper {
 
     @Mapping(target = "accountId", source = "account.id")
     CreatedAccountAddressResponse toCreatedAccountAddressResponse(AccountAddress accountAddress);
+
     @Mapping(target = "accountId", source = "account.id")
-    DeletedAcountAddressResponse toDeletedAcountAddressResponse (AccountAddress accountAddress);
+    DeletedAcountAddressResponse toDeletedAcountAddressResponse(AccountAddress accountAddress);
 
-    @Mapping(target = "accountId",source = "account.id")
-    GetAllByAccountIdResponse toGetAllByAccountIdResponse (AccountAddress accountAddress);
+    @Mapping(target = "accountId", source = "account.id")
+    GetAllByAccountIdResponse toGetAllByAccountIdResponse(AccountAddress accountAddress);
 
-    List<GetAllByAccountIdResponse> toGetAllByAccountIdResponse (List<AccountAddress> accountAddressList);
+    List<GetAllByAccountIdResponse> toGetAllByAccountIdResponse(List<AccountAddress> accountAddressList);
 }

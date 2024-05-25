@@ -19,6 +19,7 @@ public interface AccountMapper {
 
     @Mapping(target = "typeId", source = "type.id")
     GetByIdAccountResponse toGetByIdAccountResponse(Account account);
+
     @Mapping(target = "typeId", source = "type.id")
     GetAllAccountsResponse toGetAllAccountsResponse(Account account);
 

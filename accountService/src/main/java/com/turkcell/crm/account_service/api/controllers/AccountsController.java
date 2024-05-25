@@ -24,27 +24,27 @@ public class AccountsController {
     }
 
     @GetMapping
-    public List<GetAllAccountsResponse> getAll(){
+    public List<GetAllAccountsResponse> getAll() {
         return this.accountService.getAll();
     }
 
     @GetMapping("{id}")
-    public GetByIdAccountResponse getById(@PathVariable int id){
+    public GetByIdAccountResponse getById(@PathVariable int id) {
         return this.accountService.getById(id);
     }
 
     @GetMapping("by-customer/{customerId}")
-    public List<GetAllByCustomerIdResponse> getAllByCustomerId(@PathVariable int customerId){
+    public List<GetAllByCustomerIdResponse> getAllByCustomerId(@PathVariable int customerId) {
         return this.accountService.getAllByCustomerId(customerId);
     }
 
     @PatchMapping("{id}")
-    public UpdatedAccountResponse update(@PathVariable int id, @Valid @RequestBody UpdateAccountRequest updateAccountRequest){
-        return this.accountService.update(id,updateAccountRequest);
+    public UpdatedAccountResponse update(@PathVariable int id, @Valid @RequestBody UpdateAccountRequest updateAccountRequest) {
+        return this.accountService.update(id, updateAccountRequest);
     }
 
     @DeleteMapping("{id}")
-    public DeleteAccountResponse delete(@PathVariable int id){
+    public DeleteAccountResponse delete(@PathVariable int id) {
         return this.accountService.delete(id);
     }
 }

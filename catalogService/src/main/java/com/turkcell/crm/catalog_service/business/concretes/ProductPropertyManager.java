@@ -33,7 +33,7 @@ public class ProductPropertyManager implements ProductPropertyService {
 
         Product product = this.productService.getByIdForProductPropertyManager(productId);
         Property property = this.propertyService.getByIdForProductPropertyManager(request.propertyId());
-        this.productPropertyBusinessRules.productAndPropertyCategoryIdShouldBeMatch(product,property);
+        this.productPropertyBusinessRules.productAndPropertyCategoryIdShouldBeMatch(product, property);
         this.productPropertyBusinessRules.productPropertyShouldBeUnique(productId, request.propertyId());
 
         ProductProperty productPropertyToSave = this.productPropertyMapper.toProductProperty(request);
@@ -59,10 +59,9 @@ public class ProductPropertyManager implements ProductPropertyService {
     }
 
 
-
     @Override
     public GetByIdProductPropertyResponse getById(int productId, int id) {
-        Optional<ProductProperty> optionalProductProperty = this.productPropertyRepository.findByProductIdAndId(productId ,id);
+        Optional<ProductProperty> optionalProductProperty = this.productPropertyRepository.findByProductIdAndId(productId, id);
 
         this.productPropertyBusinessRules.productPropertyShouldBeExists(optionalProductProperty);
         this.productPropertyBusinessRules.productPropertyShouldNotBeDeleted(optionalProductProperty);

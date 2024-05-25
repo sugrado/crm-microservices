@@ -2,7 +2,6 @@ package com.turkcell.crm.account_service.business.concretes;
 
 import com.turkcell.crm.account_service.api.clients.CustomerClient;
 import com.turkcell.crm.account_service.business.abstracts.AccountAddressService;
-import com.turkcell.crm.account_service.business.abstracts.AccountService;
 import com.turkcell.crm.account_service.business.dtos.requests.account_addresses.CreateAccountAddressRequest;
 import com.turkcell.crm.account_service.business.dtos.requests.accounts.AccountAddressDto;
 import com.turkcell.crm.account_service.business.dtos.responses.account_addresses.CreatedAccountAddressResponse;

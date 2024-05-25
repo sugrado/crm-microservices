@@ -30,13 +30,14 @@ public class PropertiesController {
     public CreatedPropertyResponse add(@Valid @RequestBody CreatePropertyRequest createPropertyRequest) {
         return this.propertyService.add(createPropertyRequest);
     }
+
     @GetMapping("{id}")
-    public GetByIdPropertyResponse getById(@PathVariable int id){
+    public GetByIdPropertyResponse getById(@PathVariable int id) {
         return this.propertyService.getById(id);
     }
 
     @DeleteMapping("{id}")
-    public DeletePropertyResponse delete(@PathVariable int id){
+    public DeletePropertyResponse delete(@PathVariable int id) {
         return this.propertyService.delete(id);
     }
 }

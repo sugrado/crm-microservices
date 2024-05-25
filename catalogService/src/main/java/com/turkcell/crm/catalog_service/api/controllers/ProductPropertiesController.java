@@ -20,18 +20,19 @@ public class ProductPropertiesController {
     public CreatedProductPropertyResponse add(@PathVariable int productId, @Valid @RequestBody CreateProductPropertyRequest request) {
         return this.productPropertyService.add(productId, request);
     }
+
     @GetMapping
-    public List<GetAllProductPropertiesByProductIdResponse> getAllByProductId(@PathVariable int productId){
+    public List<GetAllProductPropertiesByProductIdResponse> getAllByProductId(@PathVariable int productId) {
         return this.productPropertyService.getAllByProductId(productId);
     }
 
     @GetMapping("{id}")
-    public GetByIdProductPropertyResponse geyById(@PathVariable int productId, @PathVariable int id){
+    public GetByIdProductPropertyResponse geyById(@PathVariable int productId, @PathVariable int id) {
         return this.productPropertyService.getById(productId, id);
     }
 
     @PatchMapping("{id}")
-    public UpdatedProductPropertyResponse update(@PathVariable int productId,@PathVariable int id, @Valid @RequestBody UpdateProductPropertyRequest updateProductPropertyRequest){
+    public UpdatedProductPropertyResponse update(@PathVariable int productId, @PathVariable int id, @Valid @RequestBody UpdateProductPropertyRequest updateProductPropertyRequest) {
         return this.productPropertyService.update(id, updateProductPropertyRequest);
     }
 
