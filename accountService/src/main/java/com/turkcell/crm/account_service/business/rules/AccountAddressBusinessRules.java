@@ -35,6 +35,7 @@ public class AccountAddressBusinessRules {
         }
     }
 
+
     public void addressShouldBeExist(int addressId) {
         this.customerClient.checkIfAddressExists(addressId);
     }
@@ -45,8 +46,8 @@ public class AccountAddressBusinessRules {
         }
     }
 
-    public void accountAddressShouldBeNotDeleted(Optional<AccountAddress> accountAddress) {
-        if (accountAddress.get().getDeletedDate() != null) {
+    public void accountAddressShouldBeNotDeleted(AccountAddress accountAddress) {
+        if (accountAddress.getDeletedDate() != null) {
             throw new BusinessException(messageService.getMessage(Messages.AccountAddressMessages.DELETED));
         }
     }

@@ -38,6 +38,4 @@ public class AccountBusinessRules {
             throw new BusinessException(messageService.getMessage(Messages.AccountMessages.DELETED));
         }
     }
-
-
 }

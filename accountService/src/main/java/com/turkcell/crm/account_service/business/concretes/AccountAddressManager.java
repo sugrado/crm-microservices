@@ -29,7 +29,7 @@ public class AccountAddressManager implements AccountAddressService {
     private final AccountAddressMapper accountAddressMapper;
     private final AccountAddressBusinessRules accountAddressBusinessRules;
     private final CustomerClient customerClient;
-    //private final AccountService accountService; Accoun managerla loop'a giriyor mecbur businessrule ekledim
+    //TODO: AccountService loop'a giriyor imiş. İlgilenilecek.
     private final AccountBusinessRules accountBusinessRules;
 
     @Override
@@ -74,15 +74,17 @@ public class AccountAddressManager implements AccountAddressService {
     }
 
     @Override
-    public DeletedAcountAddressResponse delete(int id) {
-        Optional<AccountAddress> optionalAccountAddress = this.accountAddressRepository.findById(id);
+    public DeletedAcountAddressResponse delete(int accountId, int addressId) {
+        accountBusinessRules.accountShouldBeExist(accountId);
+        accountAddressBusinessRules.addressShouldBeExist(addressId);
+        Optional<AccountAddress> optionalAccountAddress = this.accountAddressRepository.findByAccountIdAndAddressId(accountId, addressId);
 
         this.accountAddressBusinessRules.accountAddressShouldBeExist(optionalAccountAddress);
-        this.accountAddressBusinessRules.accountAddressShouldBeNotDeleted(optionalAccountAddress);
+        AccountAddress accountAddressToDelete = optionalAccountAddress.get();
+        this.accountAddressBusinessRules.accountAddressShouldBeNotDeleted(accountAddressToDelete);
 
-        AccountAddress deletedAccountAddress = optionalAccountAddress.get();
-        deletedAccountAddress.setDeletedDate(LocalDateTime.now());
-        this.accountAddressRepository.save(deletedAccountAddress);
+        accountAddressToDelete.setDeletedDate(LocalDateTime.now());
+        AccountAddress deletedAccountAddress = this.accountAddressRepository.save(accountAddressToDelete);
 
         return this.accountAddressMapper.toDeletedAcountAddressResponse(deletedAccountAddress);
     }

@@ -112,6 +112,7 @@ class AccountAddressManagerTest {
     void delete_ShouldDeleteAccountAddressForSpecificId() {
         // Prepare
         int addressId = 1;
+        int accountId = 1;
         AccountAddress accountAddress = new AccountAddress();
         accountAddress.setDeletedDate(null);
         Optional<AccountAddress> optionalAccountAddress = Optional.of(accountAddress);
@@ -121,15 +122,16 @@ class AccountAddressManagerTest {
                 1,
                 1);
 
-        when(accountAddressRepository.findById(addressId)).thenReturn(optionalAccountAddress);
+        when(accountAddressRepository.findByAccountIdAndAddressId(accountId, addressId)).thenReturn(optionalAccountAddress);
+        when(accountAddressRepository.save(any(AccountAddress.class))).thenReturn(optionalAccountAddress.get());
         when(accountAddressMapper.toDeletedAcountAddressResponse(accountAddress)).thenReturn(expectedResponse);
 
         // Execute
-        DeletedAcountAddressResponse response = accountAddressManager.delete(addressId);
+        DeletedAcountAddressResponse response = accountAddressManager.delete(accountId, addressId);
 
         // Verify
         verify(accountAddressBusinessRules).accountAddressShouldBeExist(optionalAccountAddress);
-        verify(accountAddressBusinessRules).accountAddressShouldBeNotDeleted(optionalAccountAddress);
+        verify(accountAddressBusinessRules).accountAddressShouldBeNotDeleted(optionalAccountAddress.get());
         verify(accountAddressRepository).save(accountAddress);
         assertEquals(expectedResponse, response);
     }

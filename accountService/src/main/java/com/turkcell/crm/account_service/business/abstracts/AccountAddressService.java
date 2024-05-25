@@ -14,7 +14,7 @@ public interface AccountAddressService {
 
     void add(List<AccountAddressDto> accountAddressDtoList, Account account);
 
-    DeletedAcountAddressResponse delete(int id);
+    DeletedAcountAddressResponse delete(int accountId, int addressId);
 
     List<GetAllByAccountIdResponse> getAllByAccountId(int accountId);
 }
