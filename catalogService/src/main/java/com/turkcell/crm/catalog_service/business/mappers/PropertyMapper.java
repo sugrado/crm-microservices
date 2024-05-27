@@ -25,6 +25,7 @@ public interface PropertyMapper {
 
     List<GetAllPropertiesByCategoryIdResponse> toGetAllPropertiesByCategoryIdResponse(List<Property> propertyList);
 
+    @Mapping(source = "category.id", target = "categoryId")
     GetByIdPropertyResponse toGetByIdPropertyResponse(Property property);
 
     @Mapping(source = "category.id", target = "categoryId")
