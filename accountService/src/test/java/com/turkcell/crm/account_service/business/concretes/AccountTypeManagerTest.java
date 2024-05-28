@@ -6,9 +6,13 @@ import com.turkcell.crm.account_service.business.dtos.responses.account_types.De
 import com.turkcell.crm.account_service.business.dtos.responses.account_types.GetAllAccountTypeResponse;
 import com.turkcell.crm.account_service.business.dtos.responses.account_types.GetByIdAccountTypeResponse;
 import com.turkcell.crm.account_service.business.mappers.AccountTypeMapper;
+import com.turkcell.crm.account_service.business.mappers.AccountTypeMapperImpl;
 import com.turkcell.crm.account_service.business.rules.AccountTypeBusinessRules;
+import com.turkcell.crm.account_service.core.business.abstracts.MessageService;
 import com.turkcell.crm.account_service.data_access.abstracts.AccountTypeRepository;
 import com.turkcell.crm.account_service.entities.concretes.AccountType;
+import com.turkcell.crm.common.exceptions.types.BusinessException;
+import com.turkcell.crm.common.exceptions.types.NotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -22,25 +26,28 @@ import java.util.Optional;
 
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 class AccountTypeManagerTest {
 
-    @Mock
+
     private AccountTypeRepository accountTypeRepository;
-
-    @Mock
-    private AccountTypeMapper accountTypeMapper;
-
-    @Mock
-    private AccountTypeBusinessRules accountTypeBusinessRules;
-
-    @InjectMocks
     private AccountTypeManager accountTypeManager;
+    private MessageService messageService;
+
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
+        AccountTypeMapper accountTypeMapper = new AccountTypeMapperImpl();
+
+        accountTypeRepository = mock(AccountTypeRepository.class);
+
+        messageService = mock(MessageService.class);
+
+        AccountTypeBusinessRules accountTypeBusinessRules = new AccountTypeBusinessRules(messageService,accountTypeRepository);
+
+        accountTypeManager =new AccountTypeManager(accountTypeRepository,accountTypeMapper,accountTypeBusinessRules);
     }
 
     @Test
@@ -56,62 +63,149 @@ class AccountTypeManagerTest {
         );
 
         AccountType accountType = new AccountType();
-        when(accountTypeMapper.toAccountType(request)).thenReturn(accountType);
-        when(accountTypeRepository.save(accountType)).thenReturn(accountType);
-        when(accountTypeMapper.toCreatedAccountTypeResponse(accountType)).thenReturn(expectedResponse);
+        accountType.setId(1);
+
+        when(accountTypeRepository.findByName(anyString())).thenReturn(Optional.empty());
+        when(accountTypeRepository.findById(anyInt())).thenReturn(Optional.of(new AccountType()));
+        when(accountTypeRepository.save(any())).thenReturn(accountType);
 
         // Execute
         CreatedAccountTypeResponse response = accountTypeManager.add(request);
 
         // Verify
-        verify(accountTypeBusinessRules).accountTypeNameCannotBeDuplicatedWhenInserted(request.name());
-        assertEquals(expectedResponse, response);
+
+        assertEquals(expectedResponse.id(), response.id());
+    }
+    @Test
+    void add_ShouldThrowExceptionWhenAccountTypeExistWithSameName() {
+        // Prepare
+        CreateAccountTypeRequest request = new CreateAccountTypeRequest(
+                "Test"
+        );
+        CreatedAccountTypeResponse expectedResponse = new CreatedAccountTypeResponse(
+                1,
+                LocalDateTime.now(),
+                "Test"
+        );
+
+        AccountType accountType = new AccountType();
+        accountType.setId(1);
+
+        when(accountTypeRepository.findByName(anyString())).thenReturn(Optional.of(new AccountType()));
+
+        // Verify
+        assertThrows(BusinessException.class,()->{
+           accountTypeManager.add(request);
+        });
     }
 
     @Test
     void getById_ShouldReturnAccountTypeForSpecificId() {
         // Prepare
-        int accountTypeId = 1;
-        Optional<AccountType> optionalAccountType = Optional.of(new AccountType());
+
+        AccountType accountType = new AccountType();
+        accountType.setId(1);
+
         GetByIdAccountTypeResponse expectedResponse = new GetByIdAccountTypeResponse(
                 1,
                 "Test"
         );
 
-        when(accountTypeRepository.findById(accountTypeId)).thenReturn(optionalAccountType);
-        when(accountTypeMapper.toGetByIdAccountTypeResponse(optionalAccountType.get())).thenReturn(expectedResponse);
+        when(accountTypeRepository.findById(anyInt())).thenReturn(Optional.of(accountType));
 
         // Execute
-        GetByIdAccountTypeResponse response = accountTypeManager.getById(accountTypeId);
+        GetByIdAccountTypeResponse response = accountTypeManager.getById(anyInt());
 
         // Verify
-        verify(accountTypeBusinessRules).accountTypeShouldBeExist(optionalAccountType);
-        verify(accountTypeBusinessRules).accountTypeShouldBeNotDeleted(optionalAccountType);
-        assertEquals(expectedResponse, response);
+
+        assertEquals(expectedResponse.id(), response.id());
+    }
+    @Test
+    void getById_ShouldThrowExceptionWhenNotExistingAccountType() {
+        // Prepare
+
+        AccountType accountType = new AccountType();
+        accountType.setId(1);
+
+        GetByIdAccountTypeResponse expectedResponse = new GetByIdAccountTypeResponse(
+                1,
+                "Test"
+        );
+
+        when(accountTypeRepository.findById(anyInt())).thenReturn(Optional.empty());
+
+        //verify
+
+        assertThrows(NotFoundException.class,()->{
+            accountTypeManager.getById(anyInt());
+        });
+    }
+    @Test
+    void getById_ShouldThrowExceptionAccountTypeIsDeleted() {
+        // Prepare
+
+        AccountType accountType = new AccountType();
+        accountType.setId(1);
+        accountType.setDeletedDate(LocalDateTime.now());
+
+        GetByIdAccountTypeResponse expectedResponse = new GetByIdAccountTypeResponse(
+                1,
+                "Test"
+        );
+
+        when(accountTypeRepository.findById(anyInt())).thenReturn(Optional.of(accountType));
+
+        //verify
+
+        assertThrows(BusinessException.class,()->{
+            accountTypeManager.delete(anyInt());
+        });
     }
 
     @Test
     void delete_ShouldDeleteAccountTypeForSpecificId() {
         // Prepare
-        int accountTypeId = 1;
-        Optional<AccountType> optionalAccountType = Optional.of(new AccountType());
+
+
         DeletedAccountTypeResponse expectedResponse = new DeletedAccountTypeResponse(
                 1,
                 LocalDateTime.now(),
                 LocalDateTime.now(),
                 "Test"
         );
+        AccountType deletedAccountType = new AccountType();
+        deletedAccountType.setId(1);
 
-        when(accountTypeRepository.findById(accountTypeId)).thenReturn(optionalAccountType);
-        when(accountTypeMapper.toDeletedAccountTypeResponse(any())).thenReturn(expectedResponse);
-
-        // Execute
-        DeletedAccountTypeResponse response = accountTypeManager.delete(accountTypeId);
+        when(accountTypeRepository.findById(anyInt())).thenReturn(Optional.empty());
 
         // Verify
-        verify(accountTypeBusinessRules).accountTypeShouldBeExist(optionalAccountType);
-        verify(accountTypeBusinessRules).accountTypeShouldBeNotDeleted(optionalAccountType);
-        assertEquals(expectedResponse, response);
+        assertThrows(NotFoundException.class,()->{
+            accountTypeManager.delete(anyInt());
+        });
+
+    }
+    @Test
+    void delete_ShouldThrowExceptionWhenNotExistingAccountType() {
+        // Prepare
+
+
+        DeletedAccountTypeResponse expectedResponse = new DeletedAccountTypeResponse(
+                1,
+                LocalDateTime.now(),
+                LocalDateTime.now(),
+                "Test"
+        );
+        AccountType deletedAccountType = new AccountType();
+        deletedAccountType.setId(1);
+
+        when(accountTypeRepository.findById(anyInt())).thenReturn(Optional.of(new AccountType()));
+        when(accountTypeRepository.save(any())).thenReturn(deletedAccountType);
+
+        // Execute
+        DeletedAccountTypeResponse response = accountTypeManager.delete(anyInt());
+
+        // Verify
+        assertEquals(expectedResponse.id(), response.id());
     }
 
     @Test
@@ -126,23 +220,20 @@ class AccountTypeManagerTest {
         accountType2.setName("Test2");
 
         GetAllAccountTypeResponse getAllAccountTypeResponse = new GetAllAccountTypeResponse(1, LocalDateTime.now(), "Test");
-        GetAllAccountTypeResponse getAllAccountTypeResponse1 = new GetAllAccountTypeResponse(1, LocalDateTime.now(), "Test2");
+        GetAllAccountTypeResponse getAllAccountTypeResponse1 = new GetAllAccountTypeResponse(2, LocalDateTime.now(), "Test2");
 
         List<AccountType> accountTypeList = Arrays.asList(accountType1, accountType2);
         List<GetAllAccountTypeResponse> getAllAccountTypeResponseList = Arrays.asList(getAllAccountTypeResponse, getAllAccountTypeResponse1);
         when(accountTypeRepository.findAll()).thenReturn(accountTypeList);
-        when(accountTypeMapper.toGetAllAccountTypeResponse(accountTypeList)).thenReturn(getAllAccountTypeResponseList);
 
         // Execute
         List<GetAllAccountTypeResponse> response = accountTypeManager.getAll();
 
         // Verify
-        assertNotNull(response);
-        assertEquals(2, response.size());
-        assertEquals(getAllAccountTypeResponse, response.get(0));
-        assertEquals(getAllAccountTypeResponse1, response.get(1));
 
-        verify(accountTypeRepository, times(1)).findAll();
-        verify(accountTypeMapper, times(1)).toGetAllAccountTypeResponse(accountTypeList);
-    }
-}
+        assertEquals(getAllAccountTypeResponseList.size(), response.size());
+        assertEquals(getAllAccountTypeResponseList.get(0).id(), response.get(0).id());
+        assertEquals(getAllAccountTypeResponseList.get(1).id(), response.get(1).id());
+
+
+}}
