@@ -53,10 +53,10 @@ public class AccountTypeManager implements AccountTypeService {
         this.accountTypeBusinessRules.accountTypeShouldBeExist(optionalAccountType);
         this.accountTypeBusinessRules.accountTypeShouldBeNotDeleted(optionalAccountType);
 
-        AccountType deletedAccountType = optionalAccountType.get();
-        deletedAccountType.setDeletedDate(LocalDateTime.now());
+        AccountType accountType = optionalAccountType.get();
+        accountType.setDeletedDate(LocalDateTime.now());
 
-        this.accountTypeRepository.save(deletedAccountType);
+        AccountType deletedAccountType = this.accountTypeRepository.save(accountType);
 
         return this.accountTypeMapper.toDeletedAccountTypeResponse(deletedAccountType);
     }

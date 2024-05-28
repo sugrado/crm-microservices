@@ -31,7 +31,7 @@ public class AccountAddressBusinessRules {
     public void addressShouldNotBeExistInAccount(int accountId, int addressId) {
         boolean exists = accountAddressRepository.existsByAccountIdAndAddressId(accountId, addressId);
         if (exists) {
-            throw new BusinessException("Address is already exist in account");
+            throw new BusinessException(messageService.getMessage(Messages.AccountAddressMessages.ACCOUNT_ADDRESS_ALREADY_EXISTS_IN_ACCOUNT));
         }
     }
 
