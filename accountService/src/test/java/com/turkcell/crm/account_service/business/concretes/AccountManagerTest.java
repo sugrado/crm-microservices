@@ -6,7 +6,6 @@ import com.turkcell.crm.account_service.business.abstracts.AccountTypeService;
 import com.turkcell.crm.account_service.business.dtos.requests.accounts.AccountAddressDto;
 import com.turkcell.crm.account_service.business.dtos.requests.accounts.CreateAccountRequest;
 import com.turkcell.crm.account_service.business.dtos.requests.accounts.UpdateAccountRequest;
-import com.turkcell.crm.account_service.business.dtos.responses.account_types.GetByIdAccountTypeResponse;
 import com.turkcell.crm.account_service.business.dtos.responses.accounts.*;
 import com.turkcell.crm.account_service.business.mappers.*;
 import com.turkcell.crm.account_service.business.rules.AccountAddressBusinessRules;
@@ -24,9 +23,6 @@ import com.turkcell.crm.common.exceptions.types.BusinessException;
 import com.turkcell.crm.common.exceptions.types.NotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -58,16 +54,17 @@ class AccountManagerTest {
         AccountAddressMapper accountAddressMapper = new AccountAddressMapperImpl();
         AccountTypeMapper accountTypeMapper = new AccountTypeMapperImpl();
 
-        AccountAddressBusinessRules accountAddressBusinessRules = new AccountAddressBusinessRules(accountAddressRepository,accountRepository,customerClient,messageService);
-        AccountBusinessRules accountBusinessRules = new AccountBusinessRules(messageService,accountRepository,customerClient);
-        AccountTypeBusinessRules accountTypeBusinessRules = new AccountTypeBusinessRules(messageService,accountTypeRepository);
+        AccountAddressBusinessRules accountAddressBusinessRules = new AccountAddressBusinessRules(accountAddressRepository, accountRepository, customerClient, messageService);
+        AccountBusinessRules accountBusinessRules = new AccountBusinessRules(messageService, accountRepository, customerClient);
+        AccountTypeBusinessRules accountTypeBusinessRules = new AccountTypeBusinessRules(messageService, accountTypeRepository);
 
-        AccountTypeService accountTypeService = new AccountTypeManager(accountTypeRepository,accountTypeMapper,accountTypeBusinessRules);
-        AccountAddressService accountAddressService = new AccountAddressManager(accountAddressRepository,accountAddressMapper,accountAddressBusinessRules,customerClient,accountBusinessRules);
+        AccountTypeService accountTypeService = new AccountTypeManager(accountTypeRepository, accountTypeMapper, accountTypeBusinessRules);
+        AccountAddressService accountAddressService = new AccountAddressManager(accountAddressRepository, accountAddressMapper, accountAddressBusinessRules, customerClient, accountBusinessRules);
 
-        accountManager = new AccountManager(accountRepository,accountMapper,accountAddressService,accountBusinessRules,accountTypeService);
+        accountManager = new AccountManager(accountRepository, accountMapper, accountAddressService, accountBusinessRules, accountTypeService);
 
     }
+
     @Test
     void add_ShouldCreateAccountAndReturnCreatedAccountResponseSuccessful() {
         AccountAddressDto accountAddressDto = new AccountAddressDto(1);
@@ -107,7 +104,7 @@ class AccountManagerTest {
     }
 
     @Test
-    void add_ShouldThrowExceptionWhenCustomerNotExist(){
+    void add_ShouldThrowExceptionWhenCustomerNotExist() {
         AccountAddressDto accountAddressDto = new AccountAddressDto(1);
         List<AccountAddressDto> accountAddressDtoList = Arrays.asList(accountAddressDto);
         // Prepare
@@ -136,14 +133,14 @@ class AccountManagerTest {
         doThrow(NotFoundException.class).when(customerClient).checkIfCustomerExists(anyInt());
 
 
-
-        assertThrows(NotFoundException.class,()->{
+        assertThrows(NotFoundException.class, () -> {
             accountManager.add(createAccountRequest);
         });
 
     }
+
     @Test
-    void add_ShouldThrowExceptionWhenAccountTypeNotExist(){
+    void add_ShouldThrowExceptionWhenAccountTypeNotExist() {
         AccountAddressDto accountAddressDto = new AccountAddressDto(1);
         List<AccountAddressDto> accountAddressDtoList = Arrays.asList(accountAddressDto);
         // Prepare
@@ -173,7 +170,7 @@ class AccountManagerTest {
         when(accountTypeRepository.findById(anyInt())).thenReturn(Optional.empty());
 
 
-        assertThrows(NotFoundException.class,()->{
+        assertThrows(NotFoundException.class, () -> {
             accountManager.add(createAccountRequest);
         });
 
@@ -248,12 +245,12 @@ class AccountManagerTest {
         doThrow(NotFoundException.class).when(customerClient).checkIfCustomerExists(anyInt());
 
 
-
-        assertThrows(NotFoundException.class,()->{
+        assertThrows(NotFoundException.class, () -> {
             accountManager.add(createAccountRequest);
         });
 
     }
+
     @Test
     void add_ShouldCreateAccountAndAddAddressesWhenAddressesAreNotEmptyShouldThrowExceptionWhenAccountTypeNotExists() {
         AccountAddressDto accountAddressDto = new AccountAddressDto(1);
@@ -287,7 +284,7 @@ class AccountManagerTest {
         when(accountTypeRepository.findById(anyInt())).thenReturn(Optional.empty());
 
 
-        assertThrows(NotFoundException.class,()->{
+        assertThrows(NotFoundException.class, () -> {
             accountManager.add(createAccountRequest);
         });
     }
@@ -361,17 +358,18 @@ class AccountManagerTest {
         when(accountRepository.findById(anyInt())).thenReturn(Optional.of(deletedAccount));
 
         // Verify
-        assertThrows(BusinessException.class,()->{
-           accountManager.getById(anyInt());
+        assertThrows(BusinessException.class, () -> {
+            accountManager.getById(anyInt());
         });
     }
+
     @Test
     void getById_ShouldThrowExceptionWhenAccountNotExits() {
         // Prepare
         when(accountRepository.findById(anyInt())).thenReturn(Optional.empty());
 
         // Verify
-        assertThrows(NotFoundException.class,()->{
+        assertThrows(NotFoundException.class, () -> {
             accountManager.getById(anyInt());
         });
     }
@@ -436,9 +434,11 @@ class AccountManagerTest {
 
         when(accountRepository.findById(accountId)).thenReturn(Optional.empty());
 
-        assertThrows(NotFoundException.class,()->{accountManager.update(anyInt(),updateRequest);
+        assertThrows(NotFoundException.class, () -> {
+            accountManager.update(anyInt(), updateRequest);
         });
     }
+
     @Test
     void update_ShouldThrowExceptionWhenAccountIsDeleted() {
 
@@ -465,7 +465,8 @@ class AccountManagerTest {
 
         when(accountRepository.findById(anyInt())).thenReturn(Optional.of(account));
 
-        assertThrows(BusinessException.class,()->{accountManager.update(anyInt(),updateRequest);
+        assertThrows(BusinessException.class, () -> {
+            accountManager.update(anyInt(), updateRequest);
         });
     }
 
@@ -495,6 +496,7 @@ class AccountManagerTest {
         // Verify
         assertEquals(expectedResponse.id(), response.id());
     }
+
     @Test
     void delete_ShouldThrowExceptionWhenAccountNotExist() {
         // Prepare
@@ -514,9 +516,11 @@ class AccountManagerTest {
 
         when(accountRepository.findById(accountId)).thenReturn(Optional.empty());
 
-        assertThrows(NotFoundException.class,()->{accountManager.delete(anyInt());
+        assertThrows(NotFoundException.class, () -> {
+            accountManager.delete(anyInt());
         });
     }
+
     @Test
     void delete_ShouldThrowExceptionWhenAccountIsDeleted() {
         // Prepare
@@ -539,7 +543,8 @@ class AccountManagerTest {
 
         when(accountRepository.findById(anyInt())).thenReturn(Optional.of(account));
 
-        assertThrows(BusinessException.class,()->{accountManager.delete(anyInt());
+        assertThrows(BusinessException.class, () -> {
+            accountManager.delete(anyInt());
         });
     }
 
@@ -569,6 +574,7 @@ class AccountManagerTest {
         assertEquals(getAllByCustomerIdResponseList.get(0).id(), response.get(0).id());
         assertEquals(getAllByCustomerIdResponseList.get(1).id(), response.get(1).id());
     }
+
     @Test
     void getAllByCustomerId_ShouldThrowExceptionWhenCustomerNotExistForSpecificCustomerId() {
         // Prepare

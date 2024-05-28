@@ -110,6 +110,7 @@ public class ProductManager implements ProductService {
 
     @Override
     public Product getByIdForProductPropertyManager(int id) {
+
         Optional<Product> optionalProduct = this.productRepository.findById(id);
 
         this.productBusinessRules.productShouldBeExist(optionalProduct);

@@ -22,6 +22,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class ProductPropertyManager implements ProductPropertyService {
+
     private final ProductPropertyRepository productPropertyRepository;
     private final ProductPropertyMapper productPropertyMapper;
     private final ProductService productService;
