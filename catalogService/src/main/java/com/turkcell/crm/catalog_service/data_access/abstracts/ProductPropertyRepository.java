@@ -11,8 +11,5 @@ public interface ProductPropertyRepository extends JpaRepository<ProductProperty
 
     List<ProductProperty> findAllByProductId(int productId);
 
-    Optional<ProductProperty> findByProductIdAndId(int productId, int id);
-
-    List<ProductProperty> findByPropertyIdAndProductId(int propertyId, int productId);
-
+    Optional<ProductProperty> findByProductIdAndPropertyId(int productId, int propertyId);
 }

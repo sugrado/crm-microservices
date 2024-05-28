@@ -26,18 +26,18 @@ public class ProductPropertiesController {
         return this.productPropertyService.getAllByProductId(productId);
     }
 
-    @GetMapping("{id}")
-    public GetByIdProductPropertyResponse geyById(@PathVariable int productId, @PathVariable int id) {
-        return this.productPropertyService.getById(productId, id);
+    @GetMapping("{propertyId}")
+    public GetByIdProductPropertyResponse geyById(@PathVariable int productId, @PathVariable int propertyId) {
+        return this.productPropertyService.getById(productId, propertyId);
     }
 
-    @PatchMapping("{id}")
-    public UpdatedProductPropertyResponse update(@PathVariable int productId, @PathVariable int id, @Valid @RequestBody UpdateProductPropertyRequest updateProductPropertyRequest) {
-        return this.productPropertyService.update(id, updateProductPropertyRequest);
+    @PatchMapping("{propertyId}")
+    public UpdatedProductPropertyResponse update(@PathVariable int productId, @PathVariable int propertyId, @Valid @RequestBody UpdateProductPropertyRequest updateProductPropertyRequest) {
+        return this.productPropertyService.update(productId, propertyId, updateProductPropertyRequest);
     }
 
-    @DeleteMapping("{id}")
-    public DeletedProductPropertyResponse delete(@PathVariable int id, int productId) {
-        return this.productPropertyService.delete(id);
+    @DeleteMapping("{propertyId}")
+    public DeletedProductPropertyResponse delete(@PathVariable int propertyId, @PathVariable int productId) {
+        return this.productPropertyService.delete(productId, propertyId);
     }
 }

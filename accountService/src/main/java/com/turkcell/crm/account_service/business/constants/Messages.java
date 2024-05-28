@@ -16,5 +16,7 @@ public class Messages {
         public static final String NOT_FOUND = "accountAddressNotFound";
         public static final String DELETED = "accountAddressIsDeleted";
 
+        public static final String ACCOUNT_ADDRESS_ALREADY_EXISTS_IN_ACCOUNT = "accountAddressAlreadyExistsInAccount";
+
     }
 }
