@@ -5,8 +5,8 @@ import com.turkcell.crm.account_service.business.dtos.requests.accounts.AccountA
 import com.turkcell.crm.account_service.business.dtos.responses.account_addresses.CreatedAccountAddressResponse;
 import com.turkcell.crm.account_service.business.dtos.responses.account_addresses.DeletedAcountAddressResponse;
 import com.turkcell.crm.account_service.business.dtos.responses.account_addresses.GetAllByAccountIdResponse;
-import com.turkcell.crm.common.shared.mapping.MapstructService;
 import com.turkcell.crm.account_service.entities.concretes.AccountAddress;
+import com.turkcell.crm.common.shared.mapping.MapstructService;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

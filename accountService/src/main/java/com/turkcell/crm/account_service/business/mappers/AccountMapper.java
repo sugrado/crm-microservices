@@ -3,8 +3,8 @@ package com.turkcell.crm.account_service.business.mappers;
 import com.turkcell.crm.account_service.business.dtos.requests.accounts.CreateAccountRequest;
 import com.turkcell.crm.account_service.business.dtos.requests.accounts.UpdateAccountRequest;
 import com.turkcell.crm.account_service.business.dtos.responses.accounts.*;
-import com.turkcell.crm.common.shared.mapping.MapstructService;
 import com.turkcell.crm.account_service.entities.concretes.Account;
+import com.turkcell.crm.common.shared.mapping.MapstructService;
 import org.mapstruct.*;
 
 import java.util.List;

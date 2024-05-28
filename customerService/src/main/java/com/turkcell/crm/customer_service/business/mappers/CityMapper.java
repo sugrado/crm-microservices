@@ -1,8 +1,8 @@
 package com.turkcell.crm.customer_service.business.mappers;
 
+import com.turkcell.crm.common.shared.mapping.MapstructService;
 import com.turkcell.crm.customer_service.business.dtos.responses.cities.GetAllCitiesResponse;
 import com.turkcell.crm.customer_service.business.dtos.responses.cities.GetByIdCityResponse;
-import com.turkcell.crm.common.shared.mapping.MapstructService;
 import com.turkcell.crm.customer_service.entities.concretes.City;
 import org.mapstruct.Mapper;
 
