@@ -1,6 +1,6 @@
 package com.turkcell.crm.identity_service.business.rules;
 
-import com.turkcell.crm.common.exceptions.types.BusinessException;
+import com.turkcell.crm.common.shared.exceptions.types.BusinessException;
 import com.turkcell.crm.identity_service.business.constants.Messages;
 import com.turkcell.crm.identity_service.entities.concretes.RefreshToken;
 import lombok.AllArgsConstructor;

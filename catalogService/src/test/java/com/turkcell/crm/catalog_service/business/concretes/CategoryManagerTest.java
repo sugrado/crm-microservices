@@ -10,8 +10,8 @@ import com.turkcell.crm.catalog_service.business.rules.CategoryBusinessRules;
 import com.turkcell.crm.catalog_service.core.business.abstracts.MessageService;
 import com.turkcell.crm.catalog_service.data_access.abstracts.CategoryRepository;
 import com.turkcell.crm.catalog_service.entities.concretes.Category;
-import com.turkcell.crm.common.exceptions.types.BusinessException;
-import com.turkcell.crm.common.exceptions.types.NotFoundException;
+import com.turkcell.crm.common.shared.exceptions.types.BusinessException;
+import com.turkcell.crm.common.shared.exceptions.types.NotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

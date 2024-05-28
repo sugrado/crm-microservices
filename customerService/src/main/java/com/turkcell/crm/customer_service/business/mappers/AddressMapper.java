@@ -4,7 +4,7 @@ import com.turkcell.crm.customer_service.business.dtos.requests.addresses.Create
 import com.turkcell.crm.customer_service.business.dtos.requests.addresses.UpdateAddressRequest;
 import com.turkcell.crm.customer_service.business.dtos.requests.customers.AddressDto;
 import com.turkcell.crm.customer_service.business.dtos.responses.addresses.*;
-import com.turkcell.crm.customer_service.core.utilities.mapping.MapstructService;
+import com.turkcell.crm.common.shared.mapping.MapstructService;
 import com.turkcell.crm.customer_service.entities.concretes.Address;
 import org.mapstruct.*;
 

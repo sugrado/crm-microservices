@@ -1,8 +1,8 @@
 package com.turkcell.crm.search_service.kafka.consumers;
 
-import com.turkcell.crm.common.kafka.events.ProductCreatedEvent;
-import com.turkcell.crm.common.kafka.events.ProductDeletedEvent;
-import com.turkcell.crm.common.kafka.events.ProductUpdatedEvent;
+import com.turkcell.crm.common.shared.kafka.events.ProductCreatedEvent;
+import com.turkcell.crm.common.shared.kafka.events.ProductDeletedEvent;
+import com.turkcell.crm.common.shared.kafka.events.ProductUpdatedEvent;
 import com.turkcell.crm.search_service.business.abstracts.ProductSearchService;
 import com.turkcell.crm.search_service.business.mappers.ProductMapper;
 import com.turkcell.crm.search_service.entities.concretes.Product;

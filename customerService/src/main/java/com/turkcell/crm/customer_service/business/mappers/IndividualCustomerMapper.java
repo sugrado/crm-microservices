@@ -1,12 +1,12 @@
 package com.turkcell.crm.customer_service.business.mappers;
 
-import com.turkcell.crm.common.kafka.events.CustomerCreatedEvent;
-import com.turkcell.crm.common.kafka.events.CustomerDeletedEvent;
-import com.turkcell.crm.common.kafka.events.CustomerUpdatedEvent;
+import com.turkcell.crm.common.shared.kafka.events.CustomerCreatedEvent;
+import com.turkcell.crm.common.shared.kafka.events.CustomerDeletedEvent;
+import com.turkcell.crm.common.shared.kafka.events.CustomerUpdatedEvent;
 import com.turkcell.crm.customer_service.business.dtos.requests.individual_customers.CreateIndividualCustomerRequest;
 import com.turkcell.crm.customer_service.business.dtos.requests.individual_customers.UpdateIndividualCustomerRequest;
 import com.turkcell.crm.customer_service.business.dtos.responses.individual_customers.*;
-import com.turkcell.crm.customer_service.core.utilities.mapping.MapstructService;
+import com.turkcell.crm.common.shared.mapping.MapstructService;
 import com.turkcell.crm.customer_service.entities.concretes.IndividualCustomer;
 import org.mapstruct.*;
 

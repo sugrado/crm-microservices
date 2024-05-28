@@ -15,7 +15,7 @@ import com.turkcell.crm.catalog_service.entities.concretes.Category;
 import com.turkcell.crm.catalog_service.entities.concretes.Product;
 import com.turkcell.crm.catalog_service.entities.concretes.ProductProperty;
 import com.turkcell.crm.catalog_service.entities.concretes.Property;
-import com.turkcell.crm.common.exceptions.types.BusinessException;
+import com.turkcell.crm.common.shared.exceptions.types.BusinessException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

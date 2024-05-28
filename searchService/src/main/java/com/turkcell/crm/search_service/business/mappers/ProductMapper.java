@@ -1,8 +1,8 @@
 package com.turkcell.crm.search_service.business.mappers;
 
-import com.turkcell.crm.common.kafka.events.ProductCreatedEvent;
-import com.turkcell.crm.common.kafka.events.ProductUpdatedEvent;
-import com.turkcell.crm.search_service.core.utilities.mapping.MapstructService;
+import com.turkcell.crm.common.shared.kafka.events.ProductCreatedEvent;
+import com.turkcell.crm.common.shared.kafka.events.ProductUpdatedEvent;
+import com.turkcell.crm.common.shared.mapping.MapstructService;
 import com.turkcell.crm.search_service.entities.concretes.Product;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

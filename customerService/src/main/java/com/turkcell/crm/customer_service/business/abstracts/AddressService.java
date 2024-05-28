@@ -1,8 +1,8 @@
 package com.turkcell.crm.customer_service.business.abstracts;
 
-import com.turkcell.crm.common.dtos.customers.CheckAddressAndCustomerMatchRequest;
-import com.turkcell.crm.common.dtos.customers.GetValidatedCustomerAddressesListItemDto;
-import com.turkcell.crm.common.dtos.customers.GetValidatedCustomerAddressesRequest;
+import com.turkcell.crm.common.shared.dtos.customers.CheckAddressAndCustomerMatchRequest;
+import com.turkcell.crm.common.shared.dtos.customers.GetValidatedCustomerAddressesListItemDto;
+import com.turkcell.crm.common.shared.dtos.customers.GetValidatedCustomerAddressesRequest;
 import com.turkcell.crm.customer_service.business.dtos.requests.addresses.ChangeDefaultAddressRequest;
 import com.turkcell.crm.customer_service.business.dtos.requests.addresses.CreateAddressRequest;
 import com.turkcell.crm.customer_service.business.dtos.requests.addresses.UpdateAddressRequest;

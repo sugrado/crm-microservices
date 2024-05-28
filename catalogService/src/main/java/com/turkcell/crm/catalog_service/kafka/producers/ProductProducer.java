@@ -1,8 +1,8 @@
 package com.turkcell.crm.catalog_service.kafka.producers;
 
-import com.turkcell.crm.common.kafka.events.ProductCreatedEvent;
-import com.turkcell.crm.common.kafka.events.ProductDeletedEvent;
-import com.turkcell.crm.common.kafka.events.ProductUpdatedEvent;
+import com.turkcell.crm.common.shared.kafka.events.ProductCreatedEvent;
+import com.turkcell.crm.common.shared.kafka.events.ProductDeletedEvent;
+import com.turkcell.crm.common.shared.kafka.events.ProductUpdatedEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.KafkaHeaders;

@@ -17,7 +17,6 @@ import java.util.List;
 @Entity
 @Table(name = "accounts")
 public class Account extends BaseEntity<Integer> {
-    // TODO: videoya bakalım
     @Column(name = "status", nullable = false)
     private Status status;
 

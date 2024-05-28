@@ -1,7 +1,7 @@
 package com.turkcell.crm.identity_service.business.rules;
 
-import com.turkcell.crm.common.exceptions.types.AuthenticationException;
-import com.turkcell.crm.common.exceptions.types.BusinessException;
+import com.turkcell.crm.common.shared.exceptions.types.AuthenticationException;
+import com.turkcell.crm.common.shared.exceptions.types.BusinessException;
 import com.turkcell.crm.identity_service.business.constants.Messages;
 import com.turkcell.crm.identity_service.data_access.abstracts.UserRepository;
 import lombok.AllArgsConstructor;

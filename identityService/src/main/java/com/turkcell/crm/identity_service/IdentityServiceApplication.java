@@ -5,7 +5,7 @@ import com.turkcell.crm.core.annotations.EnableSecurity;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication(scanBasePackages = {Paths.CommonBasePackage, Paths.Identity.BasePackage})
+@SpringBootApplication(scanBasePackages = {Paths.Common.SharedPackage, Paths.Identity.BasePackage})
 @EnableSecurity
 public class IdentityServiceApplication {
     public static void main(String[] args) {

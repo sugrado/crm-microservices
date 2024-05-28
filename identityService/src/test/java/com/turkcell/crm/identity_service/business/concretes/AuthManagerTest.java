@@ -1,6 +1,6 @@
 package com.turkcell.crm.identity_service.business.concretes;
 
-import com.turkcell.crm.common.exceptions.types.BusinessException;
+import com.turkcell.crm.common.shared.exceptions.types.BusinessException;
 import com.turkcell.crm.core.services.JwtService;
 import com.turkcell.crm.identity_service.business.abstracts.AuthService;
 import com.turkcell.crm.identity_service.business.abstracts.RefreshTokenService;

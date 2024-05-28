@@ -3,7 +3,7 @@ package com.turkcell.crm.catalog_service.business.mappers;
 import com.turkcell.crm.catalog_service.business.dtos.requests.product_property.CreateProductPropertyRequest;
 import com.turkcell.crm.catalog_service.business.dtos.requests.product_property.UpdateProductPropertyRequest;
 import com.turkcell.crm.catalog_service.business.dtos.responses.product_property.*;
-import com.turkcell.crm.catalog_service.core.utilities.mapping.MapstructService;
+import com.turkcell.crm.common.shared.mapping.MapstructService;
 import com.turkcell.crm.catalog_service.entities.concretes.ProductProperty;
 import org.mapstruct.*;
 
