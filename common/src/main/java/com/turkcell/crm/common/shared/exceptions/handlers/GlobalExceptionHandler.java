@@ -2,6 +2,8 @@ package com.turkcell.crm.common.shared.exceptions.handlers;
 
 import com.turkcell.crm.common.shared.exceptions.problem_details.*;
 import com.turkcell.crm.common.shared.exceptions.types.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -15,6 +17,8 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
     @ExceptionHandler({BusinessException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public BusinessProblemDetails handleBusinessException(BusinessException exception) {
@@ -75,8 +79,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({Exception.class})
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public InternalServerProblemDetails handleException(Exception ex) {
-        // TODO: loglama altyapısı
-        System.out.println(ex);
+        logger.error(ex.getMessage());
         return new InternalServerProblemDetails();
     }
 }
