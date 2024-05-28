@@ -3,6 +3,8 @@ package com.turkcell.crm.common.exceptions.handlers;
 import com.turkcell.crm.common.exceptions.problem_details.*;
 import com.turkcell.crm.common.exceptions.types.*;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -60,6 +62,14 @@ public class GlobalExceptionHandler {
         ValidationProblemDetails validationProblemDetails = new ValidationProblemDetails();
         validationProblemDetails.setErrors(exception.getErrors());
         return validationProblemDetails;
+    }
+
+    @ExceptionHandler({BadCredentialsException.class, InternalAuthenticationServiceException.class})
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public AuthenticationProblemDetails handleBadCredentialsException() {
+        AuthenticationProblemDetails authenticationProblemDetails = new AuthenticationProblemDetails();
+        authenticationProblemDetails.setDetail("Invalid username or password.");
+        return authenticationProblemDetails;
     }
 
     @ExceptionHandler({Exception.class})

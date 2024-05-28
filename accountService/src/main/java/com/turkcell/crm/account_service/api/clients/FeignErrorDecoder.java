@@ -22,6 +22,10 @@ public class FeignErrorDecoder implements ErrorDecoder {
                 message = getProblemDetail(response, BusinessProblemDetails.class);
                 yield new BusinessException(message.getDetail());
             }
+            case 401 -> {
+                message = getProblemDetail(response, AuthenticationProblemDetails.class);
+                yield new AuthenticationException(message.getDetail());
+            }
             case 403 -> {
                 message = getProblemDetail(response, AuthorizationProblemDetails.class);
                 yield new AuthorizationException(message.getDetail());
