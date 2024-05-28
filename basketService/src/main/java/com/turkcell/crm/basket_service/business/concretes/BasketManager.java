@@ -9,6 +9,9 @@ import com.turkcell.crm.basket_service.entities.concretes.BasketItem;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class BasketManager implements BasketService {
@@ -18,14 +21,39 @@ public class BasketManager implements BasketService {
     public void addItem(AddItemToBasketRequest addItemToBasketRequest) {
         // TODO: customer id feign ile customer service'ten kontrol edilecek
         // TODO: productId feign ile product service'ten kontrol edilecek
-        this.basketRepository.addItemToBasket(addItemToBasketRequest.customerId(), new BasketItem(addItemToBasketRequest.productId()));
+        Basket basket = this.getById(addItemToBasketRequest.customerId());
+        if (basket == null) {
+            basket = new Basket(addItemToBasketRequest.customerId());
+        }
+        basket.getItems().add(new BasketItem(addItemToBasketRequest.productId()));
+        this.basketRepository.addOrUpdate(basket);
     }
 
     @Override
     public void removeItemFromBasket(RemoveItemFromBasketRequest removeItemFromBasketRequest) {
         // TODO: customer id feign ile customer service'ten kontrol edilecek
         // TODO: productId feign ile product service'ten kontrol edilecek
-        this.basketRepository.removeItemFromBasket(removeItemFromBasketRequest.customerId(), removeItemFromBasketRequest.productId());
+        Basket basket = this.basketRepository.getById(removeItemFromBasketRequest.customerId());
+        if (basket == null) {
+            return;
+        }
+
+        List<BasketItem> items = basket.getItems();
+        if (items.size() < 2) {
+            this.basketRepository.delete(removeItemFromBasketRequest.customerId());
+            return;
+        }
+
+        Optional<BasketItem> item = items.stream()
+                .filter(p -> p.getProductId().equals(removeItemFromBasketRequest.productId()))
+                .findFirst();
+
+        if (item.isEmpty()) {
+            return;
+        }
+
+        items.remove(item.get());
+        this.basketRepository.addOrUpdate(basket);
     }
 
     // TODO: order created event'i gelirse sepeti boşalt
