@@ -10,7 +10,6 @@ import com.turkcell.crm.account_service.business.mappers.AccountAddressMapper;
 import com.turkcell.crm.account_service.business.mappers.AccountAddressMapperImpl;
 import com.turkcell.crm.account_service.business.rules.AccountAddressBusinessRules;
 import com.turkcell.crm.account_service.business.rules.AccountBusinessRules;
-import com.turkcell.crm.account_service.business.rules.AccountTypeBusinessRules;
 import com.turkcell.crm.account_service.core.business.abstracts.MessageService;
 import com.turkcell.crm.account_service.data_access.abstracts.AccountAddressRepository;
 import com.turkcell.crm.account_service.data_access.abstracts.AccountRepository;
@@ -21,9 +20,6 @@ import com.turkcell.crm.common.exceptions.types.BusinessException;
 import com.turkcell.crm.common.exceptions.types.NotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -107,6 +103,7 @@ class AccountAddressManagerTest {
             accountAddressManager.add(accountId, request);
         });
     }
+
     @Test
     void add_ShouldThrowExceptionWhenAccountNotExists() {
         // Prepare
@@ -131,6 +128,7 @@ class AccountAddressManagerTest {
             accountAddressManager.add(accountId, request);
         });
     }
+
     @Test
     void add_ShouldThrowExceptionWhenAddressExitsInAccount() {
         // Prepare
@@ -156,6 +154,7 @@ class AccountAddressManagerTest {
             accountAddressManager.add(accountId, request);
         });
     }
+
     @Test
     void add_ShouldThrowExceptionWhenAddressNotBelongToAccountOwner() {
         // Prepare

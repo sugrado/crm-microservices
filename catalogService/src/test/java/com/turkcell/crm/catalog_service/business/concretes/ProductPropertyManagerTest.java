@@ -15,7 +15,6 @@ import com.turkcell.crm.catalog_service.entities.concretes.Category;
 import com.turkcell.crm.catalog_service.entities.concretes.Product;
 import com.turkcell.crm.catalog_service.entities.concretes.ProductProperty;
 import com.turkcell.crm.catalog_service.entities.concretes.Property;
-
 import com.turkcell.crm.common.exceptions.types.BusinessException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -279,7 +278,7 @@ class ProductPropertyManagerTest {
         DeletedProductPropertyResponse result = productPropertyManager.delete(anyInt(), anyInt());
 
         assertNotNull(productProperty.getDeletedDate());
-        assertEquals(productProperty.getId(),result.id());
+        assertEquals(productProperty.getId(), result.id());
         assertEquals(productProperty.getProperty().getId(), result.propertyId());
         assertEquals(productProperty.getProduct().getId(), result.productId());
 
@@ -308,7 +307,7 @@ class ProductPropertyManagerTest {
         when(messageService.getMessage(anyString())).thenReturn("Product property is already deleted");
 
         BusinessException exception = assertThrows(BusinessException.class, () -> {
-            productPropertyManager.delete(anyInt(),anyInt());
+            productPropertyManager.delete(anyInt(), anyInt());
         });
 
         assertEquals("Product property is already deleted", exception.getMessage());

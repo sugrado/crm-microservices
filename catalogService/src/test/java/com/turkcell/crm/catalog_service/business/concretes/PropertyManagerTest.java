@@ -19,7 +19,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 class PropertyManagerTest {
@@ -229,7 +230,7 @@ class PropertyManagerTest {
     @Test
     void getById_withValidProperty_shouldReturnGetByIdPropertyResponse() {
 
-        GetByIdPropertyResponse getByIdPropertyResponse = new GetByIdPropertyResponse("Test Name",1);
+        GetByIdPropertyResponse getByIdPropertyResponse = new GetByIdPropertyResponse("Test Name", 1);
         when(propertyRepository.findById(anyInt())).thenReturn(Optional.of(property));
 
         GetByIdPropertyResponse result = propertyManager.getById(1);
