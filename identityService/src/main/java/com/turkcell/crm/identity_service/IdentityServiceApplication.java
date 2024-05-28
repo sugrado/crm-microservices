@@ -8,9 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication(scanBasePackages = {Paths.CommonBasePackage, Paths.Identity.BasePackage})
 @EnableSecurity
 public class IdentityServiceApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(IdentityServiceApplication.class, args);
     }
-
 }

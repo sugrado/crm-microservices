@@ -1,10 +1,7 @@
 package com.turkcell.crm.common.exceptions.handlers;
 
 import com.turkcell.crm.common.exceptions.problem_details.*;
-import com.turkcell.crm.common.exceptions.types.AuthorizationException;
-import com.turkcell.crm.common.exceptions.types.BusinessException;
-import com.turkcell.crm.common.exceptions.types.NotFoundException;
-import com.turkcell.crm.common.exceptions.types.ValidationException;
+import com.turkcell.crm.common.exceptions.types.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -36,6 +33,12 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public AuthorizationProblemDetails handleAuthorizationException() {
         return new AuthorizationProblemDetails();
+    }
+
+    @ExceptionHandler({AuthenticationException.class})
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public AuthenticationProblemDetails handleAuthenticationException() {
+        return new AuthenticationProblemDetails();
     }
 
     @ExceptionHandler({MethodArgumentNotValidException.class})

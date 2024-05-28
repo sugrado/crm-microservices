@@ -1,5 +1,6 @@
 package com.turkcell.crm.identity_service.business.rules;
 
+import com.turkcell.crm.common.exceptions.types.AuthenticationException;
 import com.turkcell.crm.common.exceptions.types.BusinessException;
 import com.turkcell.crm.identity_service.business.constants.Messages;
 import com.turkcell.crm.identity_service.data_access.abstracts.UserRepository;
@@ -24,7 +25,7 @@ public class AuthBusinessRules {
     public void emailAndPasswordShouldBeMatch(String email, String password) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
         if (!authentication.isAuthenticated()) {
-            throw new BusinessException(Messages.AuthMessages.LOGIN_FAILED);
+            throw new AuthenticationException(Messages.AuthMessages.LOGIN_FAILED);
         }
     }
 }

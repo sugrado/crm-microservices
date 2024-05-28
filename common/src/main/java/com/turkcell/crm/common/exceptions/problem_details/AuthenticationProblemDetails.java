@@ -1,6 +1,4 @@
-package com.turkcell.crm.identity_service.core.utilities.exceptions.problem_details;
-
-import com.turkcell.crm.common.exceptions.problem_details.ProblemDetails;
+package com.turkcell.crm.common.exceptions.problem_details;
 
 public class AuthenticationProblemDetails extends ProblemDetails {
     public AuthenticationProblemDetails() {
