@@ -24,28 +24,32 @@ public class AccountsController {
     }
 
     @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     public List<GetAllAccountsResponse> getAll() {
         return this.accountService.getAll();
     }
 
     @GetMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
     public GetByIdAccountResponse getById(@PathVariable int id) {
         return this.accountService.getById(id);
     }
 
     @GetMapping("by-customer/{customerId}")
+    @ResponseStatus(HttpStatus.OK)
     public List<GetAllByCustomerIdResponse> getAllByCustomerId(@PathVariable int customerId) {
         return this.accountService.getAllByCustomerId(customerId);
     }
 
     @PatchMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
     public UpdatedAccountResponse update(@PathVariable int id, @Valid @RequestBody UpdateAccountRequest updateAccountRequest) {
         return this.accountService.update(id, updateAccountRequest);
     }
 
     @DeleteMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
     public DeleteAccountResponse delete(@PathVariable int id) {
         return this.accountService.delete(id);
     }
-
 }

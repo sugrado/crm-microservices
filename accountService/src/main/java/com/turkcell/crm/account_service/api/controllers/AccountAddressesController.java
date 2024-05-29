@@ -5,6 +5,7 @@ import com.turkcell.crm.account_service.business.dtos.requests.account_addresses
 import com.turkcell.crm.account_service.business.dtos.responses.account_addresses.CreatedAccountAddressResponse;
 import com.turkcell.crm.account_service.business.dtos.responses.account_addresses.DeletedAcountAddressResponse;
 import com.turkcell.crm.account_service.business.dtos.responses.account_addresses.GetAllByAccountIdResponse;
+import com.turkcell.crm.common.shared.dtos.accounts.GetByIdAccountAddressResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,11 +26,19 @@ public class AccountAddressesController {
     }
 
     @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     public List<GetAllByAccountIdResponse> getAllByAccountId(@PathVariable int accountId) {
         return this.accountAddressService.getAllByAccountId(accountId);
     }
 
+    @GetMapping("{addressId}")
+    @ResponseStatus(HttpStatus.OK)
+    public GetByIdAccountAddressResponse getById(@PathVariable int accountId, @PathVariable int addressId) {
+        return this.accountAddressService.getByAccountAndAddress(accountId, addressId);
+    }
+
     @DeleteMapping("{addressId}")
+    @ResponseStatus(HttpStatus.OK)
     public DeletedAcountAddressResponse delete(@PathVariable int accountId, @PathVariable int addressId) {
         return this.accountAddressService.delete(accountId, addressId);
     }

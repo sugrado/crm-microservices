@@ -13,6 +13,7 @@ import com.turkcell.crm.account_service.business.rules.AccountBusinessRules;
 import com.turkcell.crm.account_service.data_access.abstracts.AccountAddressRepository;
 import com.turkcell.crm.account_service.entities.concretes.Account;
 import com.turkcell.crm.account_service.entities.concretes.AccountAddress;
+import com.turkcell.crm.common.shared.dtos.accounts.GetByIdAccountAddressResponse;
 import com.turkcell.crm.common.shared.dtos.customers.GetValidatedCustomerAddressesListItemDto;
 import com.turkcell.crm.common.shared.dtos.customers.GetValidatedCustomerAddressesRequest;
 import lombok.RequiredArgsConstructor;
@@ -96,5 +97,12 @@ public class AccountAddressManager implements AccountAddressService {
         List<AccountAddress> accountAddressList = this.accountAddressRepository.findAllAccountAddressesByAccountId(accountId);
 
         return this.accountAddressMapper.toGetAllByAccountIdResponse(accountAddressList);
+    }
+
+    @Override
+    public GetByIdAccountAddressResponse getByAccountAndAddress(int accountId, int addressId) {
+        Optional<AccountAddress> accountAddress = this.accountAddressRepository.findByAccountIdAndAddressId(accountId, addressId);
+        this.accountAddressBusinessRules.accountAddressShouldBeExist(accountAddress);
+        return this.accountAddressMapper.toGetByIdAccountAddressResponse(accountAddress.get());
     }
 }
