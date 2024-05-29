@@ -6,7 +6,7 @@ import com.turkcell.crm.catalog_service.data_access.abstracts.ProductPropertyRep
 import com.turkcell.crm.catalog_service.entities.concretes.Product;
 import com.turkcell.crm.catalog_service.entities.concretes.ProductProperty;
 import com.turkcell.crm.catalog_service.entities.concretes.Property;
-import com.turkcell.crm.common.exceptions.types.BusinessException;
+import com.turkcell.crm.common.shared.exceptions.types.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

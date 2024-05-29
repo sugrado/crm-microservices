@@ -17,7 +17,7 @@ import com.turkcell.crm.catalog_service.data_access.abstracts.ProductRepository;
 import com.turkcell.crm.catalog_service.entities.concretes.Category;
 import com.turkcell.crm.catalog_service.entities.concretes.Product;
 import com.turkcell.crm.catalog_service.kafka.producers.ProductProducer;
-import com.turkcell.crm.common.exceptions.types.BusinessException;
+import com.turkcell.crm.common.shared.exceptions.types.BusinessException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

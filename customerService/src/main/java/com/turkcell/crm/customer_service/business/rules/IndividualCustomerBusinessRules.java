@@ -1,7 +1,7 @@
 package com.turkcell.crm.customer_service.business.rules;
 
-import com.turkcell.crm.common.exceptions.types.BusinessException;
-import com.turkcell.crm.common.exceptions.types.NotFoundException;
+import com.turkcell.crm.common.shared.exceptions.types.BusinessException;
+import com.turkcell.crm.common.shared.exceptions.types.NotFoundException;
 import com.turkcell.crm.customer_service.adapters.mernis.CheckNationalityDTO;
 import com.turkcell.crm.customer_service.adapters.mernis.CheckNationalityService;
 import com.turkcell.crm.customer_service.business.constants.messages.Messages;

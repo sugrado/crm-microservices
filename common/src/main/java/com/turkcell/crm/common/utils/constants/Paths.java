@@ -1,7 +1,9 @@
 package com.turkcell.crm.common.utils.constants;
 
 public class Paths {
-    public static final String CommonBasePackage = "com.turkcell.crm.common";
+    public static class Common {
+        public static final String SharedPackage = "com.turkcell.crm.common.shared";
+    }
 
     public static class Customer {
         public static final String BasePackage = "com.turkcell.crm.customer_service";

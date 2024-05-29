@@ -7,9 +7,9 @@ import com.turkcell.crm.account_service.data_access.abstracts.AccountAddressRepo
 import com.turkcell.crm.account_service.data_access.abstracts.AccountRepository;
 import com.turkcell.crm.account_service.entities.concretes.Account;
 import com.turkcell.crm.account_service.entities.concretes.AccountAddress;
-import com.turkcell.crm.common.dtos.customers.CheckAddressAndCustomerMatchRequest;
-import com.turkcell.crm.common.exceptions.types.BusinessException;
-import com.turkcell.crm.common.exceptions.types.NotFoundException;
+import com.turkcell.crm.common.shared.dtos.customers.CheckAddressAndCustomerMatchRequest;
+import com.turkcell.crm.common.shared.exceptions.types.BusinessException;
+import com.turkcell.crm.common.shared.exceptions.types.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

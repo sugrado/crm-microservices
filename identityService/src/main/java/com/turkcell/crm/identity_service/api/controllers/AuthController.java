@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -25,6 +26,7 @@ public class AuthController extends BaseController {
     private int refreshTokenExpirationDays;
 
     @PostMapping("/register")
+    @ResponseStatus(HttpStatus.OK)
     public String register(@RequestBody @Valid RegisterRequest request, HttpServletResponse response) {
         RegisteredResponse registeredResponse = authService.register(request);
         setCookie(refreshTokenCookieKey, registeredResponse.getRefreshToken(), calculateCookieExpirationSeconds(refreshTokenExpirationDays), response);
@@ -32,6 +34,7 @@ public class AuthController extends BaseController {
     }
 
     @PostMapping("/login")
+    @ResponseStatus(HttpStatus.OK)
     public String login(@RequestBody @Valid LoginRequest loginRequest, HttpServletResponse response, HttpServletRequest request) {
         LoggedInResponse loggedInResponse = authService.login(loginRequest, getIpAddress(request));
         setCookie(refreshTokenCookieKey, loggedInResponse.getRefreshToken(), calculateCookieExpirationSeconds(refreshTokenExpirationDays), response);
@@ -39,6 +42,7 @@ public class AuthController extends BaseController {
     }
 
     @PostMapping("/refresh")
+    @ResponseStatus(HttpStatus.OK)
     public String refreshToken(HttpServletRequest request, HttpServletResponse response) {
         String refreshToken = getCookie(request, refreshTokenCookieKey);
         RefreshedTokenResponse refreshedTokenResponse = authService.refreshToken(refreshToken, getIpAddress(request));
@@ -46,8 +50,10 @@ public class AuthController extends BaseController {
         return refreshedTokenResponse.getAccessToken();
     }
 
-    @GetMapping("/test")
-    public String test() {
-        return "Test";
+    @GetMapping("/validate-token")
+    @ResponseStatus(HttpStatus.OK)
+    public void validateToken(HttpServletRequest request) {
+        var authHeader = request.getHeader("Authorization");
+        // TODO: implement this method
     }
 }

@@ -1,6 +1,6 @@
 package com.turkcell.crm.identity_service.business.concretes;
 
-import com.turkcell.crm.common.exceptions.types.BusinessException;
+import com.turkcell.crm.common.shared.exceptions.types.BusinessException;
 import com.turkcell.crm.identity_service.business.rules.UserBusinessRules;
 import com.turkcell.crm.identity_service.data_access.abstracts.UserRepository;
 import com.turkcell.crm.identity_service.entities.concretes.User;
