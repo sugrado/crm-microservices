@@ -28,6 +28,7 @@ public class Paths {
     public static class Basket {
         public static final String BasePackage = "com.turkcell.crm.basket_service";
     }
+
     public static class Order {
         public static final String BasePackage = "com.turkcell.crm.order_service";
     }

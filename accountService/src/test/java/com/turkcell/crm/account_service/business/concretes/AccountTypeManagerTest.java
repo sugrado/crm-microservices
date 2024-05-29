@@ -11,20 +11,16 @@ import com.turkcell.crm.account_service.business.rules.AccountTypeBusinessRules;
 import com.turkcell.crm.account_service.core.business.abstracts.MessageService;
 import com.turkcell.crm.account_service.data_access.abstracts.AccountTypeRepository;
 import com.turkcell.crm.account_service.entities.concretes.AccountType;
-import com.turkcell.crm.common.exceptions.types.BusinessException;
-import com.turkcell.crm.common.exceptions.types.NotFoundException;
+import com.turkcell.crm.common.shared.exceptions.types.BusinessException;
+import com.turkcell.crm.common.shared.exceptions.types.NotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
@@ -45,9 +41,9 @@ class AccountTypeManagerTest {
 
         messageService = mock(MessageService.class);
 
-        AccountTypeBusinessRules accountTypeBusinessRules = new AccountTypeBusinessRules(messageService,accountTypeRepository);
+        AccountTypeBusinessRules accountTypeBusinessRules = new AccountTypeBusinessRules(messageService, accountTypeRepository);
 
-        accountTypeManager =new AccountTypeManager(accountTypeRepository,accountTypeMapper,accountTypeBusinessRules);
+        accountTypeManager = new AccountTypeManager(accountTypeRepository, accountTypeMapper, accountTypeBusinessRules);
     }
 
     @Test
@@ -76,6 +72,7 @@ class AccountTypeManagerTest {
 
         assertEquals(expectedResponse.id(), response.id());
     }
+
     @Test
     void add_ShouldThrowExceptionWhenAccountTypeExistWithSameName() {
         // Prepare
@@ -94,8 +91,8 @@ class AccountTypeManagerTest {
         when(accountTypeRepository.findByName(anyString())).thenReturn(Optional.of(new AccountType()));
 
         // Verify
-        assertThrows(BusinessException.class,()->{
-           accountTypeManager.add(request);
+        assertThrows(BusinessException.class, () -> {
+            accountTypeManager.add(request);
         });
     }
 
@@ -120,6 +117,7 @@ class AccountTypeManagerTest {
 
         assertEquals(expectedResponse.id(), response.id());
     }
+
     @Test
     void getById_ShouldThrowExceptionWhenNotExistingAccountType() {
         // Prepare
@@ -136,10 +134,11 @@ class AccountTypeManagerTest {
 
         //verify
 
-        assertThrows(NotFoundException.class,()->{
+        assertThrows(NotFoundException.class, () -> {
             accountTypeManager.getById(anyInt());
         });
     }
+
     @Test
     void getById_ShouldThrowExceptionAccountTypeIsDeleted() {
         // Prepare
@@ -157,7 +156,7 @@ class AccountTypeManagerTest {
 
         //verify
 
-        assertThrows(BusinessException.class,()->{
+        assertThrows(BusinessException.class, () -> {
             accountTypeManager.delete(anyInt());
         });
     }
@@ -179,11 +178,12 @@ class AccountTypeManagerTest {
         when(accountTypeRepository.findById(anyInt())).thenReturn(Optional.empty());
 
         // Verify
-        assertThrows(NotFoundException.class,()->{
+        assertThrows(NotFoundException.class, () -> {
             accountTypeManager.delete(anyInt());
         });
 
     }
+
     @Test
     void delete_ShouldThrowExceptionWhenNotExistingAccountType() {
         // Prepare
@@ -236,4 +236,5 @@ class AccountTypeManagerTest {
         assertEquals(getAllAccountTypeResponseList.get(1).id(), response.get(1).id());
 
 
-}}
+    }
+}

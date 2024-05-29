@@ -14,12 +14,12 @@ public class BasketBusinessRules {
     private final AccountClient accountClient;
     private final CatalogClient catalogClient;
 
-    public void accountShouldBeExist(String stringAccountId){
-        int accountId= Integer.parseInt(stringAccountId);
+    public void accountShouldBeExist(String stringAccountId) {
+        int accountId = Integer.parseInt(stringAccountId);
         this.accountClient.checkIfAccountExist(accountId);
     }
 
-    public void productShouldBeExist(String stringProductId){
+    public void productShouldBeExist(String stringProductId) {
         int productId = Integer.parseInt(stringProductId);
         this.catalogClient.checkIfProductExist(productId);
     }

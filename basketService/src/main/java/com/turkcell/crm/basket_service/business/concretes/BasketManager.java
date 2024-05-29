@@ -1,6 +1,5 @@
 package com.turkcell.crm.basket_service.business.concretes;
 
-import com.turkcell.crm.basket_service.api.clients.CustomerClient;
 import com.turkcell.crm.basket_service.business.abstracts.BasketService;
 import com.turkcell.crm.basket_service.business.dtos.requests.AddItemToBasketRequest;
 import com.turkcell.crm.basket_service.business.dtos.requests.RemoveItemFromBasketRequest;

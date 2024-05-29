@@ -7,5 +7,5 @@ import org.springframework.web.bind.annotation.PathVariable;
 @FeignClient(name = "catalogService", path = "catalog-service/api/v1")
 public interface CatalogClient {
     @GetMapping("/products/{id}")
-    void checkIfProductExist (@PathVariable int id);
+    void checkIfProductExist(@PathVariable int id);
 }
