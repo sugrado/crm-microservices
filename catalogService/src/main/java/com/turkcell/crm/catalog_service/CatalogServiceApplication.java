@@ -5,7 +5,7 @@ import com.turkcell.crm.core.annotations.EnableSecurity;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication(scanBasePackages = {Paths.CommonBasePackage, Paths.Catalog.BasePackage})
+@SpringBootApplication(scanBasePackages = {Paths.Common.SharedPackage, Paths.Catalog.BasePackage})
 @EnableSecurity
 public class CatalogServiceApplication {
 

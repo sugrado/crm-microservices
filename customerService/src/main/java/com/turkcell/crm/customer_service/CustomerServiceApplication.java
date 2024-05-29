@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
-@SpringBootApplication(scanBasePackages = {Paths.CommonBasePackage, Paths.Customer.BasePackage})
+@SpringBootApplication(scanBasePackages = {Paths.Common.SharedPackage, Paths.Customer.BasePackage})
 @EnableSecurity
 public class CustomerServiceApplication {
     public static void main(String[] args) {

@@ -5,7 +5,7 @@ import com.turkcell.crm.core.annotations.EnableSecurity;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication(scanBasePackages = {Paths.CommonBasePackage, Paths.Search.BasePackage})
+@SpringBootApplication(scanBasePackages = {Paths.Common.SharedPackage, Paths.Search.BasePackage})
 @EnableSecurity
 public class SearchServiceApplication {
     public static void main(String[] args) {

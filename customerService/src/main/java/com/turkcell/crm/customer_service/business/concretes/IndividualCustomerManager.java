@@ -1,8 +1,8 @@
 package com.turkcell.crm.customer_service.business.concretes;
 
-import com.turkcell.crm.common.kafka.events.CustomerCreatedEvent;
-import com.turkcell.crm.common.kafka.events.CustomerDeletedEvent;
-import com.turkcell.crm.common.kafka.events.CustomerUpdatedEvent;
+import com.turkcell.crm.common.shared.kafka.events.CustomerCreatedEvent;
+import com.turkcell.crm.common.shared.kafka.events.CustomerDeletedEvent;
+import com.turkcell.crm.common.shared.kafka.events.CustomerUpdatedEvent;
 import com.turkcell.crm.customer_service.business.abstracts.CustomerService;
 import com.turkcell.crm.customer_service.business.abstracts.IndividualCustomerService;
 import com.turkcell.crm.customer_service.business.dtos.requests.individual_customers.CreateIndividualCustomerRequest;

@@ -47,4 +47,5 @@ public class AccountsController {
     public DeleteAccountResponse delete(@PathVariable int id) {
         return this.accountService.delete(id);
     }
+
 }

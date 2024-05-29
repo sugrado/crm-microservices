@@ -5,7 +5,7 @@ import com.turkcell.crm.catalog_service.business.dtos.requests.property.CreatePr
 import com.turkcell.crm.catalog_service.core.business.abstracts.MessageService;
 import com.turkcell.crm.catalog_service.data_access.abstracts.PropertyRepository;
 import com.turkcell.crm.catalog_service.entities.concretes.Property;
-import com.turkcell.crm.common.exceptions.types.BusinessException;
+import com.turkcell.crm.common.shared.exceptions.types.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -5,8 +5,8 @@ import com.turkcell.crm.account_service.business.dtos.responses.account_types.Cr
 import com.turkcell.crm.account_service.business.dtos.responses.account_types.DeletedAccountTypeResponse;
 import com.turkcell.crm.account_service.business.dtos.responses.account_types.GetAllAccountTypeResponse;
 import com.turkcell.crm.account_service.business.dtos.responses.account_types.GetByIdAccountTypeResponse;
-import com.turkcell.crm.account_service.core.utilities.mapping.MapstructService;
 import com.turkcell.crm.account_service.entities.concretes.AccountType;
+import com.turkcell.crm.common.shared.mapping.MapstructService;
 import org.mapstruct.Mapper;
 
 import java.util.List;

@@ -11,6 +11,8 @@ import com.turkcell.crm.account_service.business.rules.AccountBusinessRules;
 import com.turkcell.crm.account_service.data_access.abstracts.AccountRepository;
 import com.turkcell.crm.account_service.entities.concretes.Account;
 import com.turkcell.crm.account_service.entities.enums.Status;
+import com.turkcell.crm.account_service.kafka.producers.AccountProducer;
+import com.turkcell.crm.common.shared.kafka.events.AccountDeletedEvent;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,7 @@ public class AccountManager implements AccountService {
     private final AccountAddressService accountAddressService;
     private final AccountBusinessRules accountBusinessRules;
     private final AccountTypeService accountTypeService;
+    private final AccountProducer accountProducer;
 
     @Override
     @Transactional
@@ -90,6 +93,11 @@ public class AccountManager implements AccountService {
         deletedAccount.setStatus(Status.PASSIVE);
 
         this.accountRepository.save(deletedAccount);
+
+        AccountDeletedEvent accountDeletedEvent = new AccountDeletedEvent();
+        accountDeletedEvent.setId(id);
+
+        this.accountProducer.send(accountDeletedEvent);
 
         return this.accountMapper.toDeleteAccountResponse(deletedAccount);
     }

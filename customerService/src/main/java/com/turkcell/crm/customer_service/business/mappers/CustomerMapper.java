@@ -1,8 +1,8 @@
 package com.turkcell.crm.customer_service.business.mappers;
 
+import com.turkcell.crm.common.shared.mapping.MapstructService;
 import com.turkcell.crm.customer_service.business.dtos.requests.customers.CreateCustomerRequest;
 import com.turkcell.crm.customer_service.business.dtos.requests.customers.UpdateCustomerRequest;
-import com.turkcell.crm.customer_service.core.utilities.mapping.MapstructService;
 import com.turkcell.crm.customer_service.entities.concretes.Customer;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
