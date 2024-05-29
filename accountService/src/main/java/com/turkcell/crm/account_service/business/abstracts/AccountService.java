@@ -18,4 +18,6 @@ public interface AccountService {
     DeleteAccountResponse delete(int id);
 
     List<GetAllByCustomerIdResponse> getAllByCustomerId(int customerId);
+
+
 }

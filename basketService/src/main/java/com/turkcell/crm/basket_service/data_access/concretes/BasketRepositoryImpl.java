@@ -26,7 +26,7 @@ public class BasketRepositoryImpl implements BasketRepository {
     }
 
     public void addOrUpdate(Basket basket) {
-        this.hashOperations.put(KEY, basket.getCustomerId(), basket);
+        this.hashOperations.put(KEY, basket.getAccountId(), basket);
     }
 
     public void delete(String id) {

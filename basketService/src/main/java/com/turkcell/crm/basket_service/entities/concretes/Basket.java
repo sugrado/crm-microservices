@@ -12,15 +12,15 @@ import java.util.List;
 @Getter
 @Setter
 public class Basket implements Serializable {
-    private String customerId;
+    private String accountId;
     private List<BasketItem> items;
 
     public Basket() {
         this.items = new ArrayList<>();
     }
 
-    public Basket(String customerId) {
-        this.customerId = customerId;
+    public Basket(String accountId) {
+        this.accountId = accountId;
         this.items = new ArrayList<>();
     }
 }

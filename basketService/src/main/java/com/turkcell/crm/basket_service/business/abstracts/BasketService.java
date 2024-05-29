@@ -9,7 +9,7 @@ public interface BasketService {
 
     void removeItemFromBasket(RemoveItemFromBasketRequest removeItemFromBasketRequest);
 
-    void emptyBasket(String customerId);
+    void emptyBasket(String accountId);
 
     Basket getById(String id);
 }

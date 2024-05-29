@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotNull;
 
 public record AddItemToBasketRequest(
         @NotNull
-        String customerId,
+        String accountId,
         @NotNull
         String productId
 ) {

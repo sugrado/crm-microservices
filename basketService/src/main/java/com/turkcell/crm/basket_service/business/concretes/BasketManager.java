@@ -22,14 +22,14 @@ public class BasketManager implements BasketService {
 
     @Override
     public void addItem(AddItemToBasketRequest addItemToBasketRequest) {
-        // TODO: customer id feign ile customer service'ten kontrol edilecek
-        this.basketBusinessRules.customerShouldBeExist(addItemToBasketRequest.customerId());
+        // TODO: customer id feign ile account service'ten kontrol edilecek
+        this.basketBusinessRules.accountShouldBeExist(addItemToBasketRequest.accountId());
         // TODO: productId feign ile product service'ten kontrol edilecek
         this.basketBusinessRules.productShouldBeExist(addItemToBasketRequest.productId());
 
-        Basket basket = this.getById(addItemToBasketRequest.customerId());
+        Basket basket = this.getById(addItemToBasketRequest.accountId());
         if (basket == null) {
-            basket = new Basket(addItemToBasketRequest.customerId());
+            basket = new Basket(addItemToBasketRequest.accountId());
         }
         basket.getItems().add(new BasketItem(addItemToBasketRequest.productId()));
         this.basketRepository.addOrUpdate(basket);
@@ -37,20 +37,20 @@ public class BasketManager implements BasketService {
 
     @Override
     public void removeItemFromBasket(RemoveItemFromBasketRequest removeItemFromBasketRequest) {
-        // TODO: customer id feign ile customer service'ten kontrol edilecek
-        this.basketBusinessRules.customerShouldBeExist(removeItemFromBasketRequest.customerId());
+        // TODO: customer id feign ile account service'ten kontrol edilecek
+        this.basketBusinessRules.accountShouldBeExist(removeItemFromBasketRequest.accountId());
         // TODO: productId feign ile product service'ten kontrol edilecek
         this.basketBusinessRules.productShouldBeExist(removeItemFromBasketRequest.productId());
 
         //TODO: business rule eklenecek mi?
-        Basket basket = this.basketRepository.getById(removeItemFromBasketRequest.customerId());
+        Basket basket = this.basketRepository.getById(removeItemFromBasketRequest.accountId());
         if (basket == null) {
             return;
         }
 
         List<BasketItem> items = basket.getItems();
         if (items.size() < 2) {
-            this.basketRepository.delete(removeItemFromBasketRequest.customerId());
+            this.basketRepository.delete(removeItemFromBasketRequest.accountId());
             return;
         }
 
@@ -69,8 +69,8 @@ public class BasketManager implements BasketService {
     // TODO: order created event'i gelirse sepeti boşalt
     //TODO : cusomer silinirse sepetş boşalt. (Kafka ile gerçekleştirdik isterseniz bir bakın)
     @Override
-    public void emptyBasket(String customerId) {
-        this.basketRepository.delete(customerId);
+    public void emptyBasket(String accountId) {
+        this.basketRepository.delete(accountId);
     }
 
     @Override
