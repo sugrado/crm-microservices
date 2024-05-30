@@ -10,6 +10,7 @@ import com.turkcell.crm.catalog_service.business.rules.ProductBusinessRules;
 import com.turkcell.crm.catalog_service.data_access.abstracts.ProductRepository;
 import com.turkcell.crm.catalog_service.entities.concretes.Product;
 import com.turkcell.crm.catalog_service.kafka.producers.ProductProducer;
+import com.turkcell.crm.common.shared.dtos.catalogs.GetAllForCompleteOrderResponse;
 import com.turkcell.crm.common.shared.kafka.events.ProductCreatedEvent;
 import com.turkcell.crm.common.shared.kafka.events.ProductDeletedEvent;
 import com.turkcell.crm.common.shared.kafka.events.ProductUpdatedEvent;
@@ -117,5 +118,14 @@ public class ProductManager implements ProductService {
         this.productBusinessRules.productShouldNotBeDeleted(optionalProduct);
 
         return optionalProduct.get();
+    }
+
+    @Override
+    public List<GetAllForCompleteOrderResponse> getAllForCompleteOrder(List<Integer> productIdList) {
+        List<Product> products = this.productRepository.findAllByIdIsIn(productIdList);
+
+        List<GetAllForCompleteOrderResponse> getAllForCompleteOrderResponseList = this.productMapper.toGetAllForCompleteOrderResponse(products);
+
+        return getAllForCompleteOrderResponseList;
     }
 }

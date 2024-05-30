@@ -7,6 +7,7 @@ import com.turkcell.crm.order_service.business.dtos.responses.GetAllOrdersRespon
 import com.turkcell.crm.order_service.business.dtos.responses.GetByIdOrderResponse;
 import com.turkcell.crm.order_service.entities.concretes.Order;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.List;
 
@@ -16,6 +17,9 @@ public interface OrderMapper {
 
     List<GetAllOrdersResponse> toGetAllOrdersResponseList(List<Order> orders);
 
+    @Mapping(target = "accountAddressId",source = "accountAddressId")
+    @Mapping(target = "accountId",source = "accountId")
+    @Mapping(target = "totalPrice",source = "totalPrice")
     GetAllOrdersByAccountIdResponse toGetAllOrdersByAccountIdResponse(Order order);
 
     List<GetAllOrdersByAccountIdResponse> toGetAllOrdersByAccountIdResponseList(List<Order> orders);
