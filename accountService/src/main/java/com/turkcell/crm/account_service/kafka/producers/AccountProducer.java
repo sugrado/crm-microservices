@@ -1,6 +1,6 @@
 package com.turkcell.crm.account_service.kafka.producers;
 
-import com.turkcell.crm.common.shared.kafka.events.AccountDeletedEvent;
+import com.turkcell.crm.common.shared.kafka.events.accounts.AccountDeletedEvent;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

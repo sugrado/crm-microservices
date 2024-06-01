@@ -101,6 +101,7 @@ public class AccountAddressManager implements AccountAddressService {
 
     @Override
     public GetByIdAccountAddressResponse getByAccountAndAddress(int accountId, int addressId) {
+        this.accountAddressBusinessRules.addressMustBelongToAccountOwner(accountId, addressId);
         Optional<AccountAddress> accountAddress = this.accountAddressRepository.findByAccountIdAndAddressId(accountId, addressId);
         this.accountAddressBusinessRules.accountAddressShouldBeExist(accountAddress);
         return this.accountAddressMapper.toGetByIdAccountAddressResponse(accountAddress.get());
