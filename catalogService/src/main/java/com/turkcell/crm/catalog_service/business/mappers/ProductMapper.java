@@ -3,13 +3,14 @@ package com.turkcell.crm.catalog_service.business.mappers;
 import com.turkcell.crm.catalog_service.business.dtos.requests.product.CreateProductRequest;
 import com.turkcell.crm.catalog_service.business.dtos.requests.product.UpdateProductRequest;
 import com.turkcell.crm.catalog_service.business.dtos.responses.product.*;
-import com.turkcell.crm.catalog_service.business.dtos.responses.product_property.ProductPropertyDto;
 import com.turkcell.crm.catalog_service.entities.concretes.Product;
 import com.turkcell.crm.catalog_service.entities.concretes.ProductProperty;
 import com.turkcell.crm.common.shared.dtos.catalogs.GetAllForCompleteOrderResponse;
-import com.turkcell.crm.common.shared.kafka.events.ProductCreatedEvent;
-import com.turkcell.crm.common.shared.kafka.events.ProductDeletedEvent;
-import com.turkcell.crm.common.shared.kafka.events.ProductUpdatedEvent;
+import com.turkcell.crm.common.shared.dtos.catalogs.GetByIdProductResponse;
+import com.turkcell.crm.common.shared.dtos.catalogs.ProductPropertyDto;
+import com.turkcell.crm.common.shared.kafka.events.catalogs.ProductCreatedEvent;
+import com.turkcell.crm.common.shared.kafka.events.catalogs.ProductDeletedEvent;
+import com.turkcell.crm.common.shared.kafka.events.catalogs.ProductUpdatedEvent;
 import com.turkcell.crm.common.shared.mapping.MapstructService;
 import org.mapstruct.*;
 

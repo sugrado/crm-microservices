@@ -5,6 +5,8 @@ import com.turkcell.crm.catalog_service.business.dtos.requests.product.UpdatePro
 import com.turkcell.crm.catalog_service.business.dtos.responses.product.*;
 import com.turkcell.crm.catalog_service.entities.concretes.Product;
 import com.turkcell.crm.common.shared.dtos.catalogs.GetAllForCompleteOrderResponse;
+import com.turkcell.crm.common.shared.dtos.catalogs.GetByIdProductResponse;
+import com.turkcell.crm.common.shared.kafka.events.orders.OrderCreatedEventProduct;
 
 import java.util.List;
 
@@ -24,4 +26,6 @@ public interface ProductService {
     Product getByIdForProductPropertyManager(int id);
 
     List<GetAllForCompleteOrderResponse> getAllForCompleteOrder(List<Integer> productIdList);
+
+    void decreaseStocks(List<OrderCreatedEventProduct> products);
 }

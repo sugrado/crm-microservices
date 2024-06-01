@@ -5,6 +5,7 @@ import com.turkcell.crm.catalog_service.business.dtos.requests.product.CreatePro
 import com.turkcell.crm.catalog_service.business.dtos.requests.product.UpdateProductRequest;
 import com.turkcell.crm.catalog_service.business.dtos.responses.product.*;
 import com.turkcell.crm.common.shared.dtos.catalogs.GetAllForCompleteOrderResponse;
+import com.turkcell.crm.common.shared.dtos.catalogs.GetByIdProductResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -49,7 +50,7 @@ public class ProductsController {
     }
 
     @PostMapping("for-complete-order")
-    public  List<GetAllForCompleteOrderResponse> getAllForCompleteOrder(@RequestParam List<Integer> productIdList){
+    public List<GetAllForCompleteOrderResponse> getAllForCompleteOrder(@RequestParam List<Integer> productIdList) {
         return this.productService.getAllForCompleteOrder(productIdList);
     }
 }
