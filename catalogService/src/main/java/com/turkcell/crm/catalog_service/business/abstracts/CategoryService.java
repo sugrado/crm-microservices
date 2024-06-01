@@ -18,5 +18,5 @@ public interface CategoryService {
 
     DeletedCategoryResponse delete(int id);
 
-    Category getByIdForProductManager(int id);
+    Category getByIdEntity(int id);
 }

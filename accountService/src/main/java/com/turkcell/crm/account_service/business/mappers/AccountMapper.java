@@ -5,6 +5,8 @@ import com.turkcell.crm.account_service.business.dtos.requests.accounts.UpdateAc
 import com.turkcell.crm.account_service.business.dtos.responses.accounts.*;
 import com.turkcell.crm.account_service.entities.concretes.Account;
 import com.turkcell.crm.common.shared.dtos.accounts.GetByIdAccountResponse;
+import com.turkcell.crm.common.shared.kafka.events.accounts.AccountCreatedEvent;
+import com.turkcell.crm.common.shared.kafka.events.accounts.AccountUpdatedEvent;
 import com.turkcell.crm.common.shared.mapping.MapstructService;
 import org.mapstruct.*;
 
@@ -40,4 +42,16 @@ public interface AccountMapper {
 
     @Mapping(target = "typeId", source = "type.id")
     DeleteAccountResponse toDeleteAccountResponse(Account account);
+
+    @Mapping(target = "typeId", source = "type.id")
+    @Mapping(target = "type", source = "type.name")
+    @Mapping(target = "addressId", source = "address.id")
+    @Mapping(target = "accountAddressId", source = "accountAddress.id")
+    AccountCreatedEvent toAccountCreatedEvent(Account account);
+
+    @Mapping(target = "typeId", source = "type.id")
+    @Mapping(target = "type", source = "type.name")
+    @Mapping(target = "addressId", source = "address.id")
+    @Mapping(target = "accountAddressId", source = "accountAddress.id")
+    AccountUpdatedEvent toAccountUpdatedEvent(Account account);
 }

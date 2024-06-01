@@ -1,6 +1,6 @@
 package com.turkcell.crm.common.shared.kafka.events.customers;
 
-public class CustomerUpdatedEvent {
+public class IndividualCustomerCreatedEvent {
     private int id;
     private String firstName;
     private String middleName;
@@ -8,7 +8,7 @@ public class CustomerUpdatedEvent {
     private String nationalityId;
     private String mobilePhone;
 
-    public CustomerUpdatedEvent(int id, String firstName, String middleName, String lastName, String nationalityId, String mobilePhone) {
+    public IndividualCustomerCreatedEvent(int id, String firstName, String middleName, String lastName, String nationalityId, String mobilePhone) {
         this.id = id;
         this.firstName = firstName;
         this.middleName = middleName;
@@ -17,7 +17,7 @@ public class CustomerUpdatedEvent {
         this.mobilePhone = mobilePhone;
     }
 
-    public CustomerUpdatedEvent() {
+    public IndividualCustomerCreatedEvent() {
     }
 
     public int getId() {

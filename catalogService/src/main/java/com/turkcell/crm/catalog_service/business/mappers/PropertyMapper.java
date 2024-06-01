@@ -1,11 +1,11 @@
 package com.turkcell.crm.catalog_service.business.mappers;
 
 import com.turkcell.crm.catalog_service.business.dtos.requests.property.CreatePropertyRequest;
+import com.turkcell.crm.catalog_service.business.dtos.requests.property.UpdatePropertyRequest;
 import com.turkcell.crm.catalog_service.business.dtos.responses.property.*;
 import com.turkcell.crm.catalog_service.entities.concretes.Property;
 import com.turkcell.crm.common.shared.mapping.MapstructService;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.*;
 
 import java.util.List;
 
@@ -30,4 +30,10 @@ public interface PropertyMapper {
 
     @Mapping(source = "category.id", target = "categoryId")
     DeletePropertyResponse toDeletePropertyResponse(Property property);
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void updatePropertyFromRequest(UpdatePropertyRequest updatePropertyRequest, @MappingTarget Property property);
+
+    @Mapping(source = "category.id", target = "categoryId")
+    UpdatedPropertyResponse toUpdatedPropertyResponse(Property property);
 }

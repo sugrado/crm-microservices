@@ -1,13 +1,13 @@
 package com.turkcell.crm.common.shared.kafka.events.customers;
 
-public class CustomerDeletedEvent {
+public class IndividualCustomerDeletedEvent {
     private int id;
 
-    public CustomerDeletedEvent(int id) {
+    public IndividualCustomerDeletedEvent(int id) {
         this.id = id;
     }
 
-    public CustomerDeletedEvent() {
+    public IndividualCustomerDeletedEvent() {
     }
 
     public int getId() {

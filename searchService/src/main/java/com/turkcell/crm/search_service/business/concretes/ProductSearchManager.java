@@ -32,7 +32,7 @@ public class ProductSearchManager implements ProductSearchService {
     }
 
     @Override
-    public List<Product> searchProducts(DynamicQuery dynamicQuery) {
+    public List<Product> search(DynamicQuery dynamicQuery) {
         return searchService.dynamicSearch(dynamicQuery, Product.class);
     }
 

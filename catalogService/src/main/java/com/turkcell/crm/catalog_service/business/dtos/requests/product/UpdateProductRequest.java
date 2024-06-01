@@ -12,6 +12,8 @@ public record UpdateProductRequest(
         @NotNull
         double price,
         @NotNull
-        int unitsInStock
+        int unitsInStock,
+        @NotNull
+        int categoryId
 ) {
 }

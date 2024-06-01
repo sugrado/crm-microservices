@@ -65,7 +65,6 @@ public class ProductPropertyManager implements ProductPropertyService {
         Optional<ProductProperty> optionalProductProperty = this.productPropertyRepository.findByProductIdAndPropertyId(productId, propertyId);
 
         this.productPropertyBusinessRules.productPropertyShouldBeExists(optionalProductProperty);
-        this.productPropertyBusinessRules.productPropertyShouldNotBeDeleted(optionalProductProperty);
 
         return this.productPropertyMapper.toGetByIdProductPropertyResponse(optionalProductProperty.get());
     }
@@ -75,7 +74,6 @@ public class ProductPropertyManager implements ProductPropertyService {
         Optional<ProductProperty> optionalProductProperty = this.productPropertyRepository.findByProductIdAndPropertyId(productId, propertyId);
 
         this.productPropertyBusinessRules.productPropertyShouldBeExists(optionalProductProperty);
-        this.productPropertyBusinessRules.productPropertyShouldNotBeDeleted(optionalProductProperty);
 
         ProductProperty productProperty = optionalProductProperty.get();
 
@@ -91,7 +89,6 @@ public class ProductPropertyManager implements ProductPropertyService {
         Optional<ProductProperty> optionalProductProperty = this.productPropertyRepository.findByProductIdAndPropertyId(productId, propertyId);
 
         this.productPropertyBusinessRules.productPropertyShouldBeExists(optionalProductProperty);
-        this.productPropertyBusinessRules.productPropertyShouldNotBeDeleted(optionalProductProperty);
 
         ProductProperty productPropertyToDelete = optionalProductProperty.get();
         productPropertyToDelete.setDeletedDate(LocalDateTime.now());

@@ -13,7 +13,9 @@ import com.turkcell.crm.account_service.entities.concretes.Account;
 import com.turkcell.crm.account_service.entities.enums.Status;
 import com.turkcell.crm.account_service.kafka.producers.AccountProducer;
 import com.turkcell.crm.common.shared.dtos.accounts.GetByIdAccountResponse;
+import com.turkcell.crm.common.shared.kafka.events.accounts.AccountCreatedEvent;
 import com.turkcell.crm.common.shared.kafka.events.accounts.AccountDeletedEvent;
+import com.turkcell.crm.common.shared.kafka.events.accounts.AccountUpdatedEvent;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -44,6 +46,10 @@ public class AccountManager implements AccountService {
         if (createAccountRequest.accountAddresses() != null && !createAccountRequest.accountAddresses().isEmpty()) {
             accountAddressService.add(createAccountRequest.accountAddresses(), createdAccount);
         }
+
+        AccountCreatedEvent accountCreatedEvent = this.accountMapper.toAccountCreatedEvent(createdAccount);
+        this.accountProducer.send(accountCreatedEvent);
+
         return this.accountMapper.toCreatedAccountResponse(createdAccount);
     }
 
@@ -78,6 +84,10 @@ public class AccountManager implements AccountService {
         this.accountTypeService.getById(account.getType().getId());
 
         Account updatedAccount = this.accountRepository.save(account);
+
+        AccountUpdatedEvent accountUpdatedEvent = this.accountMapper.toAccountUpdatedEvent(updatedAccount);
+
+        this.accountProducer.send(accountUpdatedEvent);
 
         return this.accountMapper.toUpdatedAccountResponse(updatedAccount);
     }

@@ -31,10 +31,4 @@ public class PropertyBusinessRules {
             throw new BusinessException(messageService.getMessage(Messages.PropertyMessages.ALREADY_EXISTS));
         }
     }
-
-    public void propertyShouldNotBeDeleted(Optional<Property> property) {
-        if (property.get().getDeletedDate() != null) {
-            throw new BusinessException(messageService.getMessage(Messages.PropertyMessages.DELETED));
-        }
-    }
 }

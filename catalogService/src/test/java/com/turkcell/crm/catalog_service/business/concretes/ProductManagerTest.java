@@ -86,7 +86,7 @@ class ProductManagerTest {
                 LocalDateTime.now(), "Test Title",
                 "Test Description", 10000, 10, 1);
 
-        when(categoryService.getByIdForProductManager(anyInt())).thenReturn(category);
+        when(categoryService.getByIdEntity(anyInt())).thenReturn(category);
         when(productRepository.save(any(Product.class))).thenReturn(product);
 
         CreatedProductResponse result = productManager.add(createProductRequest);
@@ -101,7 +101,7 @@ class ProductManagerTest {
         CreateProductRequest createProductRequest = new CreateProductRequest("Test Title",
                 "Test Description", 10000, 10, 1);
 
-        when(categoryService.getByIdForProductManager(anyInt())).thenThrow(new BusinessException("Category not found"));
+        when(categoryService.getByIdEntity(anyInt())).thenThrow(new BusinessException("Category not found"));
         assertThrows(BusinessException.class, () -> productManager.add(createProductRequest));
 
     }
@@ -111,7 +111,7 @@ class ProductManagerTest {
         CreateProductRequest createProductRequest = new CreateProductRequest("Test Title",
                 "Test Description", 10000, 10, 1);
 
-        when(categoryService.getByIdForProductManager(anyInt())).thenThrow(new BusinessException("Category is deleted"));
+        when(categoryService.getByIdEntity(anyInt())).thenThrow(new BusinessException("Category is deleted"));
 
         assertThrows(BusinessException.class, () -> productManager.add(createProductRequest));
     }
