@@ -65,7 +65,7 @@ public class ProductSearchManagerTests {
     }
 
     @Test
-    public void testSearchProducts() {
+    public void testSearch() {
         DynamicQuery dynamicQuery = new DynamicQuery(
                 List.of(new DynamicFilter("productName", FilterOperator.EQUALS, "Mouse")),
                 List.of(new DynamicSort("categoryName", SortDirection.ASC))
@@ -74,7 +74,7 @@ public class ProductSearchManagerTests {
 
         when(this.searchService.dynamicSearch(any(DynamicQuery.class), eq(Product.class))).thenReturn(expectedProducts);
 
-        List<Product> actualProducts = this.productSearchManager.searchProducts(dynamicQuery);
+        List<Product> actualProducts = this.productSearchManager.search(dynamicQuery);
 
         assertEquals(expectedProducts, actualProducts);
         verify(this.searchService, times(1)).dynamicSearch(dynamicQuery, Product.class);

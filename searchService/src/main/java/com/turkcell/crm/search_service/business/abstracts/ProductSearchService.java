@@ -12,5 +12,5 @@ public interface ProductSearchService {
 
     void delete(int productId);
 
-    List<Product> searchProducts(DynamicQuery dynamicQuery);
+    List<Product> search(DynamicQuery dynamicQuery);
 }

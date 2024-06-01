@@ -44,7 +44,7 @@ public class IndividualOrderManager extends BaseOrderManager implements Individu
                                   OrderProducer orderProducer,
                                   CustomerClient customerClient,
                                   OrderBusinessRules orderBusinessRules) {
-        super(orderRepository, accountClient, orderMapper,orderBusinessRules);
+        super(orderRepository, accountClient, orderMapper, orderBusinessRules);
         this.basketClient = basketClient;
         this.catalogClient = catalogClient;
         this.orderItemService = orderItemService;

@@ -8,6 +8,7 @@ import org.mapstruct.Mapper;
 
 @Mapper(config = MapstructService.class)
 public interface AccountMapper {
-  Account toAccount(AccountCreatedEvent accountCreatedEvent);
-  Account toAccount(AccountUpdatedEvent accountUpdatedEvent);
+    Account toAccount(AccountCreatedEvent accountCreatedEvent);
+
+    Account toAccount(AccountUpdatedEvent accountUpdatedEvent);
 }

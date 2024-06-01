@@ -42,7 +42,6 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class AddressManagerTest {
@@ -65,7 +64,7 @@ public class AddressManagerTest {
         cityService = mock(CityService.class);
         districtService = mock(DistrictService.class);
         messageService = mock(MessageService.class);
-        addressBusinessRules = new AddressBusinessRules(messageService,addressRepository);
+        addressBusinessRules = new AddressBusinessRules(messageService, addressRepository);
         customerBusinessRules = new CustomerBusinessRules(messageService, customerRepository);
         addressManager = new AddressManager(addressRepository, addressMapper, cityService, districtService, addressBusinessRules, customerBusinessRules);
 
@@ -81,8 +80,8 @@ public class AddressManagerTest {
         City city2 = new City();
         city2.setId(2);
 
-        AddressDto addressDto = new AddressDto(1, 1,"Street", "123", "Description");
-        AddressDto addressDto2 = new AddressDto(2, 1,"Street", "123", "Description");
+        AddressDto addressDto = new AddressDto(1, 1, "Street", "123", "Description");
+        AddressDto addressDto2 = new AddressDto(2, 1, "Street", "123", "Description");
         List<AddressDto> addressDtoList = Arrays.asList(addressDto, addressDto2);
 
         when(cityService.getAllById(any())).thenReturn(List.of(city, city2));
@@ -144,7 +143,7 @@ public class AddressManagerTest {
         Optional<Address> optionalAddress = Optional.of(address);
         when(addressRepository.findById(1)).thenReturn(optionalAddress);
 
-        GetByIdAddressResponse expectedResponse = new GetByIdAddressResponse(1, 1,"Street", "123", "Description", true, 1,1);
+        GetByIdAddressResponse expectedResponse = new GetByIdAddressResponse(1, 1, "Street", "123", "Description", true, 1, 1);
 
         GetByIdAddressResponse response = addressManager.getById(1);
 
@@ -152,6 +151,7 @@ public class AddressManagerTest {
         assertEquals(expectedResponse, response);
         verify(addressRepository, times(1)).findById(anyInt());
     }
+
     @Test
     void getById_shouldThrowExceptionWhenAddressIsNotExist() {
         when(addressRepository.findById(anyInt())).thenReturn(Optional.empty());
@@ -203,12 +203,12 @@ public class AddressManagerTest {
         Customer customer = new Customer();
         customer.setId(1);
         address.setCustomer(customer);
-        CreateAddressRequest createAddressRequest = new CreateAddressRequest(1, 1, 1,"Street", "123", "Description", false);
+        CreateAddressRequest createAddressRequest = new CreateAddressRequest(1, 1, 1, "Street", "123", "Description", false);
 
         when(customerRepository.findById(1)).thenReturn(Optional.of(customer));
         when(addressRepository.save(any(Address.class))).thenReturn(address);
 
-        CreatedAddressResponse expectedResponse = new CreatedAddressResponse(1, "Street", "123", "Description", false, 1,1);
+        CreatedAddressResponse expectedResponse = new CreatedAddressResponse(1, "Street", "123", "Description", false, 1, 1);
         CreatedAddressResponse response = addressManager.add(createAddressRequest);
 
         assertNotNull(response);
@@ -217,7 +217,7 @@ public class AddressManagerTest {
 
     @Test
     void add_shouldThrowExceptionWhenCustomerIsNotExist() {
-        CreateAddressRequest createAddressRequest = new CreateAddressRequest(1, 1, 1,"Street", "123", "Description", false);
+        CreateAddressRequest createAddressRequest = new CreateAddressRequest(1, 1, 1, "Street", "123", "Description", false);
 
         when(customerRepository.findById(1)).thenReturn(Optional.empty());
         when(messageService.getMessage(Messages.CustomerMessages.NOT_FOUND)).thenReturn("customerNotFound");
@@ -244,7 +244,7 @@ public class AddressManagerTest {
         when(addressRepository.findById(anyInt())).thenReturn(optionalAddress);
         when(addressRepository.save(any(Address.class))).thenReturn(address);
 
-        DeletedAddressResponse expectedResponse = new DeletedAddressResponse(1, LocalDateTime.now(), "Street", "123", "Description", false, 1,1);
+        DeletedAddressResponse expectedResponse = new DeletedAddressResponse(1, LocalDateTime.now(), "Street", "123", "Description", false, 1, 1);
 
         DeletedAddressResponse response = addressManager.delete(address.getId());
 
@@ -281,7 +281,7 @@ public class AddressManagerTest {
         when(addressRepository.findById(changeDefaultAddressRequest.addressId())).thenReturn(Optional.of(newAddress));
         when(addressRepository.save(any(Address.class))).thenReturn(newAddress);
 
-        ChangedDefaultAddressResponse expectedResponse = new ChangedDefaultAddressResponse(2, "Street", "123", "Description", true, 1,1);
+        ChangedDefaultAddressResponse expectedResponse = new ChangedDefaultAddressResponse(2, "Street", "123", "Description", true, 1, 1);
 
         ChangedDefaultAddressResponse result = addressManager.changeDefaultAddress(changeDefaultAddressRequest);
 

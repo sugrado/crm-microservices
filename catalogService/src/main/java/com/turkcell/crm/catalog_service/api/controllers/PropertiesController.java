@@ -43,7 +43,7 @@ public class PropertiesController {
     }
 
     @PatchMapping("{id}")
-    public UpdatedPropertyResponse update(@PathVariable int id, @Valid @RequestBody UpdatePropertyRequest updatePropertyRequest){
+    public UpdatedPropertyResponse update(@PathVariable int id, @Valid @RequestBody UpdatePropertyRequest updatePropertyRequest) {
         return this.propertyService.update(id, updatePropertyRequest);
     }
 }

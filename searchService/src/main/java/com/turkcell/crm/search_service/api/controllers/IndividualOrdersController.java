@@ -18,6 +18,6 @@ public class IndividualOrdersController {
     @PostMapping("/dynamic-search")
     @ResponseStatus(HttpStatus.OK)
     public List<IndividualOrder> searchAccounts(@RequestBody DynamicQuery dynamicQuery) {
-        return orderSearchService.searchOrders(dynamicQuery);
+        return orderSearchService.search(dynamicQuery);
     }
 }

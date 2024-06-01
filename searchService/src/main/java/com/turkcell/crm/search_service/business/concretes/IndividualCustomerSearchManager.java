@@ -1,7 +1,7 @@
 package com.turkcell.crm.search_service.business.concretes;
 
 import com.turkcell.crm.search_service.business.abstracts.IndividualCustomerSearchService;
-import com.turkcell.crm.search_service.business.dtos.responses.customers.SearchIndividualCustomersResponse;
+import com.turkcell.crm.search_service.business.dtos.responses.individual_customers.SearchIndividualCustomersResponse;
 import com.turkcell.crm.search_service.business.mappers.IndividualCustomerMapper;
 import com.turkcell.crm.search_service.core.services.search.SearchService;
 import com.turkcell.crm.search_service.core.services.search.models.DynamicQuery;
@@ -20,21 +20,21 @@ public class IndividualCustomerSearchManager implements IndividualCustomerSearch
     private final IndividualCustomerMapper customerMapper;
 
     @Override
-    public void add(IndividualCustomer customer) {
-        this.customerRepository.save(customer);
+    public void add(IndividualCustomer individualCustomer) {
+        this.customerRepository.save(individualCustomer);
     }
 
     @Override
-    public void update(IndividualCustomer customer) {
-        this.customerRepository.save(customer);
+    public void update(IndividualCustomer individualCustomer) {
+        this.customerRepository.save(individualCustomer);
     }
 
     @Override
-    public void delete(int customerId) {
-        this.customerRepository.deleteById(customerId);
+    public void delete(int individualCustomerId) {
+        this.customerRepository.deleteById(individualCustomerId);
     }
 
-    public List<SearchIndividualCustomersResponse> searchCustomers(DynamicQuery dynamicQuery) {
+    public List<SearchIndividualCustomersResponse> search(DynamicQuery dynamicQuery) {
         List<IndividualCustomer> customers = searchService.dynamicSearch(dynamicQuery, IndividualCustomer.class);
         return this.customerMapper.toSearchIndividualCustomersResponses(customers);
     }

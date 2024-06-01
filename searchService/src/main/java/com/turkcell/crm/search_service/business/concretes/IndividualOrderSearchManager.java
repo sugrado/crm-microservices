@@ -15,17 +15,24 @@ import java.util.List;
 public class IndividualOrderSearchManager implements IndividualOrderSearchService {
     private final IndividualOrderRepository orderRepository;
     private final SearchService searchService;
-    @Override
-    public void add(IndividualOrder order) {this.orderRepository.save(order);}
 
     @Override
-    public void update(IndividualOrder order) {this.orderRepository.save(order);}
+    public void add(IndividualOrder order) {
+        this.orderRepository.save(order);
+    }
 
     @Override
-    public void delete(int id) {this.orderRepository.deleteById(id);}
+    public void update(IndividualOrder order) {
+        this.orderRepository.save(order);
+    }
 
     @Override
-    public List<IndividualOrder> searchOrders(DynamicQuery dynamicQuery) {
+    public void delete(int id) {
+        this.orderRepository.deleteById(id);
+    }
+
+    @Override
+    public List<IndividualOrder> search(DynamicQuery dynamicQuery) {
         return searchService.dynamicSearch(dynamicQuery, IndividualOrder.class);
     }
 }

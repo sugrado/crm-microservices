@@ -15,6 +15,7 @@ import java.util.List;
 public class AccountSearchManager implements AccountSearchService {
     private final AccountRepository accountRepository;
     private final SearchService searchService;
+
     @Override
     public void add(Account account) {
         this.accountRepository.save(account);
@@ -31,7 +32,7 @@ public class AccountSearchManager implements AccountSearchService {
     }
 
     @Override
-    public List<Account> searchAccounts(DynamicQuery dynamicQuery) {
+    public List<Account> search(DynamicQuery dynamicQuery) {
         return searchService.dynamicSearch(dynamicQuery, Account.class);
     }
 }

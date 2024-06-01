@@ -1,9 +1,9 @@
 package com.turkcell.crm.customer_service.business.mappers;
 
 import com.turkcell.crm.common.shared.dtos.customers.GetIndividualCustomerInvoiceInfoDto;
-import com.turkcell.crm.common.shared.kafka.events.customers.CustomerCreatedEvent;
-import com.turkcell.crm.common.shared.kafka.events.customers.CustomerDeletedEvent;
-import com.turkcell.crm.common.shared.kafka.events.customers.CustomerUpdatedEvent;
+import com.turkcell.crm.common.shared.kafka.events.customers.IndividualCustomerCreatedEvent;
+import com.turkcell.crm.common.shared.kafka.events.customers.IndividualCustomerDeletedEvent;
+import com.turkcell.crm.common.shared.kafka.events.customers.IndividualCustomerUpdatedEvent;
 import com.turkcell.crm.common.shared.mapping.MapstructService;
 import com.turkcell.crm.customer_service.business.dtos.requests.individual_customers.CreateIndividualCustomerRequest;
 import com.turkcell.crm.customer_service.business.dtos.requests.individual_customers.UpdateIndividualCustomerRequest;
@@ -31,12 +31,12 @@ public interface IndividualCustomerMapper {
     void updateIndividualCustomerFromRequest(UpdateIndividualCustomerRequest updateIndividualCustomerRequest, @MappingTarget IndividualCustomer customer);
 
     @Mapping(target = "mobilePhone", source = "customer.mobilePhone")
-    CustomerCreatedEvent toCustomerCreatedEvent(IndividualCustomer customer);
+    IndividualCustomerCreatedEvent toCustomerCreatedEvent(IndividualCustomer customer);
 
     @Mapping(target = "mobilePhone", source = "customer.mobilePhone")
-    CustomerUpdatedEvent toCustomerUpdatedEvent(IndividualCustomer customer);
+    IndividualCustomerUpdatedEvent toCustomerUpdatedEvent(IndividualCustomer customer);
 
-    CustomerDeletedEvent toCustomerDeletedEvent(IndividualCustomer customer);
+    IndividualCustomerDeletedEvent toCustomerDeletedEvent(IndividualCustomer customer);
 
     @Mapping(target = "address", ignore = true)
     @Mapping(target = "email", source = "customer.email")

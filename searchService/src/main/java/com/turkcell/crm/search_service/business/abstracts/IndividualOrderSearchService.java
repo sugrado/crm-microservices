@@ -12,5 +12,5 @@ public interface IndividualOrderSearchService {
 
     void delete(int id);
 
-    List<IndividualOrder> searchOrders(DynamicQuery dynamicQuery);
+    List<IndividualOrder> search(DynamicQuery dynamicQuery);
 }

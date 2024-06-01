@@ -19,6 +19,6 @@ public class ProductsController {
 
     @PostMapping("/dynamic-search")
     public List<Product> searchProducts(@RequestBody DynamicQuery dynamicQuery) {
-        return this.productSearchService.searchProducts(dynamicQuery);
+        return this.productSearchService.search(dynamicQuery);
     }
 }

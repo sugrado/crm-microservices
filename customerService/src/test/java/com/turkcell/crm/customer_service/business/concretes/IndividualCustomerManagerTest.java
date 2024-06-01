@@ -1,9 +1,9 @@
 package com.turkcell.crm.customer_service.business.concretes;
 
 import com.turkcell.crm.common.shared.exceptions.types.NotFoundException;
-import com.turkcell.crm.common.shared.kafka.events.customers.CustomerCreatedEvent;
-import com.turkcell.crm.common.shared.kafka.events.customers.CustomerDeletedEvent;
-import com.turkcell.crm.common.shared.kafka.events.customers.CustomerUpdatedEvent;
+import com.turkcell.crm.common.shared.kafka.events.customers.IndividualCustomerCreatedEvent;
+import com.turkcell.crm.common.shared.kafka.events.customers.IndividualCustomerDeletedEvent;
+import com.turkcell.crm.common.shared.kafka.events.customers.IndividualCustomerUpdatedEvent;
 import com.turkcell.crm.customer_service.adapters.mernis.CheckNationalityService;
 import com.turkcell.crm.customer_service.business.abstracts.CustomerService;
 import com.turkcell.crm.customer_service.business.dtos.requests.customers.AddressDto;
@@ -78,7 +78,7 @@ class IndividualCustomerManagerTest {
     @Test
     void add_ShouldAddIndividualCustomer() {
         // Arrange
-        AddressDto addressDto = new AddressDto(3, 1,"test street", "546", "test at test at test");
+        AddressDto addressDto = new AddressDto(3, 1, "test street", "546", "test at test at test");
         List<AddressDto> addressDtoList = new ArrayList<>();
         addressDtoList.add(addressDto);
         CreateCustomerRequest createCustomerRequest = new CreateCustomerRequest("test@test.com", "1234567891023", addressDtoList);
@@ -100,7 +100,7 @@ class IndividualCustomerManagerTest {
         when(customerService.add(any())).thenReturn(customer);
         when(individualCustomerRepository.save(any(IndividualCustomer.class))).thenReturn(individualCustomer);
         when(individualCustomerMapper.toCustomerCreatedEvent(any(IndividualCustomer.class)))
-                .thenReturn(new CustomerCreatedEvent());
+                .thenReturn(new IndividualCustomerCreatedEvent());
         when(individualCustomerMapper.toCreatedIndividualCustomerResponse(any(IndividualCustomer.class)))
                 .thenReturn(new CreatedIndividualCustomerResponse(1, LocalDateTime.now(), "Engin",
                         null,
@@ -121,7 +121,7 @@ class IndividualCustomerManagerTest {
         verify(individualCustomerBusinessRules).nationalityIdShouldBeUnique(any());
         verify(individualCustomerBusinessRules).nationalityIdShouldBeValid(any());
         verify(individualCustomerRepository).save(any(IndividualCustomer.class));
-        verify(customerProducer).send(any(CustomerCreatedEvent.class));
+        verify(customerProducer).send(any(IndividualCustomerCreatedEvent.class));
     }
 
     @Test
@@ -226,7 +226,7 @@ class IndividualCustomerManagerTest {
         // Arrange
         when(individualCustomerRepository.findById(customerId)).thenReturn(Optional.of(individualCustomer));
         when(individualCustomerMapper.toCustomerUpdatedEvent(any(IndividualCustomer.class)))
-                .thenReturn(new CustomerUpdatedEvent());
+                .thenReturn(new IndividualCustomerUpdatedEvent());
         when(individualCustomerMapper.toUpdatedIndividualCustomerResponse(any(IndividualCustomer.class)))
                 .thenReturn(new UpdatedIndividualCustomerResponse(customerId,
                         LocalDateTime.now(),
@@ -249,7 +249,7 @@ class IndividualCustomerManagerTest {
         // Assert
         assertNotNull(response);
         verify(individualCustomerRepository).save(any(IndividualCustomer.class));
-        verify(customerProducer).send(any(CustomerUpdatedEvent.class));
+        verify(customerProducer).send(any(IndividualCustomerUpdatedEvent.class));
     }
 
     @Test
@@ -261,12 +261,12 @@ class IndividualCustomerManagerTest {
         DeletedIndividualCustomerResponse deletedIndividualCustomerResponse = new DeletedIndividualCustomerResponse(
                 customerId, LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), "Engin", "", "Demiroğ",
                 "1234567890123", "12345678901", LocalDate.now(), "Mother", "Father", Gender.MALE, customerDto);
-        CustomerDeletedEvent customerDeletedEvent = new CustomerDeletedEvent();
+        IndividualCustomerDeletedEvent individualCustomerDeletedEvent = new IndividualCustomerDeletedEvent();
 
         when(individualCustomerRepository.findById(1)).thenReturn(Optional.of(individualCustomer));
         doNothing().when(individualCustomerBusinessRules).individualCustomerShouldBeExist(any());
         when(individualCustomerRepository.save(any(IndividualCustomer.class))).thenReturn(individualCustomer);
-        when(individualCustomerMapper.toCustomerDeletedEvent(any(IndividualCustomer.class))).thenReturn(customerDeletedEvent);
+        when(individualCustomerMapper.toCustomerDeletedEvent(any(IndividualCustomer.class))).thenReturn(individualCustomerDeletedEvent);
         when(individualCustomerMapper.toDeletedIndividualCustomerResponse(any(IndividualCustomer.class))).thenReturn(deletedIndividualCustomerResponse);
 
         DeletedIndividualCustomerResponse response = individualCustomerManager.delete(customerId);
@@ -278,7 +278,7 @@ class IndividualCustomerManagerTest {
         verify(individualCustomerBusinessRules, times(1)).individualCustomerShouldBeExist(any());
         verify(individualCustomerRepository, times(1)).save(any(IndividualCustomer.class));
         verify(individualCustomerMapper, times(1)).toCustomerDeletedEvent(any(IndividualCustomer.class));
-        verify(customerProducer, times(1)).send(any(CustomerDeletedEvent.class));
+        verify(customerProducer, times(1)).send(any(IndividualCustomerDeletedEvent.class));
         verify(individualCustomerMapper, times(1)).toDeletedIndividualCustomerResponse(any(IndividualCustomer.class));
     }
 

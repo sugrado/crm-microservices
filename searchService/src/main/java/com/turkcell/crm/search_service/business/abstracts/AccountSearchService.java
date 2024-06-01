@@ -13,5 +13,5 @@ public interface AccountSearchService {
 
     void delete(int id);
 
-    List<Account> searchAccounts(DynamicQuery dynamicQuery);
+    List<Account> search(DynamicQuery dynamicQuery);
 }
