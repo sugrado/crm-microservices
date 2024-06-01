@@ -1,7 +1,7 @@
 package com.turkcell.crm.order_service.kafka;
 
 
-import com.turkcell.crm.common.shared.kafka.events.OrderCreatedEvent;
+import com.turkcell.crm.common.shared.kafka.events.orders.IndividualOrderCreatedEvent;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,12 +17,12 @@ public class OrderProducer {
     private final KafkaTemplate<String, Object> kafkaTemplate;
     private static final Logger logger = LoggerFactory.getLogger(OrderProducer.class);
 
-    public void send(OrderCreatedEvent orderCreatedEvent) {
+    public void send(IndividualOrderCreatedEvent individualOrderCreatedEvent) {
 
-        logger.info("Order created event sent to Kafka: {}", orderCreatedEvent);
+        logger.info("Individual order created event sent to Kafka: {}", individualOrderCreatedEvent);
 
-        Message<OrderCreatedEvent> message = MessageBuilder.withPayload(orderCreatedEvent)
-                .setHeader(KafkaHeaders.TOPIC, "order-deleted")
+        Message<IndividualOrderCreatedEvent> message = MessageBuilder.withPayload(individualOrderCreatedEvent)
+                .setHeader(KafkaHeaders.TOPIC, "individual-order-created")
                 .build();
 
         kafkaTemplate.send(message);

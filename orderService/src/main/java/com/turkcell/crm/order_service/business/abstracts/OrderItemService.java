@@ -1,6 +1,5 @@
 package com.turkcell.crm.order_service.business.abstracts;
 
-import com.turkcell.crm.order_service.business.dtos.responses.GetAllOrdersResponse;
 import com.turkcell.crm.order_service.entities.concretes.OrderItem;
 
 import java.util.List;
