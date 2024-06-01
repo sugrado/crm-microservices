@@ -37,10 +37,4 @@ public class CategoryBusinessRules {
             throw new BusinessException(messageService.getMessage(Messages.CategoryMessages.ALREADY_EXISTS));
         }
     }
-
-    public void categoryShouldNotBeDeleted(Optional<Category> category) {
-        if (category.get().getDeletedDate() != null) {
-            throw new BusinessException(messageService.getMessage(Messages.CategoryMessages.DELETED));
-        }
-    }
 }

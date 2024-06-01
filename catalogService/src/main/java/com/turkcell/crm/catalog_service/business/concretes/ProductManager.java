@@ -62,7 +62,6 @@ public class ProductManager implements ProductService {
         Optional<Product> optionalProduct = this.productRepository.findById(id);
 
         this.productBusinessRules.productShouldBeExist(optionalProduct);
-        this.productBusinessRules.productShouldNotBeDeleted(optionalProduct);
 
         return this.productMapper.toGetByIdProductResponse(optionalProduct.get());
     }
@@ -73,7 +72,6 @@ public class ProductManager implements ProductService {
         Optional<Product> optionalProduct = this.productRepository.findById(id);
 
         this.productBusinessRules.productShouldBeExist(optionalProduct);
-        this.productBusinessRules.productShouldNotBeDeleted(optionalProduct);
 
         Product product = optionalProduct.get();
 
@@ -96,7 +94,6 @@ public class ProductManager implements ProductService {
         Optional<Product> optionalProduct = this.productRepository.findById(id);
 
         this.productBusinessRules.productShouldBeExist(optionalProduct);
-        this.productBusinessRules.productShouldNotBeDeleted(optionalProduct);
 
         Product productToDelete = optionalProduct.get();
         productToDelete.setDeletedDate(LocalDateTime.now());
@@ -122,7 +119,6 @@ public class ProductManager implements ProductService {
         Optional<Product> optionalProduct = this.productRepository.findById(id);
 
         this.productBusinessRules.productShouldBeExist(optionalProduct);
-        this.productBusinessRules.productShouldNotBeDeleted(optionalProduct);
 
         return optionalProduct.get();
     }

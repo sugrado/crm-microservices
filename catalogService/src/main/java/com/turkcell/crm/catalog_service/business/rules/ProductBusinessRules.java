@@ -22,10 +22,4 @@ public class ProductBusinessRules {
             throw new BusinessException(messageService.getMessage(Messages.ProductMessages.NOT_FOUND));
         }
     }
-
-    public void productShouldNotBeDeleted(Optional<Product> product) {
-        if (product.get().getDeletedDate() != null) {
-            throw new BusinessException(messageService.getMessage(Messages.ProductMessages.DELETED));
-        }
-    }
 }

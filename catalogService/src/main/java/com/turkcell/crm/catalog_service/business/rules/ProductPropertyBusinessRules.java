@@ -31,12 +31,6 @@ public class ProductPropertyBusinessRules {
         }
     }
 
-    public void productPropertyShouldNotBeDeleted(Optional<ProductProperty> productProperty) {
-        if (productProperty.get().getDeletedDate() != null) {
-            throw new BusinessException(messageService.getMessage(Messages.ProductPropertyMessages.DELETED));
-        }
-    }
-
     public void productAndPropertyCategoryIdShouldBeMatch(Product product, Property property) {
         if (!product.getCategory().getId().equals(property.getCategory().getId())) {
             throw new BusinessException(messageService.getMessage(Messages.ProductPropertyMessages.PRODUCT_AND_PROPERTY_CATEGORY_ID_SHOULD_BE_MATCH));
