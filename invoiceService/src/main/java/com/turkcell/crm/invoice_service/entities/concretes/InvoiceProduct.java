@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.util.UUID;
 
@@ -15,6 +16,7 @@ import java.util.UUID;
 @Setter
 @Entity
 @Table(name = "invoice_products")
+@SQLRestriction(value = "deleted_date is null")
 public class InvoiceProduct extends BaseEntity<UUID> {
     @Column(name = "title", nullable = false)
     private String title;

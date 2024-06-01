@@ -30,7 +30,6 @@ public class AccountAddressManager implements AccountAddressService {
     private final AccountAddressMapper accountAddressMapper;
     private final AccountAddressBusinessRules accountAddressBusinessRules;
     private final CustomerClient customerClient;
-    //TODO: AccountService loop'a giriyor imiş. İlgilenilecek.
     private final AccountBusinessRules accountBusinessRules;
 
     @Override

@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.SQLRestriction;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,6 +17,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "user_roles")
+@SQLRestriction(value = "deleted_date is null")
 public class UserRole extends BaseEntity<Integer> {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)

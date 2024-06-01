@@ -2,6 +2,8 @@ package com.turkcell.crm.customer_service.out_services;
 
 import com.turkcell.crm.common.shared.exceptions.types.BusinessException;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 @AllArgsConstructor
 public class MernisClient {
     private final RestTemplate restTemplate;
+    private static final Logger logger = LoggerFactory.getLogger(MernisClient.class);
 
     public boolean TCKimlikNoDogrula(String identityNumber, String firstName, String lastName, int birthYear) {
         HttpHeaders headers = new HttpHeaders();
@@ -23,7 +26,7 @@ public class MernisClient {
 
         String response = responseEntity.getBody();
         if (response == null) {
-            // TODO: Log
+            logger.error("Mernis servisine bağlanılamadı.");
             throw new BusinessException("Mernis servisine bağlanılamadı.");
         }
         return response.contains("<TCKimlikNoDogrulaResult>true</TCKimlikNoDogrulaResult>");

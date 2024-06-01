@@ -3,7 +3,10 @@ package com.turkcell.crm.search_service.core.services.search;
 import com.turkcell.crm.search_service.core.services.search.models.DynamicFilter;
 import com.turkcell.crm.search_service.core.services.search.models.DynamicQuery;
 import com.turkcell.crm.search_service.core.services.search.models.DynamicSort;
+import com.turkcell.crm.search_service.core.services.search.models.Pagination;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -26,6 +29,7 @@ public class SearchManager implements SearchService {
         if (dynamicQuery.sorts() != null) {
             sort(query, dynamicQuery.sorts());
         }
+        paginate(query, dynamicQuery.pagination());
         return mongoTemplate.find(query, type);
     }
 
@@ -78,5 +82,16 @@ public class SearchManager implements SearchService {
                         }
                 )
                 .forEach(query::with);
+    }
+
+    private void paginate(Query query, Pagination pagination) {
+        if (pagination == null)
+            throw new IllegalArgumentException("Pagination must be provided");
+        if (pagination.page() < 0)
+            throw new IllegalArgumentException("Page must be greater than or equal to 0");
+        if (pagination.pageSize() < 1)
+            throw new IllegalArgumentException("Page size must be greater than 0");
+        Pageable pageable = PageRequest.of(pagination.page(), pagination.pageSize());
+        query.with(pageable);
     }
 }

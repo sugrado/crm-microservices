@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDate;
 
@@ -16,6 +17,7 @@ import java.time.LocalDate;
 @Setter
 @Entity
 @Table(name = "individual_customers")
+@SQLRestriction(value = "deleted_date is null")
 public class IndividualCustomer extends BaseEntity<Integer> {
 
     @Column(name = "first_name", nullable = false, length = 50)

@@ -7,6 +7,4 @@ import java.util.List;
 
 public interface DistrictRepository extends JpaRepository<District, Integer> {
     List<District> findAllByIdIsIn(List<Integer> ids);
-
-    List<District> findAllByCity(int cityId);
 }
