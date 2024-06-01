@@ -1,4 +1,4 @@
-package com.turkcell.crm.common.shared.kafka.events;
+package com.turkcell.crm.common.shared.kafka.events.accounts;
 
 public class AccountDeletedEvent {
     private int id;

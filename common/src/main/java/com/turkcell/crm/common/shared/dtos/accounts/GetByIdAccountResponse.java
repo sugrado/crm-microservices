@@ -1,6 +1,4 @@
-package com.turkcell.crm.account_service.business.dtos.responses.accounts;
-
-import com.turkcell.crm.account_service.entities.enums.Status;
+package com.turkcell.crm.common.shared.dtos.accounts;
 
 import java.time.LocalDateTime;
 
@@ -8,7 +6,7 @@ public record GetByIdAccountResponse(
         int id,
         LocalDateTime createdDate,
         LocalDateTime updatedDate,
-        Status status,
+        String status,
         String name,
         String number,
         int customerId,

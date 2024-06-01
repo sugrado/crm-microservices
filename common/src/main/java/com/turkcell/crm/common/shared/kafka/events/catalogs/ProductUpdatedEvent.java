@@ -1,4 +1,4 @@
-package com.turkcell.crm.common.shared.kafka.events;
+package com.turkcell.crm.common.shared.kafka.events.catalogs;
 
 public class ProductUpdatedEvent {
     private int id;

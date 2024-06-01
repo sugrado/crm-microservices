@@ -1,6 +1,4 @@
-package com.turkcell.crm.catalog_service.business.dtos.responses.product;
-
-import com.turkcell.crm.catalog_service.business.dtos.responses.product_property.ProductPropertyDto;
+package com.turkcell.crm.common.shared.dtos.catalogs;
 
 import java.time.LocalDateTime;
 import java.util.List;
