@@ -36,7 +36,7 @@ public class UserRolesController {
         return this.userRoleService.deleteRoleFromUser(userId, deleteUserRoleRequest);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/all")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeAllUserRoles(@PathVariable int userId) {
         this.userRoleService.clearUserRoles(userId);

@@ -76,6 +76,14 @@ public class GlobalExceptionHandler {
         return authenticationProblemDetails;
     }
 
+    @ExceptionHandler({IllegalArgumentException.class})
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public ValidationProblemDetails handleIllegalArgumentException(IllegalArgumentException exception) {
+        ValidationProblemDetails validationProblemDetails = new ValidationProblemDetails();
+        validationProblemDetails.setErrors(Map.of("error", exception.getMessage()));
+        return validationProblemDetails;
+    }
+
     @ExceptionHandler({Exception.class})
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public InternalServerProblemDetails handleException(Exception ex) {
