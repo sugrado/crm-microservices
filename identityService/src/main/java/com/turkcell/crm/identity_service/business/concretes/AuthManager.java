@@ -1,9 +1,7 @@
 package com.turkcell.crm.identity_service.business.concretes;
 
 import com.turkcell.crm.core.services.JwtService;
-import com.turkcell.crm.identity_service.business.abstracts.AuthService;
-import com.turkcell.crm.identity_service.business.abstracts.RefreshTokenService;
-import com.turkcell.crm.identity_service.business.abstracts.UserService;
+import com.turkcell.crm.identity_service.business.abstracts.*;
 import com.turkcell.crm.identity_service.business.dtos.requests.auth.LoginRequest;
 import com.turkcell.crm.identity_service.business.dtos.requests.auth.RegisterRequest;
 import com.turkcell.crm.identity_service.business.dtos.responses.auth.LoggedInResponse;
@@ -40,17 +38,16 @@ public class AuthManager implements AuthService {
     @Override
     @Transactional
     public RegisteredResponse register(RegisterRequest request) {
+        User user = this.authMapper.toUser(request);
+        this.authBusinessRules.userEmailShouldNotBeExists(user.getEmail());
 
-        User user = authMapper.toUser(request);
-        authBusinessRules.userEmailShouldNotBeExists(user.getEmail());
-
-        String encodedPassword = passwordEncoder.encode(request.password());
+        String encodedPassword = this.passwordEncoder.encode(request.password());
         user.setPassword(encodedPassword);
 
-        User createdUser = userService.add(user);
-        RefreshToken refreshToken = refreshTokenService.create(createdUser);
+        User createdUser = this.userService.add(user);
+        RefreshToken refreshToken = this.refreshTokenService.create(createdUser);
 
-        String accessToken = generateJwt(createdUser);
+        String accessToken = this.generateJwt(createdUser);
         return new RegisteredResponse(accessToken, refreshToken.getToken());
     }
 
@@ -75,27 +72,24 @@ public class AuthManager implements AuthService {
     @Override
     @Transactional
     public LoggedInResponse login(LoginRequest loginRequest, String ipAddress) {
+        this.authBusinessRules.emailAndPasswordShouldBeMatch(loginRequest.email(), loginRequest.password());
+        User user = this.userService.findByUsername(loginRequest.email());
 
-        authBusinessRules.emailAndPasswordShouldBeMatch(loginRequest.email(), loginRequest.password());
+        this.refreshTokenService.revokeOldTokens(user, ipAddress);
 
-        User user = userService.findByUsername(loginRequest.email());
+        RefreshToken refreshToken = this.refreshTokenService.create(user);
 
-        refreshTokenService.revokeOldTokens(user, ipAddress);
-
-        RefreshToken refreshToken = refreshTokenService.create(user);
-
-        String accessToken = generateJwt(user);
-
+        String accessToken = this.generateJwt(user);
         return new LoggedInResponse(accessToken, refreshToken.getToken());
     }
 
     @Override
     @Transactional
     public RefreshedTokenResponse refreshToken(String refreshToken, String ipAddress) {
-        RefreshToken token = refreshTokenService.verify(refreshToken);
-        RefreshToken newToken = refreshTokenService.rotate(token, ipAddress);
-        refreshTokenService.revokeOldTokens(token.getUser(), ipAddress);
-        String accessToken = generateJwt(token.getUser());
+        RefreshToken token = this.refreshTokenService.verify(refreshToken);
+        RefreshToken newToken = this.refreshTokenService.rotate(token, ipAddress);
+        this.refreshTokenService.revokeOldTokens(token.getUser(), ipAddress);
+        String accessToken = this.generateJwt(token.getUser());
         return new RefreshedTokenResponse(accessToken, newToken.getToken());
     }
 
@@ -105,6 +99,6 @@ public class AuthManager implements AuthService {
         claims.put("username", user.getEmail());
         List<String> authorities = user.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
         claims.put("roles", authorities);
-        return jwtService.generateToken(user.getEmail(), claims);
+        return this.jwtService.generateToken(user.getEmail(), claims);
     }
 }

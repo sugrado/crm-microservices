@@ -29,16 +29,18 @@ public class AuthController extends BaseController {
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.OK)
     public String register(@RequestBody @Valid RegisterRequest request, HttpServletResponse response) {
-        RegisteredResponse registeredResponse = authService.register(request);
-        setCookie(refreshTokenCookieKey, registeredResponse.getRefreshToken(), calculateCookieExpirationSeconds(refreshTokenExpirationDays), response);
+        RegisteredResponse registeredResponse = this.authService.register(request);
+        this.setCookie(this.refreshTokenCookieKey, registeredResponse.getRefreshToken(),
+                calculateCookieExpirationSeconds(this.refreshTokenExpirationDays), response);
         return registeredResponse.getAccessToken();
     }
 
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
     public String login(@RequestBody @Valid LoginRequest loginRequest, HttpServletResponse response, HttpServletRequest request) {
-        LoggedInResponse loggedInResponse = authService.login(loginRequest, getIpAddress(request));
-        setCookie(refreshTokenCookieKey, loggedInResponse.getRefreshToken(), calculateCookieExpirationSeconds(refreshTokenExpirationDays), response);
+        LoggedInResponse loggedInResponse = this.authService.login(loginRequest, getIpAddress(request));
+        this.setCookie(this.refreshTokenCookieKey, loggedInResponse.getRefreshToken(),
+                calculateCookieExpirationSeconds(this.refreshTokenExpirationDays), response);
         return loggedInResponse.getAccessToken();
     }
 
@@ -53,9 +55,10 @@ public class AuthController extends BaseController {
     @PostMapping("/refresh")
     @ResponseStatus(HttpStatus.OK)
     public String refreshToken(HttpServletRequest request, HttpServletResponse response) {
-        String refreshToken = getCookie(request, refreshTokenCookieKey);
-        RefreshedTokenResponse refreshedTokenResponse = authService.refreshToken(refreshToken, getIpAddress(request));
-        setCookie(refreshTokenCookieKey, refreshedTokenResponse.getRefreshToken(), calculateCookieExpirationSeconds(refreshTokenExpirationDays), response);
+        String refreshToken = getCookie(request, this.refreshTokenCookieKey);
+        RefreshedTokenResponse refreshedTokenResponse = this.authService.refreshToken(refreshToken, getIpAddress(request));
+        this.setCookie(this.refreshTokenCookieKey, refreshedTokenResponse.getRefreshToken(),
+                calculateCookieExpirationSeconds(this.refreshTokenExpirationDays), response);
         return refreshedTokenResponse.getAccessToken();
     }
 

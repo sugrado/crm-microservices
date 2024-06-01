@@ -66,4 +66,8 @@ public class User extends BaseEntity<Integer> implements UserDetails {
                 .map(UserRole::getRole)
                 .toList();
     }
+
+    public User(int id) {
+        setId(id);
+    }
 }
