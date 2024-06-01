@@ -1,6 +1,6 @@
 package com.turkcell.crm.search_service.business.dtos.responses.customers;
 
-public record SearchCustomersResponse(
+public record SearchIndividualCustomersResponse(
         int id,
         String firstName,
         String middleName,

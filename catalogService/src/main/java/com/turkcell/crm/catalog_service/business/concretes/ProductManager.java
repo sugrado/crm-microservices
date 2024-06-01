@@ -8,6 +8,7 @@ import com.turkcell.crm.catalog_service.business.dtos.responses.product.*;
 import com.turkcell.crm.catalog_service.business.mappers.ProductMapper;
 import com.turkcell.crm.catalog_service.business.rules.ProductBusinessRules;
 import com.turkcell.crm.catalog_service.data_access.abstracts.ProductRepository;
+import com.turkcell.crm.catalog_service.entities.concretes.Category;
 import com.turkcell.crm.catalog_service.entities.concretes.Product;
 import com.turkcell.crm.catalog_service.kafka.producers.ProductProducer;
 import com.turkcell.crm.common.shared.dtos.catalogs.GetAllForCompleteOrderResponse;
@@ -39,7 +40,7 @@ public class ProductManager implements ProductService {
     public CreatedProductResponse add(CreateProductRequest request) {
 
         Product product = this.productMapper.toProduct(request);
-        product.setCategory(categoryService.getByIdForProductManager(request.categoryId()));
+        product.setCategory(categoryService.getByIdEntity(request.categoryId()));
         Product createdProduct = this.productRepository.save(product);
 
         ProductCreatedEvent productCreatedEvent = productMapper.toProductCreatedEvent(createdProduct);
@@ -77,6 +78,10 @@ public class ProductManager implements ProductService {
         Product product = optionalProduct.get();
 
         this.productMapper.updateProductFromRequest(updateProductRequest, product);
+
+        Category newCategory = this.categoryService.getByIdEntity(updateProductRequest.categoryId());
+        product.setCategory(newCategory);
+
         Product updatedProduct = this.productRepository.save(product);
 
         ProductUpdatedEvent productUpdatedEvent = productMapper.toProductUpdatedEvent(updatedProduct);

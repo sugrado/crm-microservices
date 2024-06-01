@@ -2,6 +2,7 @@ package com.turkcell.crm.catalog_service.api.controllers;
 
 import com.turkcell.crm.catalog_service.business.abstracts.PropertyService;
 import com.turkcell.crm.catalog_service.business.dtos.requests.property.CreatePropertyRequest;
+import com.turkcell.crm.catalog_service.business.dtos.requests.property.UpdatePropertyRequest;
 import com.turkcell.crm.catalog_service.business.dtos.responses.property.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -39,5 +40,10 @@ public class PropertiesController {
     @DeleteMapping("{id}")
     public DeletePropertyResponse delete(@PathVariable int id) {
         return this.propertyService.delete(id);
+    }
+
+    @PatchMapping("{id}")
+    public UpdatedPropertyResponse update(@PathVariable int id, @Valid @RequestBody UpdatePropertyRequest updatePropertyRequest){
+        return this.propertyService.update(id, updatePropertyRequest);
     }
 }

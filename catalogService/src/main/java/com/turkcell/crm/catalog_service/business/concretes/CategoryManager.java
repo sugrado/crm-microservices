@@ -78,7 +78,7 @@ public class CategoryManager implements CategoryService {
     }
 
     @Override
-    public Category getByIdForProductManager(int id) {
+    public Category getByIdEntity(int id) {
         Optional<Category> optionalCategory = this.categoryRepository.findById(id);
 
         this.categoryBusinessRules.categoryShouldBeExist(optionalCategory);
