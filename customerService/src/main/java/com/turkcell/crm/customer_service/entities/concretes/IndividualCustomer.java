@@ -18,16 +18,16 @@ import java.time.LocalDate;
 @Table(name = "individual_customers")
 public class IndividualCustomer extends BaseEntity<Integer> {
 
-    @Column(name = "first_name", nullable = false)
+    @Column(name = "first_name", nullable = false, length = 50)
     private String firstName;
 
-    @Column(name = "middle_name")
+    @Column(name = "middle_name", length = 50)
     private String middleName;
 
-    @Column(name = "last_name", nullable = false)
+    @Column(name = "last_name", nullable = false, length = 50)
     private String lastName;
 
-    @Column(name = "home_phone")
+    @Column(name = "home_phone", length = 11)
     private String homePhone;
 
     @Column(name = "nationality_id", nullable = false, unique = true, updatable = false, length = 11)
@@ -36,10 +36,10 @@ public class IndividualCustomer extends BaseEntity<Integer> {
     @Column(name = "birth_date", nullable = false)
     private LocalDate birthDate;
 
-    @Column(name = "mother_name")
+    @Column(name = "mother_name", length = 50)
     private String motherName;
 
-    @Column(name = "father_name")
+    @Column(name = "father_name", length = 50)
     private String fatherName;
 
     @Column(name = "gender", nullable = false)

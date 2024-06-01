@@ -2,15 +2,21 @@ package com.turkcell.crm.basket_service.business.rules;
 
 import com.turkcell.crm.basket_service.api.clients.AccountClient;
 import com.turkcell.crm.basket_service.api.clients.CatalogClient;
+import com.turkcell.crm.basket_service.business.constants.Messages;
 import com.turkcell.crm.basket_service.data_access.abstracts.BasketRepository;
+import com.turkcell.crm.basket_service.entities.concretes.Basket;
+import com.turkcell.crm.basket_service.entities.concretes.BasketItem;
+import com.turkcell.crm.common.shared.exceptions.types.BusinessException;
+import com.turkcell.crm.common.shared.exceptions.types.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class BasketBusinessRules {
     private final BasketRepository basketRepository;
-    //private final CustomerClient customerClient;
     private final AccountClient accountClient;
     private final CatalogClient catalogClient;
 
@@ -21,7 +27,24 @@ public class BasketBusinessRules {
 
     public void productShouldBeExist(String stringProductId) {
         int productId = Integer.parseInt(stringProductId);
-        this.catalogClient.checkIfProductExist(productId);
+        this.catalogClient.getById(productId);
     }
 
+    public void productStockShouldBeEnough(int unitsInStock) {
+        if (unitsInStock < 1) {
+            throw new BusinessException(Messages.BasketMessages.PRODUCT_STOCK_NOT_ENOUGH);
+        }
+    }
+
+    public void basketShouldBeExist(Optional<Basket> basket) {
+        if (basket.isEmpty()) {
+            throw new NotFoundException(Messages.BasketMessages.BASKET_NOT_FOUND);
+        }
+    }
+
+    public void itemShouldBeExist(Optional<BasketItem> item) {
+        if (item.isEmpty()) {
+            throw new NotFoundException(Messages.BasketMessages.BASKET_ITEM_NOT_FOUND);
+        }
+    }
 }

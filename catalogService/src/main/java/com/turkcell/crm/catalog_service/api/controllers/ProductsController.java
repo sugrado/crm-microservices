@@ -4,6 +4,8 @@ import com.turkcell.crm.catalog_service.business.abstracts.ProductService;
 import com.turkcell.crm.catalog_service.business.dtos.requests.product.CreateProductRequest;
 import com.turkcell.crm.catalog_service.business.dtos.requests.product.UpdateProductRequest;
 import com.turkcell.crm.catalog_service.business.dtos.responses.product.*;
+import com.turkcell.crm.common.shared.dtos.catalogs.GetAllForCompleteOrderResponse;
+import com.turkcell.crm.common.shared.dtos.catalogs.GetByIdProductResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -45,5 +47,10 @@ public class ProductsController {
     @DeleteMapping("{id}")
     public DeletedProductResponse delete(@PathVariable int id) {
         return this.productService.delete(id);
+    }
+
+    @PostMapping("for-complete-order")
+    public List<GetAllForCompleteOrderResponse> getAllForCompleteOrder(@RequestParam List<Integer> productIdList) {
+        return this.productService.getAllForCompleteOrder(productIdList);
     }
 }

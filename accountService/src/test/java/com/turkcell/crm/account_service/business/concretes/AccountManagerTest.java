@@ -19,6 +19,8 @@ import com.turkcell.crm.account_service.entities.concretes.Account;
 import com.turkcell.crm.account_service.entities.concretes.AccountAddress;
 import com.turkcell.crm.account_service.entities.concretes.AccountType;
 import com.turkcell.crm.account_service.entities.enums.Status;
+import com.turkcell.crm.account_service.kafka.producers.AccountProducer;
+import com.turkcell.crm.common.shared.dtos.accounts.GetByIdAccountResponse;
 import com.turkcell.crm.common.shared.exceptions.types.BusinessException;
 import com.turkcell.crm.common.shared.exceptions.types.NotFoundException;
 import org.junit.jupiter.api.BeforeEach;
@@ -60,8 +62,8 @@ class AccountManagerTest {
 
         AccountTypeService accountTypeService = new AccountTypeManager(accountTypeRepository, accountTypeMapper, accountTypeBusinessRules);
         AccountAddressService accountAddressService = new AccountAddressManager(accountAddressRepository, accountAddressMapper, accountAddressBusinessRules, customerClient, accountBusinessRules);
-
-        accountManager = new AccountManager(accountRepository, accountMapper, accountAddressService, accountBusinessRules, accountTypeService);
+        AccountProducer accountProducer = mock(AccountProducer.class);
+        accountManager = new AccountManager(accountRepository, accountMapper, accountAddressService, accountBusinessRules, accountTypeService, accountProducer);
 
     }
 
@@ -323,7 +325,7 @@ class AccountManagerTest {
                 1,
                 LocalDateTime.now(),
                 LocalDateTime.now(),
-                Status.ACTIVE,
+                Status.ACTIVE.toString(),
                 "Test",
                 "123456",
                 1,
@@ -346,7 +348,7 @@ class AccountManagerTest {
                 1,
                 LocalDateTime.now(),
                 LocalDateTime.now(),
-                Status.ACTIVE,
+                Status.ACTIVE.toString(),
                 "Test",
                 "123456",
                 1,

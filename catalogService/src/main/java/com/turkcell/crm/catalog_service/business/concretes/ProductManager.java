@@ -10,9 +10,12 @@ import com.turkcell.crm.catalog_service.business.rules.ProductBusinessRules;
 import com.turkcell.crm.catalog_service.data_access.abstracts.ProductRepository;
 import com.turkcell.crm.catalog_service.entities.concretes.Product;
 import com.turkcell.crm.catalog_service.kafka.producers.ProductProducer;
-import com.turkcell.crm.common.shared.kafka.events.ProductCreatedEvent;
-import com.turkcell.crm.common.shared.kafka.events.ProductDeletedEvent;
-import com.turkcell.crm.common.shared.kafka.events.ProductUpdatedEvent;
+import com.turkcell.crm.common.shared.dtos.catalogs.GetAllForCompleteOrderResponse;
+import com.turkcell.crm.common.shared.dtos.catalogs.GetByIdProductResponse;
+import com.turkcell.crm.common.shared.kafka.events.catalogs.ProductCreatedEvent;
+import com.turkcell.crm.common.shared.kafka.events.catalogs.ProductDeletedEvent;
+import com.turkcell.crm.common.shared.kafka.events.catalogs.ProductUpdatedEvent;
+import com.turkcell.crm.common.shared.kafka.events.orders.OrderCreatedEventProduct;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -117,5 +120,21 @@ public class ProductManager implements ProductService {
         this.productBusinessRules.productShouldNotBeDeleted(optionalProduct);
 
         return optionalProduct.get();
+    }
+
+    @Override
+    public List<GetAllForCompleteOrderResponse> getAllForCompleteOrder(List<Integer> productIdList) {
+        List<Product> products = this.productRepository.findAllByIdIsIn(productIdList);
+
+        List<GetAllForCompleteOrderResponse> getAllForCompleteOrderResponseList = this.productMapper.toGetAllForCompleteOrderResponse(products);
+
+        return getAllForCompleteOrderResponseList;
+    }
+
+    @Override
+    public void decreaseStocks(List<OrderCreatedEventProduct> products) {
+        List<Product> productList = this.productRepository.findAllByIdIsIn(products.stream().map(p -> p.id()).toList());
+        productList.forEach(p -> p.setUnitsInStock(p.getUnitsInStock() - 1));
+        this.productRepository.saveAll(productList);
     }
 }

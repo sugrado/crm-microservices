@@ -18,8 +18,8 @@ public class OrderItem extends BaseEntity<Integer> {
     @Column(name = "product_id")
     private int productId;
 
-    @Column(name = "amount")
-    private double amount;
+    @Column(name = "price")
+    private double price;
 
     @ManyToOne
     @JoinColumn(name = "order_id", nullable = false)

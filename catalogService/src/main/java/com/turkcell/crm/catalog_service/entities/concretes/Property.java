@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "properties")
+@SQLRestriction(value = "deleted_date is null")
 public class Property extends BaseEntity<Integer> {
 
     @Column(name = "name", nullable = false)

@@ -32,4 +32,8 @@ public class Paths {
     public static class Order {
         public static final String BasePackage = "com.turkcell.crm.order_service";
     }
+
+    public static class Invoice {
+        public static final String BasePackage = "com.turkcell.crm.invoice_service";
+    }
 }

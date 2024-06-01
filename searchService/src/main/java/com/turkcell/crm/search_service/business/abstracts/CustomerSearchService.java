@@ -1,5 +1,6 @@
 package com.turkcell.crm.search_service.business.abstracts;
 
+import com.turkcell.crm.search_service.business.dtos.responses.customers.SearchCustomersResponse;
 import com.turkcell.crm.search_service.core.services.search.models.DynamicQuery;
 import com.turkcell.crm.search_service.entities.concretes.Customer;
 
@@ -12,5 +13,5 @@ public interface CustomerSearchService {
 
     void delete(int customerId);
 
-    List<Customer> searchCustomers(DynamicQuery dynamicQuery);
+    List<SearchCustomersResponse> searchCustomers(DynamicQuery dynamicQuery);
 }

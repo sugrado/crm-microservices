@@ -25,11 +25,9 @@ public class Order extends BaseEntity<Integer> {
     @Column(name = "account_id")
     private int accountId;
 
-    @Column(name = "total_amount")
-    private double totalAmount;
+    @Column(name = "total_price")
+    private double totalPrice;
 
     @OneToMany(mappedBy = "order")
-    private List<OrderItem> orderItems;
-
+    private List<OrderItem> items;
 }
-

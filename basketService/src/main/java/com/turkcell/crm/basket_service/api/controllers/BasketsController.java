@@ -4,10 +4,13 @@ import com.turkcell.crm.basket_service.business.abstracts.BasketService;
 import com.turkcell.crm.basket_service.business.dtos.requests.AddItemToBasketRequest;
 import com.turkcell.crm.basket_service.business.dtos.requests.RemoveItemFromBasketRequest;
 import com.turkcell.crm.basket_service.entities.concretes.Basket;
+import com.turkcell.crm.common.shared.dtos.baskets.GetProductsFromBasketDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("basket-service/api/v1/baskets")
@@ -37,5 +40,11 @@ public class BasketsController {
     @ResponseStatus(HttpStatus.OK)
     public Basket getById(@PathVariable String id) {
         return basketService.getById(id);
+    }
+
+    @GetMapping("/{id}/products")
+    @ResponseStatus(HttpStatus.OK)
+    public List<GetProductsFromBasketDto> getProductsFromBasket(@PathVariable String id) {
+        return basketService.getProductsFromBasket(id);
     }
 }

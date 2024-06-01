@@ -34,4 +34,8 @@ public class Address extends BaseEntity<Integer> {
     @ManyToOne
     @JoinColumn(name = "city_id", nullable = false)
     private City city;
+
+    @ManyToOne
+    @JoinColumn(name = "district_id", nullable = false)
+    private District district;
 }

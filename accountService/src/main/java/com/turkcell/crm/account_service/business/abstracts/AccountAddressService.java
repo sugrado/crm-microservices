@@ -6,6 +6,7 @@ import com.turkcell.crm.account_service.business.dtos.responses.account_addresse
 import com.turkcell.crm.account_service.business.dtos.responses.account_addresses.DeletedAcountAddressResponse;
 import com.turkcell.crm.account_service.business.dtos.responses.account_addresses.GetAllByAccountIdResponse;
 import com.turkcell.crm.account_service.entities.concretes.Account;
+import com.turkcell.crm.common.shared.dtos.accounts.GetByIdAccountAddressResponse;
 
 import java.util.List;
 
@@ -17,4 +18,6 @@ public interface AccountAddressService {
     DeletedAcountAddressResponse delete(int accountId, int addressId);
 
     List<GetAllByAccountIdResponse> getAllByAccountId(int accountId);
+
+    GetByIdAccountAddressResponse getByAccountAndAddress(int accountId, int addressId);
 }

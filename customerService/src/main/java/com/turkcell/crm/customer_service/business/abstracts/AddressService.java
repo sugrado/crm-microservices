@@ -8,6 +8,7 @@ import com.turkcell.crm.customer_service.business.dtos.requests.addresses.Create
 import com.turkcell.crm.customer_service.business.dtos.requests.addresses.UpdateAddressRequest;
 import com.turkcell.crm.customer_service.business.dtos.requests.customers.AddressDto;
 import com.turkcell.crm.customer_service.business.dtos.responses.addresses.*;
+import com.turkcell.crm.customer_service.entities.concretes.Address;
 import com.turkcell.crm.customer_service.entities.concretes.Customer;
 
 import java.util.List;
@@ -16,6 +17,8 @@ public interface AddressService {
     void add(List<AddressDto> addressDtoList, Customer customer);
 
     GetByIdAddressResponse getById(int id);
+
+    Address getByIdEntity(int id);
 
     List<GetValidatedCustomerAddressesListItemDto> getAllByCustomerAndIds(GetValidatedCustomerAddressesRequest request);
 

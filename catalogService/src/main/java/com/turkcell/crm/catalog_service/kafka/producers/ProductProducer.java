@@ -1,8 +1,8 @@
 package com.turkcell.crm.catalog_service.kafka.producers;
 
-import com.turkcell.crm.common.shared.kafka.events.ProductCreatedEvent;
-import com.turkcell.crm.common.shared.kafka.events.ProductDeletedEvent;
-import com.turkcell.crm.common.shared.kafka.events.ProductUpdatedEvent;
+import com.turkcell.crm.common.shared.kafka.events.catalogs.ProductCreatedEvent;
+import com.turkcell.crm.common.shared.kafka.events.catalogs.ProductDeletedEvent;
+import com.turkcell.crm.common.shared.kafka.events.catalogs.ProductUpdatedEvent;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

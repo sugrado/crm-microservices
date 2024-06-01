@@ -1,9 +1,9 @@
 package com.turkcell.crm.customer_service.business.concretes;
 
 import com.turkcell.crm.common.shared.exceptions.types.NotFoundException;
-import com.turkcell.crm.common.shared.kafka.events.CustomerCreatedEvent;
-import com.turkcell.crm.common.shared.kafka.events.CustomerDeletedEvent;
-import com.turkcell.crm.common.shared.kafka.events.CustomerUpdatedEvent;
+import com.turkcell.crm.common.shared.kafka.events.customers.CustomerCreatedEvent;
+import com.turkcell.crm.common.shared.kafka.events.customers.CustomerDeletedEvent;
+import com.turkcell.crm.common.shared.kafka.events.customers.CustomerUpdatedEvent;
 import com.turkcell.crm.customer_service.adapters.mernis.CheckNationalityService;
 import com.turkcell.crm.customer_service.business.abstracts.CustomerService;
 import com.turkcell.crm.customer_service.business.dtos.requests.customers.AddressDto;

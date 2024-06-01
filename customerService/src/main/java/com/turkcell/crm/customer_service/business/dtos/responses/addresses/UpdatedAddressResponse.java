@@ -5,6 +5,7 @@ import java.time.LocalDate;
 public record UpdatedAddressResponse(
         int id,
         int cityId,
+        int districtId,
         int customerId,
         String street,
         String houseFlatNumber,

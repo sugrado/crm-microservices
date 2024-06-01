@@ -5,6 +5,7 @@ import com.turkcell.crm.common.shared.dtos.customers.GetValidatedCustomerAddress
 import com.turkcell.crm.common.shared.dtos.customers.GetValidatedCustomerAddressesRequest;
 import com.turkcell.crm.customer_service.business.abstracts.AddressService;
 import com.turkcell.crm.customer_service.business.abstracts.CityService;
+import com.turkcell.crm.customer_service.business.abstracts.DistrictService;
 import com.turkcell.crm.customer_service.business.dtos.requests.addresses.ChangeDefaultAddressRequest;
 import com.turkcell.crm.customer_service.business.dtos.requests.addresses.CreateAddressRequest;
 import com.turkcell.crm.customer_service.business.dtos.requests.addresses.UpdateAddressRequest;
@@ -26,7 +27,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-// TODO: Update address methodu yazılacak
 @Service
 @RequiredArgsConstructor
 public class AddressManager implements AddressService {
@@ -34,6 +34,7 @@ public class AddressManager implements AddressService {
     private final AddressRepository addressRepository;
     private final AddressMapper addressMapper;
     private final CityService cityService;
+    private final DistrictService districtService;
     private final AddressBusinessRules addressBusinessRules;
     private final CustomerBusinessRules customerBusinessRules;
 
@@ -66,6 +67,13 @@ public class AddressManager implements AddressService {
     }
 
     @Override
+    public Address getByIdEntity(int id) {
+        Optional<Address> optionalAddress = this.addressRepository.findById(id);
+        this.addressBusinessRules.addressShouldBeExist(optionalAddress);
+        return optionalAddress.get();
+    }
+
+    @Override
     public List<GetValidatedCustomerAddressesListItemDto> getAllByCustomerAndIds(GetValidatedCustomerAddressesRequest request) {
         return this.addressRepository.findAllByCustomerIdAndIdIsIn(request.customerId(), request.addressIds())
                 .stream()
@@ -85,7 +93,8 @@ public class AddressManager implements AddressService {
     public CreatedAddressResponse add(CreateAddressRequest createAddressRequest) {
 
         this.customerBusinessRules.customerShouldBeExist(createAddressRequest.customerId());
-
+        this.cityService.getById(createAddressRequest.cityId());
+        this.districtService.getById(createAddressRequest.districtId());
         Address address = this.addressMapper.toCustomerAddressWithRequest(createAddressRequest);
 
         if (address.isDefaultAddress()) {

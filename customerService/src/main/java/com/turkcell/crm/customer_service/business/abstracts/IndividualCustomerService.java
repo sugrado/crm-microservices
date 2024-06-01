@@ -1,5 +1,6 @@
 package com.turkcell.crm.customer_service.business.abstracts;
 
+import com.turkcell.crm.common.shared.dtos.customers.GetIndividualCustomerInvoiceInfoDto;
 import com.turkcell.crm.customer_service.business.dtos.requests.individual_customers.CreateIndividualCustomerRequest;
 import com.turkcell.crm.customer_service.business.dtos.requests.individual_customers.UpdateIndividualCustomerRequest;
 import com.turkcell.crm.customer_service.business.dtos.responses.individual_customers.*;
@@ -17,4 +18,5 @@ public interface IndividualCustomerService {
 
     DeletedIndividualCustomerResponse delete(int id);
 
+    GetIndividualCustomerInvoiceInfoDto getInvoiceInfoByAddress(int addressId);
 }

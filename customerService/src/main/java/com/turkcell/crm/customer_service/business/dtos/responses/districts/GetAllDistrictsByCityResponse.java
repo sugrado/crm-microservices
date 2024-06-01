@@ -1,0 +1,7 @@
+package com.turkcell.crm.customer_service.business.dtos.responses.districts;
+
+public record GetAllDistrictsByCityResponse(
+        int id,
+        String name
+) {
+}
