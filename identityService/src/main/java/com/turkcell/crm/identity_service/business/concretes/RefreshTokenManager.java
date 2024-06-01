@@ -47,7 +47,7 @@ public class RefreshTokenManager implements RefreshTokenService {
     @Transactional
     public RefreshToken rotate(RefreshToken token, String ipAddress) {
         RefreshToken createdToken = create(token.getUser());
-        revokeToken(token, ipAddress, createdToken.getToken());
+        revokeToken(token, ipAddress, "Token rotated by token: " + createdToken.getToken());
         return createdToken;
     }
 
@@ -66,10 +66,11 @@ public class RefreshTokenManager implements RefreshTokenService {
         refreshTokenRepository.saveAll(oldTokens);
     }
 
-    private void revokeToken(RefreshToken token, String ipAddress, String replacedByToken) {
+    @Override
+    public void revokeToken(RefreshToken token, String ipAddress, String reason) {
         token.setRevokedDate(LocalDateTime.now());
         token.setRevokedByIp(ipAddress);
-        token.setRevokeReason("Token rotated by token: " + replacedByToken);
+        token.setRevokeReason(reason);
         refreshTokenRepository.save(token);
     }
 }

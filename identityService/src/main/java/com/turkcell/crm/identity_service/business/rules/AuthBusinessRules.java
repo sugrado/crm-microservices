@@ -28,4 +28,16 @@ public class AuthBusinessRules {
             throw new AuthenticationException(Messages.AuthMessages.LOGIN_FAILED);
         }
     }
+
+    public void userRoleCacheShouldBeExists(Optional<UserRoleCache> userRoleCacheOptional) {
+        if (userRoleCacheOptional.isEmpty()) {
+            throw new AuthorizationException("");
+        }
+    }
+
+    public void rolesShouldBeMatch(List<String> rolesFromToken, List<String> rolesFromCache) {
+        if (!rolesFromCache.equals(rolesFromToken)) {
+            throw new AuthorizationException("");
+        }
+    }
 }

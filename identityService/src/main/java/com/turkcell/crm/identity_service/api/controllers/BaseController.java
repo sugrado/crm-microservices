@@ -25,6 +25,16 @@ public class BaseController {
         response.addCookie(cookie);
     }
 
+    protected void clearCookies(HttpServletRequest request, HttpServletResponse response) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                cookie.setMaxAge(0);
+                response.addCookie(cookie);
+            }
+        }
+    }
+
     protected String getIpAddress(HttpServletRequest request) {
         String ipAddress = request.getRemoteAddr();
         if (ipAddress == null) {

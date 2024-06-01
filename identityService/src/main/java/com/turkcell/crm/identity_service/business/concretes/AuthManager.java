@@ -13,6 +13,7 @@ import com.turkcell.crm.identity_service.business.mappers.AuthMapper;
 import com.turkcell.crm.identity_service.business.rules.AuthBusinessRules;
 import com.turkcell.crm.identity_service.entities.concretes.RefreshToken;
 import com.turkcell.crm.identity_service.entities.concretes.User;
+import com.turkcell.crm.identity_service.entities.concretes.UserRoleCache;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -32,6 +34,8 @@ public class AuthManager implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthMapper authMapper;
+    private final UserRoleCacheService userRoleCacheService;
+    private final SecurityContextService securityContextService;
 
     @Override
     @Transactional
@@ -48,6 +52,24 @@ public class AuthManager implements AuthService {
 
         String accessToken = generateJwt(createdUser);
         return new RegisteredResponse(accessToken, refreshToken.getToken());
+    }
+
+    @Override
+    public void validateToken(String authHeader) {
+        String username = this.securityContextService.getUsername();
+        List<String> rolesFromToken = this.securityContextService.getRoles();
+        Optional<UserRoleCache> userRoleCacheOptional = this.userRoleCacheService.getByUsername(username);
+        this.authBusinessRules.userRoleCacheShouldBeExists(userRoleCacheOptional);
+        UserRoleCache userRoleCache = userRoleCacheOptional.get();
+
+        List<String> rolesFromCache = userRoleCache.getRoles();
+        this.authBusinessRules.rolesShouldBeMatch(rolesFromToken, rolesFromCache);
+    }
+
+    @Override
+    public void logout(String refreshToken, String ipAddress) {
+        RefreshToken token = this.refreshTokenService.verify(refreshToken);
+        this.refreshTokenService.revokeToken(token, ipAddress, "User logged out");
     }
 
     @Override

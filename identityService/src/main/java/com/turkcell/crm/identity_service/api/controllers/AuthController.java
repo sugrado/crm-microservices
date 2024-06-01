@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,6 +42,14 @@ public class AuthController extends BaseController {
         return loggedInResponse.getAccessToken();
     }
 
+    @PostMapping("/logout")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void login(HttpServletResponse response, HttpServletRequest request) {
+        String refreshToken = getCookie(request, this.refreshTokenCookieKey);
+        this.authService.logout(refreshToken, getIpAddress(request));
+        this.clearCookies(request, response);
+    }
+
     @PostMapping("/refresh")
     @ResponseStatus(HttpStatus.OK)
     public String refreshToken(HttpServletRequest request, HttpServletResponse response) {
@@ -51,9 +60,9 @@ public class AuthController extends BaseController {
     }
 
     @GetMapping("/validate-token")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void validateToken(HttpServletRequest request) {
-        var authHeader = request.getHeader("Authorization");
-        // TODO: implement this method
+        var authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        this.authService.validateToken(authHeader);
     }
 }
