@@ -1,4 +1,4 @@
-package com.turkcell.crm.identity_service.core.configurations;
+package com.turkcell.crm.identity_service.configurations;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

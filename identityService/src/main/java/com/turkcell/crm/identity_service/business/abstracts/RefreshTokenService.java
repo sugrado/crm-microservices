@@ -10,5 +10,7 @@ public interface RefreshTokenService {
 
     RefreshToken rotate(RefreshToken token, String ipAddress);
 
+    void revokeToken(RefreshToken token, String ipAddress, String reason);
+
     void revokeOldTokens(User user, String ipAddress);
 }

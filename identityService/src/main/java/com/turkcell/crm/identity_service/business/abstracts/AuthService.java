@@ -12,4 +12,8 @@ public interface AuthService {
     RefreshedTokenResponse refreshToken(String refreshToken, String ipAddress);
 
     RegisteredResponse register(RegisterRequest request);
+
+    void validateToken(String authHeader);
+
+    void logout(String refreshToken, String ipAddress);
 }

@@ -1,14 +1,19 @@
 package com.turkcell.crm.identity_service.business.rules;
 
 import com.turkcell.crm.common.shared.exceptions.types.AuthenticationException;
+import com.turkcell.crm.common.shared.exceptions.types.AuthorizationException;
 import com.turkcell.crm.common.shared.exceptions.types.BusinessException;
 import com.turkcell.crm.identity_service.business.constants.Messages;
 import com.turkcell.crm.identity_service.data_access.abstracts.UserRepository;
+import com.turkcell.crm.identity_service.entities.concretes.UserRoleCache;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -26,6 +31,18 @@ public class AuthBusinessRules {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
         if (!authentication.isAuthenticated()) {
             throw new AuthenticationException(Messages.AuthMessages.LOGIN_FAILED);
+        }
+    }
+
+    public void userRoleCacheShouldBeExists(Optional<UserRoleCache> userRoleCacheOptional) {
+        if (userRoleCacheOptional.isEmpty()) {
+            throw new AuthorizationException("");
+        }
+    }
+
+    public void rolesShouldBeMatch(List<String> rolesFromToken, List<String> rolesFromCache) {
+        if (!rolesFromCache.equals(rolesFromToken)) {
+            throw new AuthorizationException("");
         }
     }
 }
