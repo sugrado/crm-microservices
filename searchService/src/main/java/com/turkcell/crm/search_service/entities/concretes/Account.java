@@ -21,6 +21,4 @@ public class Account {
     private String number;
     private String type;
     private int accountTypeId;
-    private int addressId;
-    private int accountAddressId;
 }

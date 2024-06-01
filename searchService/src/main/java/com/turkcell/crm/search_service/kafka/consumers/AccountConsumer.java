@@ -32,6 +32,4 @@ public class AccountConsumer {
     public void consume(AccountDeletedEvent accountDeletedEvent) {
         this.accountSearchService.delete(accountDeletedEvent.getId());
     }
-
-
 }

@@ -43,15 +43,11 @@ public interface AccountMapper {
     @Mapping(target = "typeId", source = "type.id")
     DeleteAccountResponse toDeleteAccountResponse(Account account);
 
-    @Mapping(target = "typeId", source = "type.id")
+    @Mapping(target = "accountTypeId", source = "type.id")
     @Mapping(target = "type", source = "type.name")
-    @Mapping(target = "addressId", source = "address.id")
-    @Mapping(target = "accountAddressId", source = "accountAddress.id")
     AccountCreatedEvent toAccountCreatedEvent(Account account);
 
-    @Mapping(target = "typeId", source = "type.id")
+    @Mapping(target = "accountTypeId", source = "type.id")
     @Mapping(target = "type", source = "type.name")
-    @Mapping(target = "addressId", source = "address.id")
-    @Mapping(target = "accountAddressId", source = "accountAddress.id")
     AccountUpdatedEvent toAccountUpdatedEvent(Account account);
 }
