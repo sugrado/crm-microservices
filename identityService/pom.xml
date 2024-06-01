@@ -97,10 +97,9 @@
             <version>1.0.3</version>
         </dependency>
         <dependency>
-            <groupId>com.turkcell.crm</groupId>
+            <groupId>com.pair2.crm</groupId>
             <artifactId>common</artifactId>
-            <version>0.0.1</version>
-            <scope>compile</scope>
+            <version>1.0.3</version>
         </dependency>
     </dependencies>
     <dependencyManagement>
