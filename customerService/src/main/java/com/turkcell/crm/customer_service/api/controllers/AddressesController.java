@@ -7,10 +7,7 @@ import com.turkcell.crm.customer_service.business.abstracts.AddressService;
 import com.turkcell.crm.customer_service.business.dtos.requests.addresses.ChangeDefaultAddressRequest;
 import com.turkcell.crm.customer_service.business.dtos.requests.addresses.CreateAddressRequest;
 import com.turkcell.crm.customer_service.business.dtos.requests.addresses.UpdateAddressRequest;
-import com.turkcell.crm.customer_service.business.dtos.responses.addresses.ChangedDefaultAddressResponse;
-import com.turkcell.crm.customer_service.business.dtos.responses.addresses.CreatedAddressResponse;
-import com.turkcell.crm.customer_service.business.dtos.responses.addresses.DeletedAddressResponse;
-import com.turkcell.crm.customer_service.business.dtos.responses.addresses.UpdatedAddressResponse;
+import com.turkcell.crm.customer_service.business.dtos.responses.addresses.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -54,6 +51,11 @@ public class AddressesController {
     @GetMapping("check-if-address-exists/{addressId}")
     public void checkIfAddressExists(@PathVariable int addressId) {
         this.addressService.checkIfAddressExists(addressId);
+    }
+
+    @GetMapping("{id}")
+    public GetByIdAddressResponse getById(@PathVariable int id) {
+        return this.addressService.getById(id);
     }
 
     @PostMapping("validated-customer-addresses")

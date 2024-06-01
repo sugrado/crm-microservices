@@ -6,6 +6,7 @@ public record ChangedDefaultAddressResponse(
         String houseFlatNumber,
         String description,
         boolean defaultAddress,
-        int cityId
+        int cityId,
+        int districtId
 ) {
 }

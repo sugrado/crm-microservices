@@ -1,5 +1,6 @@
 package com.turkcell.crm.customer_service.api.controllers;
 
+import com.turkcell.crm.common.shared.dtos.customers.GetIndividualCustomerInvoiceInfoDto;
 import com.turkcell.crm.customer_service.business.abstracts.IndividualCustomerService;
 import com.turkcell.crm.customer_service.business.dtos.requests.individual_customers.CreateIndividualCustomerRequest;
 import com.turkcell.crm.customer_service.business.dtos.requests.individual_customers.UpdateIndividualCustomerRequest;
@@ -31,6 +32,11 @@ public class IndividualCustomersController {
     @GetMapping("{id}")
     public GetByIdIndividualCustomerResponse getById(@PathVariable int id) {
         return this.individualCustomerService.getById(id);
+    }
+
+    @GetMapping("/invoice-info-by-address/{addressId}")
+    public GetIndividualCustomerInvoiceInfoDto getInvoiceInfoByAddress(@PathVariable int addressId) {
+        return this.individualCustomerService.getInvoiceInfoByAddress(addressId);
     }
 
     @PatchMapping("{id}")

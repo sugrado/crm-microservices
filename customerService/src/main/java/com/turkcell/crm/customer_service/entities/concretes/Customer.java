@@ -20,7 +20,7 @@ public class Customer extends BaseEntity<Integer> {
     @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "mobile_phone", nullable = false)
+    @Column(name = "mobile_phone", nullable = false, length = 11)
     private String mobilePhone;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)

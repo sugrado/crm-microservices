@@ -13,6 +13,8 @@ public class AddressDto {
     @NotNull
     private int cityId;
     @NotNull
+    private int districtId;
+    @NotNull
     @Size(min = 1)
     private String street;
     @NotNull

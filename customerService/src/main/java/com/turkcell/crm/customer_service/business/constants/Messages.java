@@ -1,4 +1,4 @@
-package com.turkcell.crm.customer_service.business.constants.messages;
+package com.turkcell.crm.customer_service.business.constants;
 
 public class Messages {
     public static class CustomerMessages {
@@ -14,6 +14,10 @@ public class Messages {
 
     public static class CityMessages {
         public static final String NOT_FOUND = "cityNotFound";
+    }
+
+    public static class DistrictMessages {
+        public static final String NOT_FOUND = "districtNotFound";
     }
 
     public static class AddressMessages {

@@ -1,8 +1,8 @@
 package com.turkcell.crm.customer_service.kafka.producers;
 
-import com.turkcell.crm.common.shared.kafka.events.CustomerCreatedEvent;
-import com.turkcell.crm.common.shared.kafka.events.CustomerDeletedEvent;
-import com.turkcell.crm.common.shared.kafka.events.CustomerUpdatedEvent;
+import com.turkcell.crm.common.shared.kafka.events.customers.CustomerCreatedEvent;
+import com.turkcell.crm.common.shared.kafka.events.customers.CustomerDeletedEvent;
+import com.turkcell.crm.common.shared.kafka.events.customers.CustomerUpdatedEvent;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

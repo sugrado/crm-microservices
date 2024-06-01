@@ -1,8 +1,11 @@
 package com.turkcell.crm.customer_service.business.concretes;
 
-import com.turkcell.crm.common.shared.kafka.events.CustomerCreatedEvent;
-import com.turkcell.crm.common.shared.kafka.events.CustomerDeletedEvent;
-import com.turkcell.crm.common.shared.kafka.events.CustomerUpdatedEvent;
+import com.turkcell.crm.common.shared.dtos.customers.GetIndividualCustomerInvoiceInfoDto;
+import com.turkcell.crm.common.shared.dtos.customers.GetInvoiceInfoByAddressDto;
+import com.turkcell.crm.common.shared.kafka.events.customers.CustomerCreatedEvent;
+import com.turkcell.crm.common.shared.kafka.events.customers.CustomerDeletedEvent;
+import com.turkcell.crm.common.shared.kafka.events.customers.CustomerUpdatedEvent;
+import com.turkcell.crm.customer_service.business.abstracts.AddressService;
 import com.turkcell.crm.customer_service.business.abstracts.CustomerService;
 import com.turkcell.crm.customer_service.business.abstracts.IndividualCustomerService;
 import com.turkcell.crm.customer_service.business.dtos.requests.individual_customers.CreateIndividualCustomerRequest;
@@ -11,6 +14,7 @@ import com.turkcell.crm.customer_service.business.dtos.responses.individual_cust
 import com.turkcell.crm.customer_service.business.mappers.IndividualCustomerMapper;
 import com.turkcell.crm.customer_service.business.rules.IndividualCustomerBusinessRules;
 import com.turkcell.crm.customer_service.data_access.abstracts.IndividualCustomerRepository;
+import com.turkcell.crm.customer_service.entities.concretes.Address;
 import com.turkcell.crm.customer_service.entities.concretes.Customer;
 import com.turkcell.crm.customer_service.entities.concretes.IndividualCustomer;
 import com.turkcell.crm.customer_service.kafka.producers.CustomerProducer;
@@ -29,6 +33,7 @@ public class IndividualCustomerManager implements IndividualCustomerService {
     private final IndividualCustomerBusinessRules individualCustomerBusinessRules;
     private final IndividualCustomerMapper individualCustomerMapper;
     private final CustomerService customerService;
+    private final AddressService addressService;
     private final CustomerProducer customerProducer;
 
     @Override
@@ -98,5 +103,18 @@ public class IndividualCustomerManager implements IndividualCustomerService {
         this.customerProducer.send(customerDeletedEvent);
 
         return individualCustomerMapper.toDeletedIndividualCustomerResponse(individualCustomerToDelete);
+    }
+
+    @Override
+    public GetIndividualCustomerInvoiceInfoDto getInvoiceInfoByAddress(int addressId) {
+
+        Address address = this.addressService.getByIdEntity(addressId);
+        IndividualCustomer individualCustomer = address.getCustomer().getIndividualCustomer();
+
+        GetIndividualCustomerInvoiceInfoDto invoiceInfo = individualCustomerMapper.toGetIndividualCustomerInvoiceInfoDto(individualCustomer);
+        invoiceInfo.setAddress(new GetInvoiceInfoByAddressDto(address.getStreet(),
+                address.getHouseFlatNumber(), address.getDescription(), address.getCity().getName(), address.getDistrict().getName()));
+
+        return invoiceInfo;
     }
 }

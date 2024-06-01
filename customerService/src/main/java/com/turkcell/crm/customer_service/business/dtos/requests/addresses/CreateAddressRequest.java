@@ -7,6 +7,8 @@ public record CreateAddressRequest(
         @NotNull
         int cityId,
         @NotNull
+        int districtId,
+        @NotNull
         int customerId,
         @NotNull
         @Size(min = 1)
