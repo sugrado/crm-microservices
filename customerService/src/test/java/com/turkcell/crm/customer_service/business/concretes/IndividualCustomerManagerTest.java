@@ -78,20 +78,23 @@ class IndividualCustomerManagerTest {
     @Test
     void add_ShouldAddIndividualCustomer() {
         // Arrange
-        AddressDto addressDto = new AddressDto(3, "test street", "546", "test at test at test");
+        AddressDto addressDto = new AddressDto(3, 1,"test street", "546", "test at test at test");
         List<AddressDto> addressDtoList = new ArrayList<>();
         addressDtoList.add(addressDto);
         CreateCustomerRequest createCustomerRequest = new CreateCustomerRequest("test@test.com", "1234567891023", addressDtoList);
-        createIndividualCustomerRequest = new CreateIndividualCustomerRequest("Engin",
+        createIndividualCustomerRequest = new CreateIndividualCustomerRequest(
+                "Engin",
                 null,
                 "Demiroğ",
                 "12345678910",
-                LocalDate.of(2001, 1, 20),
+                "12345678910",
+                LocalDate.of(2001, 1, 20), // @NotNull
                 "Aaaaaa",
                 "dsgafsdsfg",
-                Gender.MALE,
-                createCustomerRequest
+                Gender.MALE, //
+                createCustomerRequest //
         );
+
         when(individualCustomerMapper.toIndividualCustomer(any(CreateIndividualCustomerRequest.class)))
                 .thenReturn(individualCustomer);
         when(customerService.add(any())).thenReturn(customer);
@@ -208,15 +211,18 @@ class IndividualCustomerManagerTest {
     void update_ShouldUpdateIndividualCustomerForSpecificId() {
         int customerId = 1;
         UpdateCustomerRequest updateCustomerRequest = new UpdateCustomerRequest("test@test.com", "1234567891023");
-        updateIndividualCustomerRequest = new UpdateIndividualCustomerRequest("Engin",
+        updateIndividualCustomerRequest = new UpdateIndividualCustomerRequest(
+                "Engin",
                 null,
                 "Demiroğ",
+                "12345678910",
                 LocalDate.of(2001, 1, 20),
                 "sdasdsa",
                 "Aaaaaa",
                 Gender.MALE,
                 updateCustomerRequest
         );
+
         // Arrange
         when(individualCustomerRepository.findById(customerId)).thenReturn(Optional.of(individualCustomer));
         when(individualCustomerMapper.toCustomerUpdatedEvent(any(IndividualCustomer.class)))
