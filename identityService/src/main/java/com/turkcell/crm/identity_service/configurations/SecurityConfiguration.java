@@ -1,9 +1,11 @@
-package com.turkcell.crm.identity_service.core.configurations;
+package com.turkcell.crm.identity_service.configurations;
 
 import com.turkcell.crm.core.configurations.BaseSecurityService;
+import com.turkcell.crm.identity_service.business.constants.Roles;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -23,6 +25,11 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         baseSecurityService.securityFilterChain(http);
+        http.authorizeHttpRequests(r -> r
+                .requestMatchers(HttpMethod.GET, "/identity-service/api/v1/auth/validate-token").authenticated()
+                .requestMatchers("/identity-service/api/v1/users/**").hasRole(Roles.ADMIN)
+                .anyRequest().permitAll()
+        );
         return http.build();
     }
 
