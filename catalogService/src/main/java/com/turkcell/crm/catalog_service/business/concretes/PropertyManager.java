@@ -24,27 +24,6 @@ public class PropertyManager implements PropertyService {
     private final PropertyBusinessRules propertyBusinessRules;
     private final CategoryManager categoryManager;
 
-    //todo: Yusuf anısına...
-//    @Override
-//    public List<CreatedPropertyResponse> add(List<CreatePropertyRequest> request) {
-//
-//        List<Property> propertyList=request.stream().map(x-> {
-//                    Property property = this.propertyMapper.toProperty(x);
-//                    Category category = this.categoryService.getByIdForPropertyService(x.categoryId());
-//                    property.setCategory(category);
-//                    return property;
-//                }).toList();
-//
-//        List <Property> createdProperties = this.propertyRepository.saveAll(propertyList);
-//
-//        List<CreatedPropertyResponse> createdPropertyResponseList = createdProperties.stream().map(x->{
-//            CreatedPropertyResponse createdPropertyResponse = this.propertyMapper.toCreatedPropertyResponse(x);
-//            createdPropertyResponse.setCategoryName(x.getCategory().getName());
-//            return createdPropertyResponse;
-//        }).toList();
-//        return createdPropertyResponseList;
-//    }
-
     @Override
     public CreatedPropertyResponse add(CreatePropertyRequest request) {
         this.propertyBusinessRules.propertyCanNotDuplicated(request);
