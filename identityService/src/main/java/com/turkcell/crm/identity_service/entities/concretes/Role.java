@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.SQLRestriction;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Set;
@@ -16,6 +17,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "roles")
+@SQLRestriction(value = "deleted_date is null")
 public class Role extends BaseEntity<Integer> implements GrantedAuthority {
     @Column(name = "name")
     private String name;

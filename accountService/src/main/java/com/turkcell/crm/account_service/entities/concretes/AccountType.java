@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "account_types")
+@SQLRestriction(value = "deleted_date is null")
 public class AccountType extends BaseEntity<Integer> {
     @Column(name = "name")
     private String name;

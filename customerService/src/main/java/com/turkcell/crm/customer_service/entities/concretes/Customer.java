@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "customers")
+@SQLRestriction(value = "deleted_date is null")
 public class Customer extends BaseEntity<Integer> {
 
     @Column(name = "email", nullable = false)

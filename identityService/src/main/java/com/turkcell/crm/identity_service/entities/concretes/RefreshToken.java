@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDateTime;
 
@@ -18,6 +19,7 @@ import java.time.LocalDateTime;
 @Setter
 @Entity
 @Table(name = "refresh_tokens")
+@SQLRestriction(value = "deleted_date is null")
 public class RefreshToken extends BaseEntity<Integer> {
     private String revokedByIp;
     private LocalDateTime revokedDate;

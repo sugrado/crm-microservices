@@ -2,7 +2,11 @@ package com.turkcell.crm.invoice_service.entities.concretes;
 
 import com.turkcell.crm.invoice_service.core.entities.BaseEntity;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.util.UUID;
 
@@ -12,7 +16,7 @@ import java.util.UUID;
 @Setter
 @Entity
 @Table(name = "individual_invoices")
-@Builder
+@SQLRestriction(value = "deleted_date is null")
 public class IndividualInvoice extends BaseEntity<UUID> {
     @Column(name = "first_name", nullable = false)
     private String firstName;
