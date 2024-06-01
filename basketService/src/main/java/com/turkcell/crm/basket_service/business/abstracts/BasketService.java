@@ -17,4 +17,6 @@ public interface BasketService {
     Basket getById(String id);
 
     List<GetProductsFromBasketDto> getProductsFromBasket(String id);
+
+    void removeProductFromBaskets(int id);
 }

@@ -7,6 +7,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 public class BasketRepositoryImpl implements BasketRepository {
@@ -21,8 +22,12 @@ public class BasketRepositoryImpl implements BasketRepository {
         return this.hashOperations.entries(KEY);
     }
 
-    public Basket getById(String id) {
-        return this.hashOperations.get(KEY, id);
+    public Optional<Basket> getById(String id) {
+        Basket basket = this.hashOperations.get(KEY, id);
+        if (basket == null) {
+            return Optional.empty();
+        }
+        return Optional.of(basket);
     }
 
     public void addOrUpdate(Basket basket) {
