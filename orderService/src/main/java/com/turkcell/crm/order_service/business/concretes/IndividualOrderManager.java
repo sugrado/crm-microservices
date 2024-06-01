@@ -14,6 +14,7 @@ import com.turkcell.crm.order_service.business.abstracts.IndividualOrderService;
 import com.turkcell.crm.order_service.business.abstracts.OrderItemService;
 import com.turkcell.crm.order_service.business.dtos.requests.CompleteOrderRequest;
 import com.turkcell.crm.order_service.business.mappers.OrderMapper;
+import com.turkcell.crm.order_service.business.rules.OrderBusinessRules;
 import com.turkcell.crm.order_service.data_access.OrderRepository;
 import com.turkcell.crm.order_service.entities.concretes.Order;
 import com.turkcell.crm.order_service.entities.concretes.OrderItem;
@@ -39,8 +40,11 @@ public class IndividualOrderManager extends BaseOrderManager implements Individu
                                   OrderMapper orderMapper,
                                   BasketClient basketClient,
                                   CatalogClient catalogClient,
-                                  OrderItemService orderItemService, OrderProducer orderProducer, CustomerClient customerClient) {
-        super(orderRepository, accountClient, orderMapper);
+                                  OrderItemService orderItemService,
+                                  OrderProducer orderProducer,
+                                  CustomerClient customerClient,
+                                  OrderBusinessRules orderBusinessRules) {
+        super(orderRepository, accountClient, orderMapper,orderBusinessRules);
         this.basketClient = basketClient;
         this.catalogClient = catalogClient;
         this.orderItemService = orderItemService;
