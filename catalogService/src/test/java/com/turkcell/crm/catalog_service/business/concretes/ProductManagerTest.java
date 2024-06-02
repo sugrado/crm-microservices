@@ -1,13 +1,15 @@
 package com.turkcell.crm.catalog_service.business.concretes;
 
 import com.turkcell.crm.catalog_service.business.abstracts.CategoryService;
-import com.turkcell.crm.catalog_service.business.constants.messages.Messages;
+import com.turkcell.crm.catalog_service.business.constants.Messages;
 import com.turkcell.crm.catalog_service.business.dtos.requests.product.CreateProductRequest;
 import com.turkcell.crm.catalog_service.business.dtos.requests.product.UpdateProductRequest;
 import com.turkcell.crm.catalog_service.business.dtos.responses.product.*;
 import com.turkcell.crm.catalog_service.business.mappers.CategoryMapper;
 import com.turkcell.crm.catalog_service.business.mappers.ProductMapper;
-import com.turkcell.crm.catalog_service.business.mappers.ProductMapperImpl;
+import com.turkcell.crm.common.shared.dtos.catalogs.GetAllForCompleteOrderResponse;
+import com.turkcell.crm.common.shared.kafka.events.orders.OrderCreatedEventProduct;
+import org.mapstruct.factory.Mappers;
 import com.turkcell.crm.catalog_service.business.rules.CategoryBusinessRules;
 import com.turkcell.crm.catalog_service.business.rules.ProductBusinessRules;
 import com.turkcell.crm.catalog_service.core.business.abstracts.MessageService;
@@ -35,29 +37,19 @@ class ProductManagerTest {
     private ProductRepository productRepository;
     private MessageService messageService;
     private ProductManager productManager;
-
     private Product product;
-    private ProductProducer productProducer;
     private CategoryService categoryService;
-    private CategoryRepository categoryRepository;
-    private CategoryMapper categoryMapper;
-    private CategoryBusinessRules categoryBusinessRules;
     private Category category;
-
 
     @BeforeEach()
     void setUp() {
 
-        ProductMapper productMapper = new ProductMapperImpl();
+        ProductMapper productMapper = Mappers.getMapper(ProductMapper.class);
         productRepository = mock(ProductRepository.class);
         messageService = mock(MessageService.class);
         ProductBusinessRules productBusinessRules = new ProductBusinessRules(messageService, productRepository);
-        productProducer = mock(ProductProducer.class);
+        ProductProducer productProducer = mock(ProductProducer.class);
 
-        /*categoryMapper = new CategoryMapperImpl();
-        categoryRepository = mock(CategoryRepository.class);
-        categoryBusinessRules = new CategoryBusinessRules(categoryRepository,messageService);
-        categoryService = new CategoryManager(categoryRepository,categoryMapper,categoryBusinessRules);*/
 
         categoryService = mock(CategoryService.class);
 
@@ -73,11 +65,10 @@ class ProductManagerTest {
         product.setPrice(10000);
         product.setUnitsInStock(10);
         product.setCategory(category);
-
     }
 
     @Test
-    void add_withValidRequest_shouldCreateAndReturnProduct() {
+    void add_shouldAddProductSuccessfully() {
 
         CreateProductRequest createProductRequest = new CreateProductRequest("Test Title",
                 "Test Description", 10000, 10, 1);
@@ -108,6 +99,7 @@ class ProductManagerTest {
 
     @Test
     void add_withDeletedCategory_shouldThrowBusinessException() {
+
         CreateProductRequest createProductRequest = new CreateProductRequest("Test Title",
                 "Test Description", 10000, 10, 1);
 
@@ -117,7 +109,7 @@ class ProductManagerTest {
     }
 
     @Test
-    void getAll_shouldReturnListOfProducts() {
+    void getAll_shouldReturnListOfProductsSuccessfully() {
 
         Product product1 = new Product();
         product1.setId(1);
@@ -146,7 +138,8 @@ class ProductManagerTest {
     }
 
     @Test
-    void getById_withNonExistentId_shouldThrowBusinessException() {
+    void getById_shouldThrowBusinessExceptionWhenProductNotFound() {
+
         when(productRepository.findById(anyInt())).thenReturn(Optional.empty());
         when(messageService.getMessage(Messages.ProductMessages.NOT_FOUND)).thenReturn("Product not found");
 
@@ -154,20 +147,9 @@ class ProductManagerTest {
         assertEquals("Product not found", exception.getMessage());
     }
 
-
     @Test
-    void getById_withDeletedProduct_shouldThrowBusinessException() {
+    void getById_shouldReturnProductSuccessfully() {
 
-        product.setDeletedDate(LocalDateTime.now());
-        when(productRepository.findById(anyInt())).thenReturn(Optional.of(product));
-        when(messageService.getMessage(Messages.ProductMessages.DELETED)).thenReturn("Product is deleted");
-
-        BusinessException exception = assertThrows(BusinessException.class, () -> productManager.getById(1));
-        assertEquals("Product is deleted", exception.getMessage());
-    }
-
-    @Test
-    void getById_withValidId_shouldReturnProduct() {
         ProductPropertyDto productPropertyDto = new ProductPropertyDto("Test Value", "Test Property");
         GetByIdProductResponse getByIdProductResponse = new GetByIdProductResponse(1,
                 LocalDateTime.now(), LocalDateTime.now(), "Test Title", "Test Description", 15000, 5,
@@ -182,16 +164,14 @@ class ProductManagerTest {
     }
 
     @Test
-    void testUpdate_Success() {
-        UpdateProductRequest updateProductRequest = new UpdateProductRequest("Test Title", "Test Description", 30000, 30);
+    void update_shouldUpdateProductSuccessfully() {
+
+        UpdateProductRequest updateProductRequest = new UpdateProductRequest("Test Title", "Test Description", 30000, 30,1);
         UpdatedProductResponse updatedProductResponse = new UpdatedProductResponse(1,
-                LocalDateTime.now(), LocalDateTime.now(), "Test Title", "Test Description", 30000, 30);
+                LocalDateTime.now(), LocalDateTime.now(), "Test Title", "Test Description", 30000, 30,1);
 
         when(productRepository.findById(anyInt())).thenReturn(Optional.of(product));
         when(productRepository.save(any(Product.class))).thenReturn(product);
-
-        //doNothing().when(productMapper).updateProductFromRequest(updateProductRequest, product);
-        //doNothing().when(productProducer).send(any(ProductProducer.class));
 
         UpdatedProductResponse response = productManager.update(1, updateProductRequest);
 
@@ -201,8 +181,9 @@ class ProductManagerTest {
     }
 
     @Test
-    void testUpdate_ProductNotFound() {
-        UpdateProductRequest updateProductRequest = new UpdateProductRequest("Test Title", "Test Description", 30000, 30);
+    void update_shouldThrowBusinessExceptionWhenProductDoesNotExist() {
+
+        UpdateProductRequest updateProductRequest = new UpdateProductRequest("Test Title", "Test Description", 30000, 30,1);
         when(productRepository.findById(1)).thenReturn(Optional.empty());
         when(messageService.getMessage(Messages.ProductMessages.NOT_FOUND)).thenReturn("Product not found");
 
@@ -211,25 +192,11 @@ class ProductManagerTest {
         });
 
         assertEquals("Product not found", exception.getMessage());
-
     }
 
     @Test
-    void testUpdate_ProductDeleted() {
-        UpdateProductRequest updateProductRequest = new UpdateProductRequest("Test Title", "Test Description", 30000, 30);
-        product.setDeletedDate(LocalDateTime.now());
-        when(productRepository.findById(anyInt())).thenReturn(Optional.of(product));
-        when(messageService.getMessage(Messages.ProductMessages.DELETED)).thenReturn("Product is deleted");
+    void delete_shouldThrowBusinessExceptionWhenProductDoesNotExist() {
 
-        BusinessException exception = assertThrows(BusinessException.class, () -> {
-            productManager.update(1, updateProductRequest);
-        });
-
-        assertEquals("Product is deleted", exception.getMessage());
-    }
-
-    @Test
-    void testDelete_ProductNotFound() {
         when(productRepository.findById(1)).thenReturn(Optional.empty());
         when(messageService.getMessage(Messages.ProductMessages.NOT_FOUND)).thenReturn("Product not found");
 
@@ -238,24 +205,11 @@ class ProductManagerTest {
         });
 
         assertEquals("Product not found", exception.getMessage());
-
     }
 
     @Test
-    void testDelete_ProductDeleted() {
-        product.setDeletedDate(LocalDateTime.now());
-        when(productRepository.findById(anyInt())).thenReturn(Optional.of(product));
-        when(messageService.getMessage(Messages.ProductMessages.DELETED)).thenReturn("Product is already deleted");
+    void delete_shouldDeleteProductSuccessfully() {
 
-        BusinessException exception = assertThrows(BusinessException.class, () -> {
-            productManager.delete(1);
-        });
-
-        assertEquals("Product is already deleted", exception.getMessage());
-    }
-
-    @Test
-    void testDelete_Success() {
         ProductPropertyDto productPropertyDto = new ProductPropertyDto("Test Value", "Test Property");
         DeletedProductResponse deletedProductResponse = new DeletedProductResponse(1,
                 LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), "Test Title", "Test Description", 10000,
@@ -264,8 +218,6 @@ class ProductManagerTest {
         when(productRepository.findById(anyInt())).thenReturn(Optional.of(product));
         when(productRepository.save(any(Product.class))).thenReturn(product);
 
-        //doNothing().when(productProducer).send(any());
-
         DeletedProductResponse response = productManager.delete(1);
 
         assertEquals(deletedProductResponse.id(), response.id());
@@ -273,7 +225,8 @@ class ProductManagerTest {
     }
 
     @Test
-    void testGetAllByCategoryId_Success() {
+    void getAllByCategoryId_shouldReturnAllProductsSuccessfully() {
+
         Product product1 = new Product();
         product1.setCategory(new Category(1));
         product1.setTitle("Test Title");
@@ -305,7 +258,8 @@ class ProductManagerTest {
     }
 
     @Test
-    void testGetByIdForProductPropertyManager_Success() {
+    void getByIdForProductPropertyManager_ShouldReturnProductSuccessfully() {
+
         when(productRepository.findById(anyInt())).thenReturn(Optional.of(product));
 
         Product result = productManager.getByIdForProductPropertyManager(1);
@@ -315,7 +269,7 @@ class ProductManagerTest {
     }
 
     @Test
-    void testGetByIdForProductPropertyManager_ProductNotFound() {
+    void getByIdForProductPropertyManager_shouldThrowBusinessExceptionWhenProductNotFound() {
 
         when(productRepository.findById(anyInt())).thenReturn(Optional.empty());
         when(messageService.getMessage(Messages.ProductMessages.NOT_FOUND)).thenReturn("Product not found");
@@ -325,20 +279,62 @@ class ProductManagerTest {
         });
 
         assertEquals("Product not found", exception.getMessage());
-
     }
 
     @Test
-    void testGetByIdForProductPropertyManager_ProductDeleted() {
+    void getAllForCompleteOrder_shouldReturnAllForCompleteOrderResponsesSuccessfully() {
 
-        product.setDeletedDate(LocalDateTime.now());
-        when(productRepository.findById(anyInt())).thenReturn(Optional.of(product));
-        when(messageService.getMessage(Messages.ProductMessages.DELETED)).thenReturn("Product is already deleted");
+        Product product1 = new Product();
+        product1.setId(1);
+        product1.setTitle("Product 1");
 
-        BusinessException exception = assertThrows(BusinessException.class, () -> {
-            productManager.getByIdForProductPropertyManager(1);
-        });
+        Product product2 = new Product();
+        product2.setId(2);
+        product2.setTitle("Product 2");
 
-        assertEquals("Product is already deleted", exception.getMessage());
+        List<Product> productList = Arrays.asList(product1, product2);
+
+        List<Integer> productIdList = Arrays.asList(1, 2);
+
+        GetAllForCompleteOrderResponse response1 = new GetAllForCompleteOrderResponse(1, "Product 1",1000);
+        GetAllForCompleteOrderResponse response2 = new GetAllForCompleteOrderResponse(2, "Product 2",2000);
+
+        List<GetAllForCompleteOrderResponse> getAllForCompleteOrderResponseList = Arrays.asList(response1, response2);
+
+        when(productRepository.findAllByIdIsIn(anyList())).thenReturn(productList);
+
+
+        List<GetAllForCompleteOrderResponse> response = productManager.getAllForCompleteOrder(productIdList);
+
+        assertEquals(getAllForCompleteOrderResponseList.size(), response.size());
+        assertEquals(getAllForCompleteOrderResponseList.get(0).id(), response.get(0).id());
+        assertEquals(getAllForCompleteOrderResponseList.get(0).title(), response.get(0).title());
+        assertEquals(getAllForCompleteOrderResponseList.get(1).id(), response.get(1).id());
+        assertEquals(getAllForCompleteOrderResponseList.get(1).title(), response.get(1).title());
+    }
+    @Test
+    void decreaseStocks_shouldDecreaseStockForEachProductSuccessfully() {
+
+        Product product1 = new Product();
+        product1.setId(1);
+        product1.setUnitsInStock(10);
+
+        Product product2 = new Product();
+        product2.setId(2);
+        product2.setUnitsInStock(20);
+
+        List<Product> productList = Arrays.asList(product1, product2);
+
+        OrderCreatedEventProduct eventProduct1 = new OrderCreatedEventProduct(1,"Test Title",1000);
+        OrderCreatedEventProduct eventProduct2 = new OrderCreatedEventProduct(2, "Test title 2", 2000);
+        List<OrderCreatedEventProduct> eventProducts = Arrays.asList(eventProduct1, eventProduct2);
+
+
+        when(productRepository.findAllByIdIsIn(anyList())).thenReturn(productList);
+
+        productManager.decreaseStocks(eventProducts);
+
+        assertEquals(9, productList.get(0).getUnitsInStock());
+        assertEquals(19, productList.get(1).getUnitsInStock());
     }
 }

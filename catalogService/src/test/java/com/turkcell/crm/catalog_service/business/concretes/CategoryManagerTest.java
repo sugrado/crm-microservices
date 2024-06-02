@@ -1,11 +1,11 @@
 package com.turkcell.crm.catalog_service.business.concretes;
 
-import com.turkcell.crm.catalog_service.business.constants.messages.Messages;
+import com.turkcell.crm.catalog_service.business.constants.Messages;
 import com.turkcell.crm.catalog_service.business.dtos.requests.category.CreateCategoryRequest;
 import com.turkcell.crm.catalog_service.business.dtos.requests.category.UpdateCategoryRequest;
 import com.turkcell.crm.catalog_service.business.dtos.responses.category.*;
 import com.turkcell.crm.catalog_service.business.mappers.CategoryMapper;
-import com.turkcell.crm.catalog_service.business.mappers.CategoryMapperImpl;
+import org.mapstruct.factory.Mappers;
 import com.turkcell.crm.catalog_service.business.rules.CategoryBusinessRules;
 import com.turkcell.crm.catalog_service.core.business.abstracts.MessageService;
 import com.turkcell.crm.catalog_service.data_access.abstracts.CategoryRepository;
@@ -34,7 +34,7 @@ public class CategoryManagerTest {
     @BeforeEach
     void setUp() {
         messageService = mock(MessageService.class);
-        CategoryMapper categoryMapper = new CategoryMapperImpl();
+        CategoryMapper categoryMapper = Mappers.getMapper(CategoryMapper.class);
         categoryRepository = mock(CategoryRepository.class);
         CategoryBusinessRules categoryBusinessRules = new CategoryBusinessRules(categoryRepository, messageService);
         categoryManager = new CategoryManager(categoryRepository, categoryMapper, categoryBusinessRules);
@@ -75,7 +75,7 @@ public class CategoryManagerTest {
     }
 
     @Test
-    void getAll_shouldReturnAllCategories() {
+    void getAll_shouldReturnAllCategoriesSuccessfully() {
 
         Category category1 = new Category();
         category1.setId(1);
@@ -115,22 +115,7 @@ public class CategoryManagerTest {
     }
 
     @Test
-    void getbyId_shouldThrowBusinessExceptionWhenCategoryDeleted() {
-
-        category.setDeletedDate(LocalDateTime.now());
-        when(categoryRepository.findById(any())).thenReturn(Optional.of(category));
-        String errorMessage = "Category is deleted";
-        when(messageService.getMessage(Messages.CategoryMessages.DELETED)).thenReturn(errorMessage);
-
-        assertThrows(BusinessException.class, () -> {
-            categoryManager.getById(1);
-        });
-
-    }
-
-    @Test
-    void getById_shouldReturnCategorySuccessfullyWhenFoundAndNotDeleted() {
-
+    void getById_shouldReturnCategorySuccessfully() {
 
         GetByIdCategoryResponse getByIdCategoryResponse = new GetByIdCategoryResponse(1, "Test Name", "Test Description");
         when(categoryRepository.findById(any())).thenReturn(Optional.of(category));
@@ -155,25 +140,9 @@ public class CategoryManagerTest {
     }
 
     @Test
-    void update_shouldThrowBusinessExceptionWhenCategoryDeleted() {
-
-        UpdateCategoryRequest updateCategoryRequest = new UpdateCategoryRequest("Name Updated", "Description Updated");
-        category.setDeletedDate(LocalDateTime.now());
-
-        when(categoryRepository.findById(1)).thenReturn(Optional.of(category));
-        when(messageService.getMessage(Messages.CategoryMessages.DELETED)).thenReturn("Category is deleted");
-
-        assertThrows(BusinessException.class, () -> {
-            categoryManager.update(1, updateCategoryRequest);
-        });
-    }
-
-    @Test
     void update_shouldThrowBusinessExceptionWhenCategoryNameAlreadyExists() {
+
         UpdateCategoryRequest updateCategoryRequest = new UpdateCategoryRequest("Electronics Updated", "Description Updated");
-        /*Category existingCategory = new Category();
-        existingCategory.setId(1);
-        existingCategory.setName("Electronics Updated");*/
 
         when(categoryRepository.findById(1)).thenReturn(Optional.of(category));
         when(categoryRepository.findByNameAndIdIsNot("Electronics Updated", 1)).thenReturn(Optional.of(category));
@@ -214,18 +183,6 @@ public class CategoryManagerTest {
     }
 
     @Test
-    void delete_shouldThrowBusinessException_whenCategoryAlreadyDeleted() {
-
-        category.setDeletedDate(LocalDateTime.now());
-        when(categoryRepository.findById(1)).thenReturn(Optional.of(category));
-        when(messageService.getMessage(Messages.CategoryMessages.DELETED)).thenReturn("Category is already deleted");
-
-        assertThrows(BusinessException.class, () -> {
-            categoryManager.delete(1);
-        });
-    }
-
-    @Test
     void delete_shouldDeleteCategorySuccessfully() {
 
         DeletedCategoryResponse deletedCategoryResponse = new DeletedCategoryResponse(1, "Test Name", "Test Description", LocalDateTime.now());
@@ -239,37 +196,23 @@ public class CategoryManagerTest {
     }
 
     @Test
-    void getByIdForProductManager_withCategoryNotFound_shouldThrowNotFoundException() {
+    void getByIdEntity_shouldThrowNotFoundExceptionWhenCategoryNotFound() {
 
         when(categoryRepository.findById(1)).thenReturn(Optional.empty());
         when(messageService.getMessage(Messages.CategoryMessages.NOT_FOUND)).thenReturn("Category not found");
 
         assertThrows(NotFoundException.class, () -> {
-            categoryManager.getByIdForProductManager(1);
+            categoryManager.getByIdEntity(1);
         });
     }
 
     @Test
-    void getByIdForProductManager_withDeletedCategory_shouldThrowBusinessException() {
+    void getByIdEntity_shouldReturnCategorySuccessfully() {
 
-        category.setDeletedDate(LocalDateTime.now());
-        when(categoryRepository.findById(1)).thenReturn(Optional.of(category));
-        when(messageService.getMessage(Messages.CategoryMessages.DELETED)).thenReturn("Category is deleted");
+        when(categoryRepository.findById(any())).thenReturn(Optional.of(category));
 
-        assertThrows(BusinessException.class, () -> {
-            categoryManager.getByIdForProductManager(1);
-        });
-    }
-
-    @Test
-    void getByIdForProductManager_withValidCategory_shouldReturnCategory() {
-
-        category.setId(1);
-        when(categoryRepository.findById(1)).thenReturn(Optional.of(category));
-
-        Category result = categoryManager.getByIdForProductManager(1);
+        Category result = categoryManager.getByIdEntity(1);
 
         assertEquals(category.getId(), result.getId());
     }
-
 }
