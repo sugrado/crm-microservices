@@ -138,7 +138,7 @@ services:
       - common
 
   catalog-db:
-    build: ./catalogService/database
+    image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: catalog-db
     user: root
     ports:
