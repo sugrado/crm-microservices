@@ -1,9 +1,11 @@
 package com.turkcell.crm.customer_service.business.concretes;
 
 import com.turkcell.crm.customer_service.business.dtos.responses.cities.GetAllCitiesResponse;
+import com.turkcell.crm.customer_service.business.dtos.responses.cities.GetByIdCityResponse;
 import com.turkcell.crm.customer_service.business.mappers.CityMapper;
 import com.turkcell.crm.customer_service.business.mappers.CityMapperImpl;
 import com.turkcell.crm.customer_service.business.rules.CityBusinessRules;
+import com.turkcell.crm.customer_service.core.business.abstracts.MessageService;
 import com.turkcell.crm.customer_service.data_access.abstracts.CityRepository;
 import com.turkcell.crm.customer_service.entities.concretes.City;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,21 +13,25 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.*;
 
 class CityManagerTest {
     private CityRepository cityRepository;
     private CityMapper cityMapper;
     private CityManager cityManager;
+    private MessageService messageService;
     private CityBusinessRules cityBusinessRules;
 
     @BeforeEach
     void setUp() {
+        messageService = mock(MessageService.class);
         cityRepository = mock(CityRepository.class);
         cityMapper = new CityMapperImpl();
+        cityBusinessRules = new CityBusinessRules(messageService);
         cityManager = new CityManager(cityRepository, cityBusinessRules, cityMapper);
     }
 
@@ -91,5 +97,37 @@ class CityManagerTest {
             assertEquals(cities.get(i).getId(), actualCities.get(i).getId());
             assertEquals(cities.get(i).getName(), actualCities.get(i).getName());
         }
+    }
+
+    @Test
+    void getById_shouldReturnCityById() {
+        // Arrange
+        int cityId = 1;
+        City city = new City();
+        city.setId(cityId);
+        city.setName("City1");
+
+        GetByIdCityResponse expectedResponse = new GetByIdCityResponse(cityId, "City1");
+
+        when(cityRepository.findById(cityId)).thenReturn(Optional.of(city));
+
+        // Act
+        GetByIdCityResponse actualResponse = cityManager.getById(cityId);
+
+        // Assert
+        assertEquals(expectedResponse.id(), actualResponse.id());
+        assertEquals(expectedResponse.name(), actualResponse.name());
+    }
+
+    @Test
+    void getById_shouldThrowExceptionWhenCityNotFound() {
+        // Arrange
+        int cityId = 1;
+        Optional<City> cityOptional = Optional.empty();
+
+        when(cityRepository.findById(cityId)).thenReturn(cityOptional);
+
+        // Act & Assert
+        assertThrows(RuntimeException.class, () -> cityManager.getById(cityId));
     }
 }
