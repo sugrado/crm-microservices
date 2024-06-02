@@ -1,6 +1,6 @@
 spring:
   application:
-    name: accountService
+    name: account-service
   cloud:
     config:
       profile: dev

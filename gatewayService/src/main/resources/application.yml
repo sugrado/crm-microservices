@@ -1,6 +1,6 @@
 spring:
   application:
-    name: gatewayService
+    name: gateway-service
   cloud:
     config:
       profile: dev

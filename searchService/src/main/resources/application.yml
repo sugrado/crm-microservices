@@ -1,6 +1,6 @@
 spring:
   application:
-    name: searchService
+    name: search-service
   cloud:
     config:
       profile: dev

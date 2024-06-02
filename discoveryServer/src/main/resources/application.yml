@@ -1,6 +1,6 @@
 spring:
   application:
-    name: discoveryServer
+    name: discovery-server
   cloud:
     config:
       profile: dev

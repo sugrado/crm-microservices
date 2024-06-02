@@ -1,6 +1,6 @@
 spring:
   application:
-    name: identityService
+    name: identity-service
   cloud:
     config:
       profile: dev
