@@ -384,7 +384,7 @@ class AccountManagerTest {
         UpdateAccountRequest updateRequest = new UpdateAccountRequest(
                 Status.ACTIVE,
                 "Test",
-                "123456",
+                "1234567",
                 1
         );
 
@@ -409,6 +409,7 @@ class AccountManagerTest {
         // Verify
         verify(accountRepository).save(any(Account.class));
         assertEquals(expectedResponse.id(), response.id());
+        assertNotEquals(updateRequest.name(),response.name());
     }
 
     @Test
