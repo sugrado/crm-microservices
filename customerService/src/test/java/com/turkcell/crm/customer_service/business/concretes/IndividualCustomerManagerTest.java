@@ -1,10 +1,13 @@
 package com.turkcell.crm.customer_service.business.concretes;
 
+import com.turkcell.crm.common.shared.dtos.customers.GetIndividualCustomerInvoiceInfoDto;
+import com.turkcell.crm.common.shared.dtos.customers.GetInvoiceInfoByAddressDto;
 import com.turkcell.crm.common.shared.exceptions.types.NotFoundException;
 import com.turkcell.crm.common.shared.kafka.events.customers.IndividualCustomerCreatedEvent;
 import com.turkcell.crm.common.shared.kafka.events.customers.IndividualCustomerDeletedEvent;
 import com.turkcell.crm.common.shared.kafka.events.customers.IndividualCustomerUpdatedEvent;
 import com.turkcell.crm.customer_service.adapters.mernis.CheckNationalityService;
+import com.turkcell.crm.customer_service.business.abstracts.AddressService;
 import com.turkcell.crm.customer_service.business.abstracts.CustomerService;
 import com.turkcell.crm.customer_service.business.dtos.requests.customers.AddressDto;
 import com.turkcell.crm.customer_service.business.dtos.requests.customers.CreateCustomerRequest;
@@ -17,8 +20,7 @@ import com.turkcell.crm.customer_service.business.mappers.IndividualCustomerMapp
 import com.turkcell.crm.customer_service.business.rules.IndividualCustomerBusinessRules;
 import com.turkcell.crm.customer_service.core.business.abstracts.MessageService;
 import com.turkcell.crm.customer_service.data_access.abstracts.IndividualCustomerRepository;
-import com.turkcell.crm.customer_service.entities.concretes.Customer;
-import com.turkcell.crm.customer_service.entities.concretes.IndividualCustomer;
+import com.turkcell.crm.customer_service.entities.concretes.*;
 import com.turkcell.crm.customer_service.entities.enums.Gender;
 import com.turkcell.crm.customer_service.kafka.producers.CustomerProducer;
 import org.junit.jupiter.api.BeforeEach;
@@ -53,6 +55,8 @@ class IndividualCustomerManagerTest {
 
     @Mock
     private CustomerService customerService;
+    @Mock
+    private AddressService addressService;
 
     @Mock
     private CustomerProducer customerProducer;
@@ -302,6 +306,56 @@ class IndividualCustomerManagerTest {
         assertThrows(NotFoundException.class, () -> {
             individualCustomerBusinessRules1.individualCustomerShouldBeExist(Optional.empty());
         });
+    }
+    @Test
+    void getInvoiceInfoByAddress_ShouldReturnInvoiceInfo() {
+        // Arrange
+        int addressId = 1;
+        Address address = new Address();
+        address.setId(addressId);
+        address.setStreet("test street");
+        address.setHouseFlatNumber("546");
+        address.setDescription("test description");
+        address.setCity(new City(1));
+        address.setDistrict(new District(1));
+
+        IndividualCustomer individualCustomer = new IndividualCustomer();
+        individualCustomer.setFirstName("Engin");
+        individualCustomer.setLastName("Demiroğ");
+        individualCustomer.setNationalityId("12345678910");
+
+        Customer customer = new Customer();
+        customer.setIndividualCustomer(individualCustomer);
+        address.setCustomer(customer);
+
+        GetInvoiceInfoByAddressDto addressDto = new GetInvoiceInfoByAddressDto(
+                address.getStreet(), address.getHouseFlatNumber(), address.getDescription(), address.getCity().getName(), address.getDistrict().getName());
+
+        GetIndividualCustomerInvoiceInfoDto expectedInvoiceInfo = new GetIndividualCustomerInvoiceInfoDto();
+        expectedInvoiceInfo.setFirstName("Engin");
+        expectedInvoiceInfo.setLastName("Demiroğ");
+        expectedInvoiceInfo.setNationalityId("12345678910");
+        expectedInvoiceInfo.setAddress(addressDto);
+
+        when(addressService.getByIdEntity(addressId)).thenReturn(address);
+        when(individualCustomerMapper.toGetIndividualCustomerInvoiceInfoDto(individualCustomer)).thenReturn(expectedInvoiceInfo);
+
+        // Act
+        GetIndividualCustomerInvoiceInfoDto actualInvoiceInfo = individualCustomerManager.getInvoiceInfoByAddress(addressId);
+
+        // Assert
+        assertNotNull(actualInvoiceInfo);
+        assertEquals(expectedInvoiceInfo.getFirstName(), actualInvoiceInfo.getFirstName());
+        assertEquals(expectedInvoiceInfo.getLastName(), actualInvoiceInfo.getLastName());
+        assertEquals(expectedInvoiceInfo.getNationalityId(), actualInvoiceInfo.getNationalityId());
+        assertEquals(expectedInvoiceInfo.getAddress().street(), actualInvoiceInfo.getAddress().street());
+        assertEquals(expectedInvoiceInfo.getAddress().houseFlatNumber(), actualInvoiceInfo.getAddress().houseFlatNumber());
+        assertEquals(expectedInvoiceInfo.getAddress().description(), actualInvoiceInfo.getAddress().description());
+        assertEquals(expectedInvoiceInfo.getAddress().cityName(), actualInvoiceInfo.getAddress().cityName());
+        assertEquals(expectedInvoiceInfo.getAddress().districtName(), actualInvoiceInfo.getAddress().districtName());
+
+        verify(addressService, times(1)).getByIdEntity(addressId);
+        verify(individualCustomerMapper, times(1)).toGetIndividualCustomerInvoiceInfoDto(individualCustomer);
     }
 
 

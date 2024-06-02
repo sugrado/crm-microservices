@@ -12,8 +12,7 @@ import java.util.Collections;
 @Service
 public class IdentityClient {
     private final RestTemplate restTemplate;
-    // TODO: localhost:7005 magic string to be replaced with a constant
-    private static final String BASE_URL = "http://localhost:7005/identity-service/api/v1/";
+    private static final String BASE_URL = "http://identity-service:7005/identity-service/api/v1/";
 
     public IdentityClient(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;

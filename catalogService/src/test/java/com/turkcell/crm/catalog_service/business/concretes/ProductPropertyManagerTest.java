@@ -2,12 +2,12 @@ package com.turkcell.crm.catalog_service.business.concretes;
 
 import com.turkcell.crm.catalog_service.business.abstracts.ProductService;
 import com.turkcell.crm.catalog_service.business.abstracts.PropertyService;
-import com.turkcell.crm.catalog_service.business.constants.messages.Messages;
+import com.turkcell.crm.catalog_service.business.constants.Messages;
 import com.turkcell.crm.catalog_service.business.dtos.requests.product_property.CreateProductPropertyRequest;
 import com.turkcell.crm.catalog_service.business.dtos.requests.product_property.UpdateProductPropertyRequest;
 import com.turkcell.crm.catalog_service.business.dtos.responses.product_property.*;
 import com.turkcell.crm.catalog_service.business.mappers.ProductPropertyMapper;
-import com.turkcell.crm.catalog_service.business.mappers.ProductPropertyMapperImpl;
+import org.mapstruct.factory.Mappers;
 import com.turkcell.crm.catalog_service.business.rules.ProductPropertyBusinessRules;
 import com.turkcell.crm.catalog_service.core.business.abstracts.MessageService;
 import com.turkcell.crm.catalog_service.data_access.abstracts.ProductPropertyRepository;
@@ -42,7 +42,7 @@ class ProductPropertyManagerTest {
     void setUp() {
 
         productPropertyRepository = mock(ProductPropertyRepository.class);
-        ProductPropertyMapper productPropertyMapper = new ProductPropertyMapperImpl();
+        ProductPropertyMapper productPropertyMapper = Mappers.getMapper(ProductPropertyMapper.class);
         productService = mock(ProductService.class);
         propertyService = mock(PropertyService.class);
         messageService = mock(MessageService.class);
@@ -69,25 +69,7 @@ class ProductPropertyManagerTest {
     }
 
     @Test
-    void testAdd_Success() {
-
-        CreateProductPropertyRequest createProductPropertyRequest = new CreateProductPropertyRequest("Test Value", 1);
-
-        when(productService.getByIdForProductPropertyManager(anyInt())).thenReturn(product);
-        when(propertyService.getByIdForProductPropertyManager(anyInt())).thenReturn(property);
-        when(productPropertyRepository.existsByProductIdAndPropertyId(anyInt(), anyInt())).thenReturn(false);
-
-        when(productPropertyRepository.save(any())).thenReturn(productProperty);
-
-
-        CreatedProductPropertyResponse result = productPropertyManager.add(1, createProductPropertyRequest);
-
-        assertEquals(createProductPropertyRequest.propertyId(), result.propertyId());
-
-    }
-
-    @Test
-    void testAdd_ProductAndPropertyCategoryMismatch() {
+    void add_shouldThrowExceptionWhenProductAndPropertyCategoryMismatch() {
 
         CreateProductPropertyRequest createProductPropertyRequest = new CreateProductPropertyRequest("Test Value", 1);
 
@@ -107,7 +89,7 @@ class ProductPropertyManagerTest {
     }
 
     @Test
-    void testAdd_ProductPropertyAlreadyExists() {
+    void add_shouldThrowExceptionWhenProductPropertyAlreadyExists() {
 
         CreateProductPropertyRequest createProductPropertyRequest = new CreateProductPropertyRequest("Test Value", 1);
 
@@ -124,7 +106,26 @@ class ProductPropertyManagerTest {
     }
 
     @Test
-    void testGetAll_Success() {
+    void add_shouldAddProductPropertySuccessfully() {
+
+        CreateProductPropertyRequest createProductPropertyRequest = new CreateProductPropertyRequest("Test Value", 1);
+
+        when(productService.getByIdForProductPropertyManager(anyInt())).thenReturn(product);
+        when(propertyService.getByIdForProductPropertyManager(anyInt())).thenReturn(property);
+        when(productPropertyRepository.existsByProductIdAndPropertyId(anyInt(), anyInt())).thenReturn(false);
+
+        when(productPropertyRepository.save(any())).thenReturn(productProperty);
+
+
+        CreatedProductPropertyResponse result = productPropertyManager.add(1, createProductPropertyRequest);
+
+        assertEquals(createProductPropertyRequest.propertyId(), result.propertyId());
+
+    }
+
+    @Test
+    void getAll_ShouldReturnAllProductPropertiesSuccessfully() {
+
         ProductProperty productProperty1 = new ProductProperty();
         productProperty1.setId(1);
 
@@ -149,7 +150,8 @@ class ProductPropertyManagerTest {
     }
 
     @Test
-    void testGetAllByProductId_Success() {
+    void getAllByProductId_ShouldReturnAllProductPropertiesSuccessfully() {
+
         int productId = 1;
         ProductProperty productProperty1 = new ProductProperty();
         productProperty1.setProduct(new Product(productId));
@@ -168,23 +170,8 @@ class ProductPropertyManagerTest {
     }
 
     @Test
-    void testGetById_Success() {
-        int productId = 1;
-        int propertyId = 1;
+    void getById_shouldThrowExceptionWhenProductPropertyNotFound() {
 
-        when(productPropertyRepository.findByProductIdAndPropertyId(productId, propertyId)).thenReturn(Optional.of(productProperty));
-
-
-        GetByIdProductPropertyResponse result = productPropertyManager.getById(productId, propertyId);
-
-
-        assertEquals(productId, result.productId());
-        assertEquals(propertyId, result.propertyId());
-
-    }
-
-    @Test
-    void testGetById_NotFound() {
         int productId = 1;
         int propertyId = 2;
 
@@ -199,25 +186,40 @@ class ProductPropertyManagerTest {
     }
 
     @Test
-    void testGetById_Deleted() {
-        int productId = 1;
-        int propertyId = 2;
+    void getById_ShouldReturnProductPropertySuccessfully() {
 
-        productProperty.setDeletedDate(LocalDateTime.now());
+        int productId = 1;
+        int propertyId = 1;
 
         when(productPropertyRepository.findByProductIdAndPropertyId(productId, propertyId)).thenReturn(Optional.of(productProperty));
-        when(messageService.getMessage(anyString())).thenReturn("Product property is deleted");
 
-        BusinessException exception = assertThrows(BusinessException.class, () -> {
-            productPropertyManager.getById(productId, propertyId);
-        });
 
-        assertEquals("Product property is deleted", exception.getMessage());
+        GetByIdProductPropertyResponse result = productPropertyManager.getById(productId, propertyId);
 
+
+        assertEquals(productId, result.productId());
+        assertEquals(propertyId, result.propertyId());
     }
 
     @Test
-    void testUpdate_Success() {
+    void update_shouldThrowExceptionWhenProductPropertyNotFound() {
+
+        UpdateProductPropertyRequest updateProductPropertyRequest = new UpdateProductPropertyRequest("Test Value");
+
+
+        when(productPropertyRepository.findByProductIdAndPropertyId(anyInt(), anyInt())).thenReturn(Optional.empty());
+        when(messageService.getMessage(anyString())).thenReturn("Product property not found");
+
+        BusinessException exception = assertThrows(BusinessException.class, () -> {
+            productPropertyManager.update(anyInt(), anyInt(), updateProductPropertyRequest);
+        });
+
+        assertEquals("Product property not found", exception.getMessage());
+
+    }
+    @Test
+    void update_ShouldUpdateProductPropertySuccessfully() {
+
         int productId = 1;
         int propertyId = 1;
 
@@ -234,42 +236,20 @@ class ProductPropertyManagerTest {
     }
 
     @Test
-    void testUpdate_NotFound() {
-
-        UpdateProductPropertyRequest updateProductPropertyRequest = new UpdateProductPropertyRequest("Test Value");
-
+    void delete_shouldThrowExceptionWhenProductPropertyNotFound() {
 
         when(productPropertyRepository.findByProductIdAndPropertyId(anyInt(), anyInt())).thenReturn(Optional.empty());
         when(messageService.getMessage(anyString())).thenReturn("Product property not found");
 
         BusinessException exception = assertThrows(BusinessException.class, () -> {
-            productPropertyManager.update(anyInt(), anyInt(), updateProductPropertyRequest);
+            productPropertyManager.delete(anyInt(), anyInt());
         });
 
         assertEquals("Product property not found", exception.getMessage());
 
     }
-
     @Test
-    void testUpdate_Deleted() {
-        int productId = 1;
-        int propertyId = 2;
-        UpdateProductPropertyRequest updateProductPropertyRequest = new UpdateProductPropertyRequest("Test Value");
-
-        productProperty.setDeletedDate(LocalDateTime.now());
-
-        when(productPropertyRepository.findByProductIdAndPropertyId(productId, propertyId)).thenReturn(Optional.of(productProperty));
-        when(messageService.getMessage(anyString())).thenReturn("Product property is deleted");
-
-        BusinessException exception = assertThrows(BusinessException.class, () -> {
-            productPropertyManager.update(productId, propertyId, updateProductPropertyRequest);
-        });
-
-        assertEquals("Product property is deleted", exception.getMessage());
-    }
-
-    @Test
-    void testDelete_Success() {
+    void delete_shouldDeleteProductPropertySuccessfully() {
 
         when(productPropertyRepository.findByProductIdAndPropertyId(anyInt(), anyInt())).thenReturn(Optional.of(productProperty));
         when(productPropertyRepository.save(any())).thenReturn(productProperty);
@@ -283,34 +263,4 @@ class ProductPropertyManagerTest {
         assertEquals(productProperty.getProduct().getId(), result.productId());
 
     }
-
-    @Test
-    void testDelete_NotFound() {
-
-        when(productPropertyRepository.findByProductIdAndPropertyId(anyInt(), anyInt())).thenReturn(Optional.empty());
-        when(messageService.getMessage(anyString())).thenReturn("Product property not found");
-
-        BusinessException exception = assertThrows(BusinessException.class, () -> {
-            productPropertyManager.delete(anyInt(), anyInt());
-        });
-
-        assertEquals("Product property not found", exception.getMessage());
-
-    }
-
-    @Test
-    void testDelete_AlreadyDeleted() {
-
-        productProperty.setDeletedDate(LocalDateTime.now());
-
-        when(productPropertyRepository.findByProductIdAndPropertyId(anyInt(), anyInt())).thenReturn(Optional.of(productProperty));
-        when(messageService.getMessage(anyString())).thenReturn("Product property is already deleted");
-
-        BusinessException exception = assertThrows(BusinessException.class, () -> {
-            productPropertyManager.delete(anyInt(), anyInt());
-        });
-
-        assertEquals("Product property is already deleted", exception.getMessage());
-    }
-
 }

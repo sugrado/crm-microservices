@@ -1,10 +1,12 @@
 package com.turkcell.crm.catalog_service.business.concretes;
 
-import com.turkcell.crm.catalog_service.business.constants.messages.Messages;
+import com.turkcell.crm.catalog_service.business.constants.Messages;
 import com.turkcell.crm.catalog_service.business.dtos.requests.property.CreatePropertyRequest;
+import com.turkcell.crm.catalog_service.business.dtos.requests.property.UpdatePropertyRequest;
 import com.turkcell.crm.catalog_service.business.dtos.responses.property.*;
 import com.turkcell.crm.catalog_service.business.mappers.PropertyMapper;
-import com.turkcell.crm.catalog_service.business.mappers.PropertyMapperImpl;
+import com.turkcell.crm.common.shared.exceptions.types.NotFoundException;
+import org.mapstruct.factory.Mappers;
 import com.turkcell.crm.catalog_service.business.rules.PropertyBusinessRules;
 import com.turkcell.crm.catalog_service.core.business.abstracts.MessageService;
 import com.turkcell.crm.catalog_service.data_access.abstracts.PropertyRepository;
@@ -13,7 +15,6 @@ import com.turkcell.crm.catalog_service.entities.concretes.Property;
 import com.turkcell.crm.common.shared.exceptions.types.BusinessException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -30,15 +31,17 @@ class PropertyManagerTest {
     private PropertyManager propertyManager;
     private CreatePropertyRequest createPropertyRequest;
     private Property property;
+    private CategoryManager categoryManager;
 
     @BeforeEach
     void setup() {
 
-        PropertyMapper propertyMapper = new PropertyMapperImpl();
+        PropertyMapper propertyMapper = Mappers.getMapper(PropertyMapper.class);
         propertyRepository = mock(PropertyRepository.class);
         messageService = mock(MessageService.class);
         PropertyBusinessRules propertyBusinessRules = new PropertyBusinessRules(propertyRepository, messageService);
-        propertyManager = new PropertyManager(propertyRepository, propertyMapper, propertyBusinessRules);
+        categoryManager = mock(CategoryManager.class);
+        propertyManager = new PropertyManager(propertyRepository, propertyMapper, propertyBusinessRules, categoryManager);
 
         property = new Property();
         property.setId(1);
@@ -47,7 +50,7 @@ class PropertyManagerTest {
     }
 
     @Test
-    void add_withExistingProperty_shouldThrowBusinessException() {
+    void add_shouldThrowBusinessExceptionWhenPropertyAlreadyExist() {
 
         createPropertyRequest = new CreatePropertyRequest("Test Name", 1);
 
@@ -61,7 +64,7 @@ class PropertyManagerTest {
     }
 
     @Test
-    void add_withNewProperty_shouldCreatePropertySuccessfully() {
+    void add_shouldAddPropertySuccessfully() {
 
         CreatePropertyRequest createPropertyRequest = new CreatePropertyRequest("Test Name", 1);
         CreatedPropertyResponse createdPropertyResponse = new CreatedPropertyResponse(1, 1, "Test Name", LocalDateTime.now());
@@ -78,7 +81,8 @@ class PropertyManagerTest {
     }
 
     @Test
-    void getAll_shouldReturnAllProperties() {
+    void getAll_shouldReturnAllPropertiesSuccessfully() {
+
         Property property1 = new Property();
         property1.setId(1);
         property1.setName("Test Name");
@@ -91,8 +95,8 @@ class PropertyManagerTest {
 
         List<Property> propertyList = Arrays.asList(property1, property2);
 
-        GetAllPropertiesResponse getAllPropertiesResponse = new GetAllPropertiesResponse("Test Name", "1");
-        GetAllPropertiesResponse getAllPropertiesResponse1 = new GetAllPropertiesResponse("Test Name 2", "1");
+        GetAllPropertiesResponse getAllPropertiesResponse = new GetAllPropertiesResponse(1,"Test Name", 1);
+        GetAllPropertiesResponse getAllPropertiesResponse1 = new GetAllPropertiesResponse(2,"Test Name 2", 1);
 
         List<GetAllPropertiesResponse> responseList = Arrays.asList(getAllPropertiesResponse, getAllPropertiesResponse1);
 
@@ -104,30 +108,18 @@ class PropertyManagerTest {
     }
 
     @Test
-    void delete_withPropertyNotFound_shouldThrowBusinessException() {
+    void delete_shouldThrowBusinessExceptionWhenPropertyNotFound() {
 
         when(propertyRepository.findById(anyInt())).thenReturn(Optional.empty());
         when(messageService.getMessage(Messages.PropertyMessages.NOT_FOUND)).thenReturn("Property not found");
 
-        assertThrows(BusinessException.class, () -> {
+        assertThrows(NotFoundException.class, () -> {
             propertyManager.delete(anyInt());
         });
     }
 
     @Test
-    void delete_withDeletedProperty_shouldThrowBusinessException() {
-
-        property.setDeletedDate(LocalDateTime.now());
-        when(propertyRepository.findById(1)).thenReturn(Optional.of(property));
-        when(messageService.getMessage(Messages.PropertyMessages.DELETED)).thenReturn("Property is already deleted");
-
-        assertThrows(BusinessException.class, () -> {
-            propertyManager.delete(1);
-        });
-    }
-
-    @Test
-    void delete_withValidProperty_shouldDeletePropertySuccessfully() {
+    void delete_shouldDeletePropertySuccessfully() {
 
         DeletePropertyResponse deletePropertyResponse = new DeletePropertyResponse(1,
                 1, "Test Name", LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now());
@@ -141,32 +133,47 @@ class PropertyManagerTest {
         assertEquals(deletePropertyResponse.name(), response.name());
         assertEquals(deletePropertyResponse.categoryId(), response.categoryId());
     }
+    @Test
+    void update_shouldThrowExceptionWhenPropertyNotFound() {
+
+        UpdatePropertyRequest updatePropertyRequest = new UpdatePropertyRequest("Test Name",1);
+        when(propertyRepository.findById(anyInt())).thenReturn(Optional.empty());
+
+        assertThrows(NotFoundException.class,
+                () -> propertyManager.update(1, updatePropertyRequest));
+
+    }
+    @Test
+    void update_shouldUpdatePropertySuccessfully() {
+
+        Category category = new Category();
+        UpdatePropertyRequest updatePropertyRequest = new UpdatePropertyRequest("Test Name" ,1);
+        UpdatedPropertyResponse updatedPropertyResponse = new UpdatedPropertyResponse(1,
+                1,"Test Name", LocalDateTime.now(), LocalDateTime.now());
+
+        when(propertyRepository.findById(anyInt())).thenReturn(Optional.of(property));
+        when(categoryManager.getByIdEntity(anyInt())).thenReturn(category);
+        when(propertyRepository.save(any(Property.class))).thenReturn(property);
+
+
+        UpdatedPropertyResponse response = propertyManager.update(1, updatePropertyRequest);
+
+        assertEquals(updatedPropertyResponse.id(), response.id());
+    }
 
     @Test
-    void getByIdForProductPropertyManager_withPropertyNotFound_shouldThrowBusinessException() {
+    void getByIdForProductPropertyManager_shouldThrowBusinessExceptionWhenPropertyNotFound() {
 
         when(propertyRepository.findById(anyInt())).thenReturn(Optional.empty());
         when(messageService.getMessage(Messages.PropertyMessages.NOT_FOUND)).thenReturn("Property not found");
 
-        assertThrows(BusinessException.class, () -> {
+        assertThrows(NotFoundException.class, () -> {
             propertyManager.getByIdForProductPropertyManager(1);
         });
     }
 
     @Test
-    void getByIdForProductPropertyManager_withDeletedProperty_shouldThrowBusinessException() {
-
-        property.setDeletedDate(LocalDateTime.now());
-        when(propertyRepository.findById(anyInt())).thenReturn(Optional.of(property));
-        when(messageService.getMessage(Messages.PropertyMessages.DELETED)).thenReturn("Property is already deleted");
-
-        assertThrows(BusinessException.class, () -> {
-            propertyManager.getByIdForProductPropertyManager(anyInt());
-        });
-    }
-
-    @Test
-    void getByIdForProductPropertyManager_withValidProperty_shouldReturnProperty() {
+    void getByIdForProductPropertyManager_shouldReturnPropertySuccessfully() {
 
         when(propertyRepository.findById(anyInt())).thenReturn(Optional.of(property));
 
@@ -178,7 +185,7 @@ class PropertyManagerTest {
     }
 
     @Test
-    void getAllByCategoryId_shouldReturnAllPropertiesForCategory() {
+    void getAllByCategoryId_shouldReturnAllPropertiesForCategorySuccessfully() {
 
         int categoryId = 1;
 
@@ -192,8 +199,8 @@ class PropertyManagerTest {
 
         List<Property> propertyList = Arrays.asList(property1, property2);
 
-        GetAllPropertiesByCategoryIdResponse response1 = new GetAllPropertiesByCategoryIdResponse("Test Name");
-        GetAllPropertiesByCategoryIdResponse response2 = new GetAllPropertiesByCategoryIdResponse("Test Name 2");
+        GetAllPropertiesByCategoryIdResponse response1 = new GetAllPropertiesByCategoryIdResponse(1,"Test Name");
+        GetAllPropertiesByCategoryIdResponse response2 = new GetAllPropertiesByCategoryIdResponse(2,"Test Name 2");
         List<GetAllPropertiesByCategoryIdResponse> responseList = Arrays.asList(response1, response2);
 
         when(propertyRepository.findAllByCategoryId(categoryId)).thenReturn(propertyList);
@@ -207,28 +214,18 @@ class PropertyManagerTest {
     }
 
     @Test
-    void getById_withPropertyNotFound_shouldThrowBusinessException() {
+    void getById_shouldThrowBusinessExceptionWhenPropertyNotFound() {
+
         when(propertyRepository.findById(anyInt())).thenReturn(Optional.empty());
         when(messageService.getMessage(Messages.PropertyMessages.NOT_FOUND)).thenReturn("Property not found");
 
-        assertThrows(BusinessException.class, () -> {
+        assertThrows(NotFoundException.class, () -> {
             propertyManager.getById(1);
         });
     }
 
     @Test
-    void getById_withDeletedProperty_shouldThrowBusinessException() {
-        property.setDeletedDate(LocalDateTime.now());
-        when(propertyRepository.findById(anyInt())).thenReturn(Optional.of(property));
-        when(messageService.getMessage(Messages.PropertyMessages.DELETED)).thenReturn("Property is already deleted");
-
-        assertThrows(BusinessException.class, () -> {
-            propertyManager.getById(1);
-        });
-    }
-
-    @Test
-    void getById_withValidProperty_shouldReturnGetByIdPropertyResponse() {
+    void getById_shouldReturnPropertyResponseSuccessfully() {
 
         GetByIdPropertyResponse getByIdPropertyResponse = new GetByIdPropertyResponse("Test Name", 1);
         when(propertyRepository.findById(anyInt())).thenReturn(Optional.of(property));
@@ -238,5 +235,4 @@ class PropertyManagerTest {
         assertEquals(getByIdPropertyResponse.name(), result.name());
         assertEquals(getByIdPropertyResponse.categoryId(), result.categoryId());
     }
-
 }

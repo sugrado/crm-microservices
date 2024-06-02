@@ -4,6 +4,7 @@ import com.turkcell.crm.common.shared.exceptions.types.BusinessException;
 import com.turkcell.crm.core.services.JwtService;
 import com.turkcell.crm.identity_service.business.abstracts.RefreshTokenService;
 import com.turkcell.crm.identity_service.business.rules.RefreshTokenBusinessRules;
+import com.turkcell.crm.identity_service.core.business.abstracts.MessageService;
 import com.turkcell.crm.identity_service.data_access.abstracts.RefreshTokenRepository;
 import com.turkcell.crm.identity_service.entities.concretes.RefreshToken;
 import com.turkcell.crm.identity_service.entities.concretes.User;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
 class RefreshTokenManagerTest {
     private RefreshTokenRepository refreshTokenRepository;
@@ -25,7 +27,8 @@ class RefreshTokenManagerTest {
     @BeforeEach
     void setUp() {
         refreshTokenRepository = Mockito.mock(RefreshTokenRepository.class);
-        RefreshTokenBusinessRules refreshTokenBusinessRules = new RefreshTokenBusinessRules();
+        MessageService messageService = mock(MessageService.class);
+        RefreshTokenBusinessRules refreshTokenBusinessRules = new RefreshTokenBusinessRules(messageService);
         JwtService jwtService = new JwtService();
         ReflectionTestUtils.setField(jwtService, "secretKey", "mySuperSecretKeymySuperSecretKeymySuperSecretKey");
         ReflectionTestUtils.setField(jwtService, "expiration", 3600000L);

@@ -4,6 +4,8 @@ import com.turkcell.crm.common.shared.exceptions.types.BusinessException;
 import com.turkcell.crm.core.services.JwtService;
 import com.turkcell.crm.identity_service.business.abstracts.AuthService;
 import com.turkcell.crm.identity_service.business.abstracts.RefreshTokenService;
+import com.turkcell.crm.identity_service.business.abstracts.SecurityContextService;
+import com.turkcell.crm.identity_service.business.abstracts.UserRoleCacheService;
 import com.turkcell.crm.identity_service.business.dtos.requests.auth.LoginRequest;
 import com.turkcell.crm.identity_service.business.dtos.requests.auth.RegisterRequest;
 import com.turkcell.crm.identity_service.business.dtos.responses.auth.LoggedInResponse;
@@ -11,8 +13,11 @@ import com.turkcell.crm.identity_service.business.dtos.responses.auth.RefreshedT
 import com.turkcell.crm.identity_service.business.dtos.responses.auth.RegisteredResponse;
 import com.turkcell.crm.identity_service.business.mappers.AuthMapper;
 import com.turkcell.crm.identity_service.business.mappers.AuthMapperImpl;
+import com.turkcell.crm.identity_service.business.mappers.UserMapper;
+import com.turkcell.crm.identity_service.business.mappers.UserMapperImpl;
 import com.turkcell.crm.identity_service.business.rules.AuthBusinessRules;
 import com.turkcell.crm.identity_service.business.rules.UserBusinessRules;
+import com.turkcell.crm.identity_service.core.business.abstracts.MessageService;
 import com.turkcell.crm.identity_service.data_access.abstracts.UserRepository;
 import com.turkcell.crm.identity_service.entities.concretes.RefreshToken;
 import com.turkcell.crm.identity_service.entities.concretes.User;
@@ -44,10 +49,12 @@ class AuthManagerTest {
     void setUp() {
         userRepository = mock(UserRepository.class);
         authenticationManager = mock(AuthenticationManager.class);
-        AuthBusinessRules authBusinessRules = new AuthBusinessRules(userRepository, authenticationManager);
+        MessageService messageService = mock(MessageService.class);
+        AuthBusinessRules authBusinessRules = new AuthBusinessRules(userRepository, authenticationManager, messageService);
 
-        UserBusinessRules userBusinessRules = new UserBusinessRules();
-        UserManager userManager = new UserManager(userRepository, userBusinessRules);
+        UserBusinessRules userBusinessRules = new UserBusinessRules(messageService);
+        UserMapper userMapper = new UserMapperImpl();
+        UserManager userManager = new UserManager(userRepository, userBusinessRules, userMapper);
 
         JwtService jwtService = new JwtService();
         ReflectionTestUtils.setField(jwtService, "secretKey", "mySuperSecretKeymySuperSecretKeymySuperSecretKey");
@@ -56,7 +63,9 @@ class AuthManagerTest {
 
         passwordEncoder = mock(PasswordEncoder.class);
         AuthMapper authMapper = new AuthMapperImpl();
-        authService = new AuthManager(authBusinessRules, userManager, refreshTokenService, passwordEncoder, jwtService, authMapper);
+        SecurityContextService securityContextService = mock(SecurityContextService.class);
+        UserRoleCacheService userRoleCacheService = mock(UserRoleCacheService.class);
+        authService = new AuthManager(authBusinessRules, userManager, refreshTokenService, passwordEncoder, jwtService, authMapper, userRoleCacheService, securityContextService);
     }
 
     @Test

@@ -7,9 +7,7 @@ import com.turkcell.crm.account_service.business.dtos.requests.accounts.AccountA
 import com.turkcell.crm.account_service.business.dtos.requests.accounts.CreateAccountRequest;
 import com.turkcell.crm.account_service.business.dtos.requests.accounts.UpdateAccountRequest;
 import com.turkcell.crm.account_service.business.dtos.responses.accounts.*;
-import com.turkcell.crm.account_service.business.mappers.AccountAddressMapper;
-import com.turkcell.crm.account_service.business.mappers.AccountMapper;
-import com.turkcell.crm.account_service.business.mappers.AccountTypeMapper;
+import com.turkcell.crm.account_service.business.mappers.*;
 import com.turkcell.crm.account_service.business.rules.AccountAddressBusinessRules;
 import com.turkcell.crm.account_service.business.rules.AccountBusinessRules;
 import com.turkcell.crm.account_service.business.rules.AccountTypeBusinessRules;
@@ -386,7 +384,7 @@ class AccountManagerTest {
         UpdateAccountRequest updateRequest = new UpdateAccountRequest(
                 Status.ACTIVE,
                 "Test",
-                "123456",
+                "1234567",
                 1
         );
 
@@ -411,6 +409,7 @@ class AccountManagerTest {
         // Verify
         verify(accountRepository).save(any(Account.class));
         assertEquals(expectedResponse.id(), response.id());
+        assertNotEquals(updateRequest.name(),response.name());
     }
 
     @Test

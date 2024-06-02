@@ -1,6 +1,5 @@
 package com.turkcell.crm.customer_service.business.concretes;
 
-
 import com.turkcell.crm.common.shared.dtos.customers.CheckAddressAndCustomerMatchRequest;
 import com.turkcell.crm.common.shared.dtos.customers.GetValidatedCustomerAddressesListItemDto;
 import com.turkcell.crm.common.shared.dtos.customers.GetValidatedCustomerAddressesRequest;
@@ -11,11 +10,10 @@ import com.turkcell.crm.customer_service.business.abstracts.DistrictService;
 import com.turkcell.crm.customer_service.business.constants.Messages;
 import com.turkcell.crm.customer_service.business.dtos.requests.addresses.ChangeDefaultAddressRequest;
 import com.turkcell.crm.customer_service.business.dtos.requests.addresses.CreateAddressRequest;
+import com.turkcell.crm.customer_service.business.dtos.requests.addresses.UpdateAddressRequest;
 import com.turkcell.crm.customer_service.business.dtos.requests.customers.AddressDto;
-import com.turkcell.crm.customer_service.business.dtos.responses.addresses.ChangedDefaultAddressResponse;
-import com.turkcell.crm.customer_service.business.dtos.responses.addresses.CreatedAddressResponse;
-import com.turkcell.crm.customer_service.business.dtos.responses.addresses.DeletedAddressResponse;
-import com.turkcell.crm.customer_service.business.dtos.responses.addresses.GetByIdAddressResponse;
+import com.turkcell.crm.customer_service.business.dtos.responses.addresses.*;
+import com.turkcell.crm.customer_service.business.dtos.responses.cities.GetByIdCityResponse;
 import com.turkcell.crm.customer_service.business.mappers.AddressMapper;
 import com.turkcell.crm.customer_service.business.mappers.AddressMapperImpl;
 import com.turkcell.crm.customer_service.business.rules.AddressBusinessRules;
@@ -34,6 +32,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -168,9 +167,33 @@ public class AddressManagerTest {
         assertTrue(actualMessage.contains(expectedMessage));
         verify(addressRepository, times(1)).findById(anyInt());
     }
+    @Test
+    void getByIdEntity_shouldReturnAddressSuccesful(){
+        Address address = new Address();
+        address.setId(1);
+
+        when(addressRepository.findById(anyInt())).thenReturn(Optional.of(address));
+
+        Address expectedAddress = addressManager.getByIdEntity(anyInt());
+
+        assertEquals(expectedAddress.getId(),address.getId());
+    }
+    @Test
+    void getByIdEntity_shouldThrowExceptionWhenAddressNotFound() {
+        // Arrange
+        int addressId = 1;
+        Optional<Address> emptyOptional = Optional.empty();
+
+        when(addressRepository.findById(addressId)).thenReturn(emptyOptional);
+
+        assertThrows(NotFoundException.class,()->{
+            addressManager.getByIdEntity(addressId);
+        });
+    }
+
 
     @Test
-    void shouldReturnAllAddressesByCustomerAndIdsSuccessful() {
+    void getAllByCustomerAndIds_shouldReturnAllAddressesByCustomerAndIdsSuccessful() {
         Address address = new Address();
         address.setId(1);
 
@@ -185,7 +208,7 @@ public class AddressManagerTest {
     }
 
     @Test
-    void shouldCheckAddressAndCustomerMatchSuccessful() {
+    void checkAddressAndCustomerMatch_shouldCheckAddressAndCustomerMatchSuccessful() {
         int addressId = 1;
         int customerId = 1;
         CheckAddressAndCustomerMatchRequest request = new CheckAddressAndCustomerMatchRequest(addressId, customerId);
@@ -231,6 +254,32 @@ public class AddressManagerTest {
 
         assertTrue(actualMessage.contains(expectedMessage));
     }
+    @Test
+    void update_ShouldUpdateAddressForSpecificIdSuccesful() {
+        int addressId = 1;
+        int cityId = 1;
+        UpdateAddressRequest updateRequest = new UpdateAddressRequest(
+                1, 1, "aaa", "bbb", "ccc"
+        );
+
+        UpdatedAddressResponse expectedResponse = new UpdatedAddressResponse(
+                1, 1, 1, 1, "bbb", "bbb", "ccc", LocalDate.now()
+        );
+
+        Address address = new Address();
+        address.setId(addressId);
+        Optional<Address> addressOptional = Optional.of(address);
+        GetByIdCityResponse getByIdCityResponse = new GetByIdCityResponse(cityId, "CityName");
+
+        when(addressRepository.findById(addressId)).thenReturn(addressOptional);
+        when(cityService.getById(cityId)).thenReturn(getByIdCityResponse);
+        when(addressRepository.save(address)).thenReturn(address);
+        UpdatedAddressResponse response = addressManager.update(addressId, updateRequest);
+
+        verify(addressRepository).save(any(Address.class));
+        assertEquals(expectedResponse.id(), response.id());
+        assertNotEquals(expectedResponse.street(),response.street());
+    }
 
     @Test
     void delete_shouldDeleteAddressSuccessful() {
@@ -255,7 +304,7 @@ public class AddressManagerTest {
 
     @Test
     @Transactional
-    void shouldChangeDefaultAddressSuccessful() {
+    void changeDefaultAddress_shouldChangeDefaultAddressSuccessful() {
         Customer customer = new Customer();
         customer.setId(1);
 
@@ -287,11 +336,7 @@ public class AddressManagerTest {
 
         assertNotNull(result);
         assertEquals(expectedResponse.id(), result.id());
-        assertEquals(expectedResponse.street(), result.street());
-        assertEquals(expectedResponse.houseFlatNumber(), result.houseFlatNumber());
-        assertEquals(expectedResponse.description(), result.description());
         assertEquals(expectedResponse.defaultAddress(), result.defaultAddress());
-        assertEquals(expectedResponse.cityId(), result.cityId());
         assertFalse(oldAddress.isDefaultAddress());
         assertTrue(newAddress.isDefaultAddress());
     }

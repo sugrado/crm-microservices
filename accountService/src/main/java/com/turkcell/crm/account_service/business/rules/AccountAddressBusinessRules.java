@@ -24,8 +24,11 @@ public class AccountAddressBusinessRules {
     private final MessageService messageService;
 
     public void addressMustBelongToAccountOwner(int accountId, int addressId) {
-        Account account = accountRepository.findById(accountId).get();
-        customerClient.checkAddressAndCustomerMatch(new CheckAddressAndCustomerMatchRequest(account.getCustomerId(), addressId));
+        Optional<Account> account = accountRepository.findById(accountId);
+        if (account.isEmpty()){
+            throw new NotFoundException(Messages.AccountAddressMessages.NOT_FOUND);
+        }
+        customerClient.checkAddressAndCustomerMatch(new CheckAddressAndCustomerMatchRequest(account.get().getCustomerId(), addressId));
     }
 
     public void addressShouldNotBeExistInAccount(int accountId, int addressId) {

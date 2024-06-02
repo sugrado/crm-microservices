@@ -6,6 +6,7 @@ import com.turkcell.crm.search_service.core.services.search.enums.SortDirection;
 import com.turkcell.crm.search_service.core.services.search.models.DynamicFilter;
 import com.turkcell.crm.search_service.core.services.search.models.DynamicQuery;
 import com.turkcell.crm.search_service.core.services.search.models.DynamicSort;
+import com.turkcell.crm.search_service.core.services.search.models.Pagination;
 import com.turkcell.crm.search_service.data_access.abstracts.ProductRepository;
 import com.turkcell.crm.search_service.entities.concretes.Product;
 import org.junit.jupiter.api.BeforeEach;
@@ -69,7 +70,8 @@ public class ProductSearchManagerTests {
         DynamicQuery dynamicQuery = new DynamicQuery(
                 List.of(new DynamicFilter("productName", FilterOperator.EQUALS, "Mouse")),
                 List.of(new DynamicSort("categoryName", SortDirection.ASC))
-        );
+                ,new Pagination(1,5
+        ));
         List<Product> expectedProducts = Arrays.asList(new Product(), new Product());
 
         when(this.searchService.dynamicSearch(any(DynamicQuery.class), eq(Product.class))).thenReturn(expectedProducts);

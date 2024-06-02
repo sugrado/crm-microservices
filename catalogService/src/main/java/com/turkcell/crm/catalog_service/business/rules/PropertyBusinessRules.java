@@ -6,6 +6,7 @@ import com.turkcell.crm.catalog_service.core.business.abstracts.MessageService;
 import com.turkcell.crm.catalog_service.data_access.abstracts.PropertyRepository;
 import com.turkcell.crm.catalog_service.entities.concretes.Property;
 import com.turkcell.crm.common.shared.exceptions.types.BusinessException;
+import com.turkcell.crm.common.shared.exceptions.types.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ public class PropertyBusinessRules {
 
     public void propertyShouldBeExist(Optional<Property> optionalProperty) {
         if (optionalProperty.isEmpty()) {
-            throw new BusinessException(messageService.getMessage(Messages.PropertyMessages.NOT_FOUND));
+            throw new NotFoundException(messageService.getMessage(Messages.PropertyMessages.NOT_FOUND));
         }
     }
 

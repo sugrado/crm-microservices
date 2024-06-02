@@ -1,7 +1,10 @@
 package com.turkcell.crm.identity_service.business.concretes;
 
-import com.turkcell.crm.common.shared.exceptions.types.BusinessException;
+import com.turkcell.crm.common.shared.exceptions.types.AuthenticationException;
+import com.turkcell.crm.identity_service.business.mappers.UserMapper;
+import com.turkcell.crm.identity_service.business.mappers.UserMapperImpl;
 import com.turkcell.crm.identity_service.business.rules.UserBusinessRules;
+import com.turkcell.crm.identity_service.core.business.abstracts.MessageService;
 import com.turkcell.crm.identity_service.data_access.abstracts.UserRepository;
 import com.turkcell.crm.identity_service.entities.concretes.User;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,15 +25,17 @@ class UserManagerTest {
 
     @BeforeEach
     void setUp() {
+        MessageService messageService = mock(MessageService.class);
         userRepository = mock(UserRepository.class);
-        UserBusinessRules userBusinessRules = new UserBusinessRules();
-        userManager = new UserManager(userRepository, userBusinessRules);
+        UserBusinessRules userBusinessRules = new UserBusinessRules(messageService);
+        UserMapper userMapper = new UserMapperImpl();
+        userManager = new UserManager(userRepository, userBusinessRules, userMapper);
     }
 
     @Test
     void findByUsername_withNotExistingUser_ShouldThrowException() {
         when(userRepository.findByEmail(Mockito.anyString())).thenReturn(Optional.empty());
-        assertThrows(BusinessException.class, () -> {
+        assertThrows(AuthenticationException.class, () -> {
             userManager.findByUsername("gorkem");
         });
     }
@@ -53,7 +58,7 @@ class UserManagerTest {
     @Test
     void loadUserByUsername_withNotExistingUser_ShouldThrowException() {
         when(userRepository.findByEmail(Mockito.anyString())).thenReturn(Optional.empty());
-        assertThrows(BusinessException.class, () -> {
+        assertThrows(AuthenticationException.class, () -> {
             userManager.loadUserByUsername("gorkem");
         });
     }

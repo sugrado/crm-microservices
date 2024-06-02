@@ -28,7 +28,7 @@ public class AccountConsumer {
         this.accountSearchService.update(account);
     }
 
-    @KafkaListener(topics = "account-updated", groupId = "search.group")
+    @KafkaListener(topics = "account-deleted", groupId = "search.group")
     public void consume(AccountDeletedEvent accountDeletedEvent) {
         this.accountSearchService.delete(accountDeletedEvent.getId());
     }
