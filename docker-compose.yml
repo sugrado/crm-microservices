@@ -1,0 +1,328 @@
+name: telco-crm-pair2
+services:
+  zookeeper:
+    image: 'bitnami/zookeeper:latest'
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    networks:
+      - common
+
+  kafka:
+    image: 'bitnami/kafka:latest'
+    container_name: kafka
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    depends_on:
+      - zookeeper
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_CFG_LISTENERS=LISTENER_DEVELOPMENT://localhost:9092,LISTENER_PRODUCTION://kafka:29092
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=LISTENER_DEVELOPMENT:PLAINTEXT,LISTENER_PRODUCTION:PLAINTEXT
+      - KAFKA_CFG_ADVERTISED_LISTENERS=LISTENER_DEVELOPMENT://localhost:9092,LISTENER_PRODUCTION://kafka:29092
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=LISTENER_PRODUCTION
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+    networks:
+      - common
+
+  config-server:
+    build: ./configServer
+    container_name: config-server
+    restart: always
+    volumes:
+      - ./configServer:/app
+    ports:
+      - 8050:8050
+    environment:
+      SPRING_CLOUD_CONFIG_SERVER_GIT_URI: https://github.com/sugrado/telco-crm-configuration
+    networks:
+      - common
+
+  discovery-server:
+    build: ./discoveryServer
+    ports:
+      - 7000:7000
+    container_name: discovery-server
+    restart: always
+    volumes:
+      - ./discoveryServer:/app
+    depends_on:
+      - config-server
+    networks:
+      - common
+
+  gateway-service:
+    build: ./gatewayService
+    container_name: gateway-service
+    restart: always
+    volumes:
+      - ./gatewayService:/app
+    ports:
+      - 7002:7002
+    depends_on:
+      - config-server
+      - discovery-server
+    networks:
+      - common
+
+  customer-db:
+    image: postgres:16
+    container_name: customer-db
+    ports:
+      - 5460:5432
+    restart: always
+    volumes:
+      - customer_db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=pair2
+      - POSTGRES_PASSWORD=pair2crm
+      - POSTGRES_DB=crm_customer
+    networks:
+      - common
+
+  customer-service:
+    build: ./customerService
+    container_name: customer-service
+    restart: always
+    volumes:
+      - ./customerService:/app
+    environment:
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+    depends_on:
+      - customer-db
+      - discovery-server
+      - config-server
+    networks:
+      - common
+
+  identity-db:
+    image: postgres:16
+    container_name: identity-db
+    ports:
+      - 5461:5432
+    restart: always
+    volumes:
+      - identity_db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=pair2
+      - POSTGRES_PASSWORD=pair2crm
+      - POSTGRES_DB=crm_identity
+    networks:
+      - common
+
+  identity-service:
+    build: ./identityService
+    container_name: identity-service
+    restart: always
+    volumes:
+      - ./identityService:/app
+    depends_on:
+      - identity-db
+      - discovery-server
+      - config-server
+      - identity-redis
+    networks:
+      - common
+
+  identity-redis:
+    image: redis:latest
+    container_name: identity-redis
+    restart: always
+    ports:
+      - 6379:6379
+    networks:
+      - common
+
+  catalog-db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: catalog-db
+    user: root
+    ports:
+      - 1433:1433
+    restart: always
+    volumes:
+      - catalog_db:/var/opt/mssql/data
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=Mssql123.
+      - MSSQL_PID=Express
+    networks:
+      - common
+
+  catalog-service:
+    build: ./catalogService
+    container_name: catalog-service
+    restart: always
+    volumes:
+      - ./catalogService:/app
+    environment:
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+    depends_on:
+      - catalog-db
+      - discovery-server
+      - config-server
+      - kafka
+    networks:
+      - common
+
+  account-db:
+    image: postgres:16
+    container_name: account-db
+    ports:
+      - 5462:5432
+    restart: always
+    volumes:
+      - account_db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=pair2
+      - POSTGRES_PASSWORD=pair2crm
+      - POSTGRES_DB=crm_account
+    networks:
+      - common
+
+  account-service:
+    build: ./accountService
+    container_name: account-service
+    restart: always
+    volumes:
+      - ./accountService:/app
+    environment:
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+    depends_on:
+      - account-db
+      - discovery-server
+      - config-server
+      - kafka
+    networks:
+      - common
+
+  basket-redis:
+    image: redis:latest
+    container_name: basket-redis
+    restart: always
+    ports:
+      - 6380:6379
+    networks:
+      - common
+
+  basket-service:
+    build: ./basketService
+    container_name: basket-service
+    restart: always
+    volumes:
+      - ./basketService:/app
+    environment:
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+    depends_on:
+      - basket-redis
+      - discovery-server
+      - config-server
+      - kafka
+    networks:
+      - common
+
+  invoice-db:
+    image: postgres:16
+    container_name: invoice-db
+    ports:
+      - 5463:5432
+    restart: always
+    volumes:
+      - invoice_db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=pair2
+      - POSTGRES_PASSWORD=pair2crm
+      - POSTGRES_DB=crm_invoice
+    networks:
+      - common
+
+  invoice-service:
+    build: ./invoiceService
+    container_name: invoice-service
+    restart: always
+    volumes:
+      - ./invoiceService:/app
+    environment:
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+    depends_on:
+      - invoice-db
+      - discovery-server
+      - config-server
+      - kafka
+    networks:
+      - common
+
+  order-db:
+    image: postgres:16
+    container_name: order-db
+    ports:
+      - 5464:5432
+    restart: always
+    volumes:
+      - order_db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=pair2
+      - POSTGRES_PASSWORD=pair2crm
+      - POSTGRES_DB=crm_order
+    networks:
+      - common
+
+  order-service:
+    build: ./orderService
+    container_name: order-service
+    restart: always
+    volumes:
+      - ./orderService:/app
+    environment:
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+    depends_on:
+      - order-db
+      - discovery-server
+      - config-server
+      - kafka
+    networks:
+      - common
+
+  search-db:
+    image: mongo:latest
+    container_name: search-db
+    ports:
+      - 27017:27017
+    restart: always
+    volumes:
+      - search_db:/etc/mongo
+    networks:
+      - common
+
+  search-service:
+    build: ./searchService
+    container_name: search-service
+    restart: always
+    volumes:
+      - ./searchService:/app
+    environment:
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+    depends_on:
+      - search-db
+      - discovery-server
+      - config-server
+      - kafka
+    networks:
+      - common
+
+volumes:
+  customer_db:
+  identity_db:
+  catalog_db:
+  account_db:
+  search_db:
+  invoice_db:
+  order_db:
+
+networks:
+  common:
+    driver: bridge

@@ -27,7 +27,7 @@ public class SecurityConfiguration {
         baseSecurityService.securityFilterChain(http);
         http.authorizeHttpRequests(r -> r
                 .requestMatchers(HttpMethod.GET, "/identity-service/api/v1/auth/validate-token").authenticated()
-                .requestMatchers("/identity-service/api/v1/users/**").hasRole(Roles.ADMIN)
+//                .requestMatchers("/identity-service/api/v1/users/**").hasRole(Roles.ADMIN)
                 .anyRequest().permitAll()
         );
         return http.build();
