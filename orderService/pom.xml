@@ -64,7 +64,7 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.pair2.crm</groupId>
+            <groupId>io.github.sugrado</groupId>
             <artifactId>common</artifactId>
             <version>1.0.3</version>
         </dependency>

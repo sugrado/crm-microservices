@@ -1,6 +1,6 @@
 package com.turkcell.crm.catalog_service.business.rules;
 
-import com.turkcell.crm.catalog_service.business.constants.messages.Messages;
+import com.turkcell.crm.catalog_service.business.constants.Messages;
 import com.turkcell.crm.catalog_service.business.dtos.requests.property.CreatePropertyRequest;
 import com.turkcell.crm.catalog_service.core.business.abstracts.MessageService;
 import com.turkcell.crm.catalog_service.data_access.abstracts.PropertyRepository;
