@@ -15,6 +15,7 @@ import com.turkcell.crm.account_service.data_access.abstracts.AccountAddressRepo
 import com.turkcell.crm.account_service.data_access.abstracts.AccountRepository;
 import com.turkcell.crm.account_service.entities.concretes.Account;
 import com.turkcell.crm.account_service.entities.concretes.AccountAddress;
+import com.turkcell.crm.common.shared.dtos.accounts.GetByIdAccountAddressResponse;
 import com.turkcell.crm.common.shared.dtos.customers.GetValidatedCustomerAddressesListItemDto;
 import com.turkcell.crm.common.shared.exceptions.types.BusinessException;
 import com.turkcell.crm.common.shared.exceptions.types.NotFoundException;
@@ -356,6 +357,30 @@ class AccountAddressManagerTest {
         // Verify
         assertThrows(NotFoundException.class, () -> {
             accountAddressManager.getAllByAccountId(accountId);
+        });
+    }
+    @Test
+    void  getByAccountAndAddress_ShouldReturnAccountAddressesForSpecificAddressAndAccountId(){
+        AccountAddress accountAddress = new AccountAddress(1);
+
+        when(accountRepository.findById(anyInt())).thenReturn(Optional.of(new Account()));
+        doNothing().when(customerClient).checkAddressAndCustomerMatch(any());
+
+        when(accountAddressRepository.findByAccountIdAndAddressId(anyInt(), anyInt())).thenReturn(Optional.of(accountAddress));
+
+        GetByIdAccountAddressResponse response= accountAddressManager.getByAccountAndAddress(1,1);
+
+        assertEquals(response.id(),accountAddress.getId());
+    }
+
+    @Test
+    void  getByAccountAndAddress_ShouldThrowNotFoundExceptionWhenAccountNotExist(){
+        AccountAddress accountAddress = new AccountAddress(1);
+
+        when(accountRepository.findById(1)).thenReturn(Optional.empty());
+
+        assertThrows(NotFoundException.class, () -> {
+            accountAddressManager.getByAccountAndAddress(1,1);
         });
     }
 }

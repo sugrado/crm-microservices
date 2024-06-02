@@ -15,7 +15,7 @@ public class IndividualOrderConsumer {
     private final IndividualOrderSearchService orderSearchService;
     private final IndividualOrderMapper orderMapper;
 
-    @KafkaListener(topics = "order-created", groupId = "search.group")
+    @KafkaListener(topics = "individual-order-created", groupId = "search.group")
     public void consume(IndividualOrderCreatedEvent individualOrderCreatedEvent) {
         IndividualOrder order = this.orderMapper.toOrder(individualOrderCreatedEvent);
         this.orderSearchService.add(order);

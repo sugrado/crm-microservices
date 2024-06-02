@@ -7,9 +7,7 @@ import com.turkcell.crm.account_service.business.dtos.requests.accounts.AccountA
 import com.turkcell.crm.account_service.business.dtos.requests.accounts.CreateAccountRequest;
 import com.turkcell.crm.account_service.business.dtos.requests.accounts.UpdateAccountRequest;
 import com.turkcell.crm.account_service.business.dtos.responses.accounts.*;
-import com.turkcell.crm.account_service.business.mappers.AccountAddressMapper;
-import com.turkcell.crm.account_service.business.mappers.AccountMapper;
-import com.turkcell.crm.account_service.business.mappers.AccountTypeMapper;
+import com.turkcell.crm.account_service.business.mappers.*;
 import com.turkcell.crm.account_service.business.rules.AccountAddressBusinessRules;
 import com.turkcell.crm.account_service.business.rules.AccountBusinessRules;
 import com.turkcell.crm.account_service.business.rules.AccountTypeBusinessRules;
