@@ -1,6 +1,6 @@
 spring:
   application:
-    name: orderService
+    name: order-service
   cloud:
     config:
       profile: dev

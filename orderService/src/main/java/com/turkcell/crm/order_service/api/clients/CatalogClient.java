@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@FeignClient(name = "catalogService", path = "catalog-service/api/v1")
+@FeignClient(name = "catalog-service", path = "catalog-service/api/v1")
 public interface CatalogClient {
     @PostMapping("/products/for-complete-order")
     List<GetAllForCompleteOrderResponse> getAllForCompleteOrder(@RequestParam List<Integer> productIdList);

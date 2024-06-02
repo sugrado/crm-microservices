@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
-@FeignClient(name = "basketService", path = "basket-service/api/v1")
+@FeignClient(name = "basket-service", path = "basket-service/api/v1")
 public interface BasketClient {
     @GetMapping("/baskets/{id}/products")
     List<GetProductsFromBasketDto> getProductsFromBasket(@PathVariable String id);

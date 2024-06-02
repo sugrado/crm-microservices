@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-@FeignClient(name = "customerService", path = "customer-service/api/v1")
+@FeignClient(name = "customer-service", path = "customer-service/api/v1")
 public interface CustomerClient {
     @GetMapping("/customers/check-if-customer-exists/{customerId}")
     void checkIfCustomerExists(@PathVariable int customerId);
