@@ -5,7 +5,6 @@ import com.turkcell.crm.catalog_service.business.dtos.requests.category.CreateCa
 import com.turkcell.crm.catalog_service.business.dtos.requests.category.UpdateCategoryRequest;
 import com.turkcell.crm.catalog_service.business.dtos.responses.category.*;
 import com.turkcell.crm.catalog_service.business.mappers.CategoryMapper;
-import org.mapstruct.factory.Mappers;
 import com.turkcell.crm.catalog_service.business.rules.CategoryBusinessRules;
 import com.turkcell.crm.catalog_service.core.business.abstracts.MessageService;
 import com.turkcell.crm.catalog_service.data_access.abstracts.CategoryRepository;
@@ -14,6 +13,7 @@ import com.turkcell.crm.common.shared.exceptions.types.BusinessException;
 import com.turkcell.crm.common.shared.exceptions.types.NotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mapstruct.factory.Mappers;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;

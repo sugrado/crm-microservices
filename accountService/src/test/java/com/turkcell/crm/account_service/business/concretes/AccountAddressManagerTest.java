@@ -359,8 +359,9 @@ class AccountAddressManagerTest {
             accountAddressManager.getAllByAccountId(accountId);
         });
     }
+
     @Test
-    void  getByAccountAndAddress_ShouldReturnAccountAddressesForSpecificAddressAndAccountId(){
+    void getByAccountAndAddress_ShouldReturnAccountAddressesForSpecificAddressAndAccountId() {
         AccountAddress accountAddress = new AccountAddress(1);
 
         when(accountRepository.findById(anyInt())).thenReturn(Optional.of(new Account()));
@@ -368,19 +369,19 @@ class AccountAddressManagerTest {
 
         when(accountAddressRepository.findByAccountIdAndAddressId(anyInt(), anyInt())).thenReturn(Optional.of(accountAddress));
 
-        GetByIdAccountAddressResponse response= accountAddressManager.getByAccountAndAddress(1,1);
+        GetByIdAccountAddressResponse response = accountAddressManager.getByAccountAndAddress(1, 1);
 
-        assertEquals(response.id(),accountAddress.getId());
+        assertEquals(response.id(), accountAddress.getId());
     }
 
     @Test
-    void  getByAccountAndAddress_ShouldThrowNotFoundExceptionWhenAccountNotExist(){
+    void getByAccountAndAddress_ShouldThrowNotFoundExceptionWhenAccountNotExist() {
         AccountAddress accountAddress = new AccountAddress(1);
 
         when(accountRepository.findById(1)).thenReturn(Optional.empty());
 
         assertThrows(NotFoundException.class, () -> {
-            accountAddressManager.getByAccountAndAddress(1,1);
+            accountAddressManager.getByAccountAndAddress(1, 1);
         });
     }
 }

@@ -25,7 +25,7 @@ public class AccountAddressBusinessRules {
 
     public void addressMustBelongToAccountOwner(int accountId, int addressId) {
         Optional<Account> account = accountRepository.findById(accountId);
-        if (account.isEmpty()){
+        if (account.isEmpty()) {
             throw new NotFoundException(Messages.AccountAddressMessages.NOT_FOUND);
         }
         customerClient.checkAddressAndCustomerMatch(new CheckAddressAndCustomerMatchRequest(account.get().getCustomerId(), addressId));

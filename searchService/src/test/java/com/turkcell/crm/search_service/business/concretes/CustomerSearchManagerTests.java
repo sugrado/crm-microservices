@@ -71,7 +71,7 @@ public class CustomerSearchManagerTests {
         DynamicQuery dynamicQuery = new DynamicQuery(
                 List.of(new DynamicFilter("firstName", FilterOperator.EQUALS, "Engin")),
                 List.of(new DynamicSort("lastName", SortDirection.ASC))
-                ,new Pagination(1,5)
+                , new Pagination(1, 5)
         );
         List<IndividualCustomer> expectedCustomers = Arrays.asList(new IndividualCustomer(), new IndividualCustomer());
 

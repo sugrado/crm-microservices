@@ -7,7 +7,6 @@ import com.turkcell.crm.catalog_service.business.dtos.requests.product_property.
 import com.turkcell.crm.catalog_service.business.dtos.requests.product_property.UpdateProductPropertyRequest;
 import com.turkcell.crm.catalog_service.business.dtos.responses.product_property.*;
 import com.turkcell.crm.catalog_service.business.mappers.ProductPropertyMapper;
-import org.mapstruct.factory.Mappers;
 import com.turkcell.crm.catalog_service.business.rules.ProductPropertyBusinessRules;
 import com.turkcell.crm.catalog_service.core.business.abstracts.MessageService;
 import com.turkcell.crm.catalog_service.data_access.abstracts.ProductPropertyRepository;
@@ -18,6 +17,7 @@ import com.turkcell.crm.catalog_service.entities.concretes.Property;
 import com.turkcell.crm.common.shared.exceptions.types.BusinessException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mapstruct.factory.Mappers;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -217,6 +217,7 @@ class ProductPropertyManagerTest {
         assertEquals("Product property not found", exception.getMessage());
 
     }
+
     @Test
     void update_ShouldUpdateProductPropertySuccessfully() {
 
@@ -248,6 +249,7 @@ class ProductPropertyManagerTest {
         assertEquals("Product property not found", exception.getMessage());
 
     }
+
     @Test
     void delete_shouldDeleteProductPropertySuccessfully() {
 

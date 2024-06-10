@@ -307,6 +307,7 @@ class IndividualCustomerManagerTest {
             individualCustomerBusinessRules1.individualCustomerShouldBeExist(Optional.empty());
         });
     }
+
     @Test
     void getInvoiceInfoByAddress_ShouldReturnInvoiceInfo() {
         // Arrange
