@@ -1,5 +1,7 @@
 package com.turkcell.crm.search_service.core.services.search;
 
+import com.turkcell.crm.search_service.business.constants.Messages;
+import com.turkcell.crm.search_service.core.business.abstracts.MessageService;
 import com.turkcell.crm.search_service.core.services.search.models.DynamicFilter;
 import com.turkcell.crm.search_service.core.services.search.models.DynamicQuery;
 import com.turkcell.crm.search_service.core.services.search.models.DynamicSort;
@@ -19,6 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SearchManager implements SearchService {
     private final MongoTemplate mongoTemplate;
+    private final MessageService messageService;
 
     @Override
     public <T> List<T> dynamicSearch(DynamicQuery dynamicQuery, Class<T> type) {
@@ -36,11 +39,11 @@ public class SearchManager implements SearchService {
     private void filter(Query query, List<DynamicFilter> filters) {
         for (DynamicFilter filter : filters) {
             if (filter.field() == null || filter.field().isBlank())
-                throw new IllegalArgumentException("Field must be provided for filtering");
+                throw new IllegalArgumentException(this.messageService.getMessage(Messages.FilteringMessages.FIELD_MUST_BE_PROVIDED_FOR_FILTERING));
             if (filter.value() == null || filter.value().isBlank())
-                throw new IllegalArgumentException("Value must be provided for filtering");
+                throw new IllegalArgumentException(this.messageService.getMessage(Messages.FilteringMessages.VALUE_MUST_BE_PROVIDED_FOR_FILTERING));
             if (filter.operator() == null)
-                throw new IllegalArgumentException("Operator must be provided for filtering");
+                throw new IllegalArgumentException(this.messageService.getMessage(Messages.FilteringMessages.OPERATOR_MUST_BE_PROVIDED_FOR_FILTERING));
         }
 
         filters.stream()
@@ -69,9 +72,9 @@ public class SearchManager implements SearchService {
     private void sort(Query query, List<DynamicSort> sorts) {
         for (DynamicSort dynamicSort : sorts) {
             if (dynamicSort.field() == null || dynamicSort.field().isBlank())
-                throw new IllegalArgumentException("Field must be provided for sorting");
+                throw new IllegalArgumentException(this.messageService.getMessage(Messages.SortingMessages.FIELD_MUST_BE_PROVIDED_FOR_SORTING));
             if (dynamicSort.direction() == null)
-                throw new IllegalArgumentException("Direction must be provided for sorting");
+                throw new IllegalArgumentException(this.messageService.getMessage(Messages.SortingMessages.DIRECTION_MUST_BE_PROVIDED_FOR_SORTING));
         }
 
         sorts.stream()
@@ -86,11 +89,11 @@ public class SearchManager implements SearchService {
 
     private void paginate(Query query, Pagination pagination) {
         if (pagination == null)
-            throw new IllegalArgumentException("Pagination must be provided");
+            throw new IllegalArgumentException(this.messageService.getMessage(Messages.PaginationMessages.PAGINATION_MUST_BE_PROVIDED));
         if (pagination.page() < 0)
-            throw new IllegalArgumentException("Page must be greater than or equal to 0");
+            throw new IllegalArgumentException(this.messageService.getMessage(Messages.PaginationMessages.PAGE_MUST_BE_GREATER_THAN_OR_EQUAL_TO_0));
         if (pagination.pageSize() < 1)
-            throw new IllegalArgumentException("Page size must be greater than 0");
+            throw new IllegalArgumentException(this.messageService.getMessage(Messages.PaginationMessages.PAGE_SIZE_MUST_BE_GREATER_THAN_0));
         Pageable pageable = PageRequest.of(pagination.page(), pagination.pageSize());
         query.with(pageable);
     }
