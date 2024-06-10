@@ -1,7 +1,6 @@
 package com.turkcell.crm.identity_service.configurations;
 
 import com.turkcell.crm.core.configurations.BaseSecurityService;
-import com.turkcell.crm.identity_service.business.constants.Roles;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,9 +25,9 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         baseSecurityService.securityFilterChain(http);
         http.authorizeHttpRequests(r -> r
-                .requestMatchers(HttpMethod.GET, "/identity-service/api/v1/auth/validate-token").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/identity-service/api/v1/auth/validate-token").authenticated()
 //                .requestMatchers("/identity-service/api/v1/users/**").hasRole(Roles.ADMIN)
-                .anyRequest().permitAll()
+                        .anyRequest().permitAll()
         );
         return http.build();
     }

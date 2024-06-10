@@ -1,13 +1,12 @@
 package com.turkcell.crm.customer_service.business.concretes;
 
-import com.turkcell.crm.customer_service.business.abstracts.AddressService;
-import com.turkcell.crm.customer_service.business.abstracts.CustomerService;
-import com.turkcell.crm.customer_service.business.dtos.requests.customers.CreateCustomerRequest;
-import com.turkcell.crm.customer_service.business.dtos.requests.customers.AddressDto;
-import com.turkcell.crm.customer_service.business.dtos.requests.customers.UpdateCustomerRequest;
 import com.turkcell.crm.common.shared.exceptions.types.BusinessException;
 import com.turkcell.crm.common.shared.exceptions.types.NotFoundException;
-
+import com.turkcell.crm.customer_service.business.abstracts.AddressService;
+import com.turkcell.crm.customer_service.business.abstracts.CustomerService;
+import com.turkcell.crm.customer_service.business.dtos.requests.customers.AddressDto;
+import com.turkcell.crm.customer_service.business.dtos.requests.customers.CreateCustomerRequest;
+import com.turkcell.crm.customer_service.business.dtos.requests.customers.UpdateCustomerRequest;
 import com.turkcell.crm.customer_service.business.mappers.CustomerMapper;
 import com.turkcell.crm.customer_service.business.mappers.CustomerMapperImpl;
 import com.turkcell.crm.customer_service.business.rules.CustomerBusinessRules;
@@ -36,13 +35,13 @@ public class CustomerManagerTest {
 
     @BeforeEach
     void setUp() {
-        messageService=Mockito.mock(MessageService.class);
-        customerService=Mockito.mock(CustomerService.class);
+        messageService = Mockito.mock(MessageService.class);
+        customerService = Mockito.mock(CustomerService.class);
         customerRepository = Mockito.mock(CustomerRepository.class);
 
         customerBusinessRules = Mockito.mock(CustomerBusinessRules.class);
         addressService = Mockito.mock(AddressService.class);
-        CustomerMapper customerMapper=new CustomerMapperImpl();// CustomerMapper sadece burada tanımlanıyor
+        CustomerMapper customerMapper = new CustomerMapperImpl();// CustomerMapper sadece burada tanımlanıyor
 
         customerManager = new CustomerManager(customerRepository, customerBusinessRules, customerMapper, addressService);
     }
@@ -51,7 +50,7 @@ public class CustomerManagerTest {
     @Test
     void add_ShouldAddCustomer() {
         // Arrange
-        List<AddressDto> addresses = List.of(new AddressDto(1,1,"dfdfg" ,"City 1","sdfdsf"));
+        List<AddressDto> addresses = List.of(new AddressDto(1, 1, "dfdfg", "City 1", "sdfdsf"));
         CreateCustomerRequest request = new CreateCustomerRequest("John", "Doe", addresses);
         Customer customer = new Customer();
         Customer createdCustomer = new Customer();
@@ -65,6 +64,7 @@ public class CustomerManagerTest {
         // Assert
         assertEquals(createdCustomer, result);
     }
+
     @Test
     void emailShouldBeUnique_ShouldThrowBusinessException_WhenEmailExists() {
         // Arrange
@@ -79,11 +79,12 @@ public class CustomerManagerTest {
             customerBusinessRules.emailShouldBeUnique(existingEmail);
         });
     }
+
     @Test
     void update_ShouldReturnUpdatedCustomer_WhenCustomerExists() {
         // Arrange
         int customerId = 1;
-        UpdateCustomerRequest updateRequest = new UpdateCustomerRequest("test@exampla.com","05458795452");
+        UpdateCustomerRequest updateRequest = new UpdateCustomerRequest("test@exampla.com", "05458795452");
         Customer existingCustomer = new Customer();
         existingCustomer.setId(customerId);
 
@@ -101,7 +102,7 @@ public class CustomerManagerTest {
     void update_ShouldThrowNotFoundException_WhenCustomerDoesNotExist() {
         // Arrange
         int nonExistentCustomerId = 1;
-        UpdateCustomerRequest updateRequest = new UpdateCustomerRequest("test@example.com","05458795452");
+        UpdateCustomerRequest updateRequest = new UpdateCustomerRequest("test@example.com", "05458795452");
 
         // Mocking behavior of customerRepository.findById()
         when(customerRepository.findById(nonExistentCustomerId)).thenReturn(Optional.empty());

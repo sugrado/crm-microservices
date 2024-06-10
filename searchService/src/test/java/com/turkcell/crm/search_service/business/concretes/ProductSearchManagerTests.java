@@ -70,7 +70,7 @@ public class ProductSearchManagerTests {
         DynamicQuery dynamicQuery = new DynamicQuery(
                 List.of(new DynamicFilter("productName", FilterOperator.EQUALS, "Mouse")),
                 List.of(new DynamicSort("categoryName", SortDirection.ASC))
-                ,new Pagination(1,5
+                , new Pagination(1, 5
         ));
         List<Product> expectedProducts = Arrays.asList(new Product(), new Product());
 

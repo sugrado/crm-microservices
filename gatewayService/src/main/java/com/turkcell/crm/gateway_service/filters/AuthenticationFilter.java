@@ -1,8 +1,7 @@
 package com.turkcell.crm.gateway_service.filters;
 
 import com.turkcell.crm.gateway_service.clients.IdentityClient;
-import com.turkcell.crm.gateway_service.constant.Messages;
-import com.turkcell.crm.gateway_service.exceptions.types.AuthenticationException;
+import com.turkcell.crm.gateway_service.rules.AuthenticationFilterRules;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.HttpHeaders;
@@ -13,10 +12,12 @@ import java.util.List;
 @Component
 public class AuthenticationFilter extends AbstractGatewayFilterFactory<AuthenticationFilter.Config> {
     private final IdentityClient identityClient;
+    private final AuthenticationFilterRules authenticationFilterRules;
 
-    public AuthenticationFilter(IdentityClient identityClient) {
+    public AuthenticationFilter(IdentityClient identityClient, AuthenticationFilterRules authenticationFilterRules) {
         super(Config.class);
         this.identityClient = identityClient;
+        this.authenticationFilterRules = authenticationFilterRules;
     }
 
     @Override
@@ -25,24 +26,17 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
             if (!RouteValidator.isSecured.test(exchange.getRequest())) {
                 return chain.filter(exchange);
             }
-
-            if (!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
-                throw new AuthenticationException(Messages.MISSING_AUTHORIZATION_HEADER);
-            }
+            this.authenticationFilterRules.headersShouldContainAuthorizationHeader(exchange.getRequest().getHeaders());
 
             List<String> authHeaders = exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION);
-            if (authHeaders == null || authHeaders.isEmpty()) {
-                throw new AuthenticationException(Messages.MISSING_AUTHORIZATION_HEADER);
-            }
+            this.authenticationFilterRules.authHeadersCanNotBeEmptyOrNull(authHeaders);
 
             String authHeader = authHeaders.get(0);
             if (authHeader != null && authHeader.startsWith("Bearer ")) {
                 authHeader = authHeader.substring(7);
             }
 
-            if (authHeader == null || authHeader.isBlank() || authHeader.isEmpty()) {
-                throw new AuthenticationException(Messages.MISSING_AUTHORIZATION_HEADER);
-            }
+            this.authenticationFilterRules.authHeaderCanNotBeEmptyOrNull(authHeader);
 
             this.identityClient.validateToken(authHeader);
 

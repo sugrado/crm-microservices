@@ -167,8 +167,9 @@ public class AddressManagerTest {
         assertTrue(actualMessage.contains(expectedMessage));
         verify(addressRepository, times(1)).findById(anyInt());
     }
+
     @Test
-    void getByIdEntity_shouldReturnAddressSuccesful(){
+    void getByIdEntity_shouldReturnAddressSuccesful() {
         Address address = new Address();
         address.setId(1);
 
@@ -176,8 +177,9 @@ public class AddressManagerTest {
 
         Address expectedAddress = addressManager.getByIdEntity(anyInt());
 
-        assertEquals(expectedAddress.getId(),address.getId());
+        assertEquals(expectedAddress.getId(), address.getId());
     }
+
     @Test
     void getByIdEntity_shouldThrowExceptionWhenAddressNotFound() {
         // Arrange
@@ -186,7 +188,7 @@ public class AddressManagerTest {
 
         when(addressRepository.findById(addressId)).thenReturn(emptyOptional);
 
-        assertThrows(NotFoundException.class,()->{
+        assertThrows(NotFoundException.class, () -> {
             addressManager.getByIdEntity(addressId);
         });
     }
@@ -254,6 +256,7 @@ public class AddressManagerTest {
 
         assertTrue(actualMessage.contains(expectedMessage));
     }
+
     @Test
     void update_ShouldUpdateAddressForSpecificIdSuccesful() {
         int addressId = 1;
@@ -278,7 +281,7 @@ public class AddressManagerTest {
 
         verify(addressRepository).save(any(Address.class));
         assertEquals(expectedResponse.id(), response.id());
-        assertNotEquals(expectedResponse.street(),response.street());
+        assertNotEquals(expectedResponse.street(), response.street());
     }
 
     @Test

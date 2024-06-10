@@ -409,7 +409,7 @@ class AccountManagerTest {
         // Verify
         verify(accountRepository).save(any(Account.class));
         assertEquals(expectedResponse.id(), response.id());
-        assertNotEquals(updateRequest.name(),response.name());
+        assertNotEquals(updateRequest.name(), response.name());
     }
 
     @Test

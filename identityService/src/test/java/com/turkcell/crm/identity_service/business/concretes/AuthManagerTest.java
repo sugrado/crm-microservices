@@ -72,9 +72,7 @@ class AuthManagerTest {
     void register_withExistingEmail_shouldThrowException() {
         RegisterRequest registerRequest = new RegisterRequest("gorkem@mail.com", "123456789");
         when(userRepository.existsByEmail(Mockito.anyString())).thenReturn(true);
-        assertThrows(BusinessException.class, () -> {
-            authService.register(registerRequest);
-        });
+        assertThrows(BusinessException.class, () -> authService.register(registerRequest));
     }
 
     @Test

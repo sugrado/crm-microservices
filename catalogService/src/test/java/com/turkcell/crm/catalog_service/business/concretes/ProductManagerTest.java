@@ -5,24 +5,21 @@ import com.turkcell.crm.catalog_service.business.constants.Messages;
 import com.turkcell.crm.catalog_service.business.dtos.requests.product.CreateProductRequest;
 import com.turkcell.crm.catalog_service.business.dtos.requests.product.UpdateProductRequest;
 import com.turkcell.crm.catalog_service.business.dtos.responses.product.*;
-import com.turkcell.crm.catalog_service.business.mappers.CategoryMapper;
 import com.turkcell.crm.catalog_service.business.mappers.ProductMapper;
-import com.turkcell.crm.common.shared.dtos.catalogs.GetAllForCompleteOrderResponse;
-import com.turkcell.crm.common.shared.kafka.events.orders.OrderCreatedEventProduct;
-import org.mapstruct.factory.Mappers;
-import com.turkcell.crm.catalog_service.business.rules.CategoryBusinessRules;
 import com.turkcell.crm.catalog_service.business.rules.ProductBusinessRules;
 import com.turkcell.crm.catalog_service.core.business.abstracts.MessageService;
-import com.turkcell.crm.catalog_service.data_access.abstracts.CategoryRepository;
 import com.turkcell.crm.catalog_service.data_access.abstracts.ProductRepository;
 import com.turkcell.crm.catalog_service.entities.concretes.Category;
 import com.turkcell.crm.catalog_service.entities.concretes.Product;
 import com.turkcell.crm.catalog_service.kafka.producers.ProductProducer;
+import com.turkcell.crm.common.shared.dtos.catalogs.GetAllForCompleteOrderResponse;
 import com.turkcell.crm.common.shared.dtos.catalogs.GetByIdProductResponse;
 import com.turkcell.crm.common.shared.dtos.catalogs.ProductPropertyDto;
 import com.turkcell.crm.common.shared.exceptions.types.BusinessException;
+import com.turkcell.crm.common.shared.kafka.events.orders.OrderCreatedEventProduct;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mapstruct.factory.Mappers;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -166,9 +163,9 @@ class ProductManagerTest {
     @Test
     void update_shouldUpdateProductSuccessfully() {
 
-        UpdateProductRequest updateProductRequest = new UpdateProductRequest("Test Title", "Test Description", 30000, 30,1);
+        UpdateProductRequest updateProductRequest = new UpdateProductRequest("Test Title", "Test Description", 30000, 30, 1);
         UpdatedProductResponse updatedProductResponse = new UpdatedProductResponse(1,
-                LocalDateTime.now(), LocalDateTime.now(), "Test Title", "Test Description", 30000, 30,1);
+                LocalDateTime.now(), LocalDateTime.now(), "Test Title", "Test Description", 30000, 30, 1);
 
         when(productRepository.findById(anyInt())).thenReturn(Optional.of(product));
         when(productRepository.save(any(Product.class))).thenReturn(product);
@@ -183,7 +180,7 @@ class ProductManagerTest {
     @Test
     void update_shouldThrowBusinessExceptionWhenProductDoesNotExist() {
 
-        UpdateProductRequest updateProductRequest = new UpdateProductRequest("Test Title", "Test Description", 30000, 30,1);
+        UpdateProductRequest updateProductRequest = new UpdateProductRequest("Test Title", "Test Description", 30000, 30, 1);
         when(productRepository.findById(1)).thenReturn(Optional.empty());
         when(messageService.getMessage(Messages.ProductMessages.NOT_FOUND)).thenReturn("Product not found");
 
@@ -296,8 +293,8 @@ class ProductManagerTest {
 
         List<Integer> productIdList = Arrays.asList(1, 2);
 
-        GetAllForCompleteOrderResponse response1 = new GetAllForCompleteOrderResponse(1, "Product 1",1000);
-        GetAllForCompleteOrderResponse response2 = new GetAllForCompleteOrderResponse(2, "Product 2",2000);
+        GetAllForCompleteOrderResponse response1 = new GetAllForCompleteOrderResponse(1, "Product 1", 1000);
+        GetAllForCompleteOrderResponse response2 = new GetAllForCompleteOrderResponse(2, "Product 2", 2000);
 
         List<GetAllForCompleteOrderResponse> getAllForCompleteOrderResponseList = Arrays.asList(response1, response2);
 
@@ -312,6 +309,7 @@ class ProductManagerTest {
         assertEquals(getAllForCompleteOrderResponseList.get(1).id(), response.get(1).id());
         assertEquals(getAllForCompleteOrderResponseList.get(1).title(), response.get(1).title());
     }
+
     @Test
     void decreaseStocks_shouldDecreaseStockForEachProductSuccessfully() {
 
@@ -325,7 +323,7 @@ class ProductManagerTest {
 
         List<Product> productList = Arrays.asList(product1, product2);
 
-        OrderCreatedEventProduct eventProduct1 = new OrderCreatedEventProduct(1,"Test Title",1000);
+        OrderCreatedEventProduct eventProduct1 = new OrderCreatedEventProduct(1, "Test Title", 1000);
         OrderCreatedEventProduct eventProduct2 = new OrderCreatedEventProduct(2, "Test title 2", 2000);
         List<OrderCreatedEventProduct> eventProducts = Arrays.asList(eventProduct1, eventProduct2);
 

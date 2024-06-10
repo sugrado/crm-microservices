@@ -5,16 +5,17 @@ import com.turkcell.crm.catalog_service.business.dtos.requests.property.CreatePr
 import com.turkcell.crm.catalog_service.business.dtos.requests.property.UpdatePropertyRequest;
 import com.turkcell.crm.catalog_service.business.dtos.responses.property.*;
 import com.turkcell.crm.catalog_service.business.mappers.PropertyMapper;
-import com.turkcell.crm.common.shared.exceptions.types.NotFoundException;
-import org.mapstruct.factory.Mappers;
 import com.turkcell.crm.catalog_service.business.rules.PropertyBusinessRules;
 import com.turkcell.crm.catalog_service.core.business.abstracts.MessageService;
 import com.turkcell.crm.catalog_service.data_access.abstracts.PropertyRepository;
 import com.turkcell.crm.catalog_service.entities.concretes.Category;
 import com.turkcell.crm.catalog_service.entities.concretes.Property;
 import com.turkcell.crm.common.shared.exceptions.types.BusinessException;
+import com.turkcell.crm.common.shared.exceptions.types.NotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mapstruct.factory.Mappers;
+
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -95,8 +96,8 @@ class PropertyManagerTest {
 
         List<Property> propertyList = Arrays.asList(property1, property2);
 
-        GetAllPropertiesResponse getAllPropertiesResponse = new GetAllPropertiesResponse(1,"Test Name", 1);
-        GetAllPropertiesResponse getAllPropertiesResponse1 = new GetAllPropertiesResponse(2,"Test Name 2", 1);
+        GetAllPropertiesResponse getAllPropertiesResponse = new GetAllPropertiesResponse(1, "Test Name", 1);
+        GetAllPropertiesResponse getAllPropertiesResponse1 = new GetAllPropertiesResponse(2, "Test Name 2", 1);
 
         List<GetAllPropertiesResponse> responseList = Arrays.asList(getAllPropertiesResponse, getAllPropertiesResponse1);
 
@@ -133,23 +134,25 @@ class PropertyManagerTest {
         assertEquals(deletePropertyResponse.name(), response.name());
         assertEquals(deletePropertyResponse.categoryId(), response.categoryId());
     }
+
     @Test
     void update_shouldThrowExceptionWhenPropertyNotFound() {
 
-        UpdatePropertyRequest updatePropertyRequest = new UpdatePropertyRequest("Test Name",1);
+        UpdatePropertyRequest updatePropertyRequest = new UpdatePropertyRequest("Test Name", 1);
         when(propertyRepository.findById(anyInt())).thenReturn(Optional.empty());
 
         assertThrows(NotFoundException.class,
                 () -> propertyManager.update(1, updatePropertyRequest));
 
     }
+
     @Test
     void update_shouldUpdatePropertySuccessfully() {
 
         Category category = new Category();
-        UpdatePropertyRequest updatePropertyRequest = new UpdatePropertyRequest("Test Name" ,1);
+        UpdatePropertyRequest updatePropertyRequest = new UpdatePropertyRequest("Test Name", 1);
         UpdatedPropertyResponse updatedPropertyResponse = new UpdatedPropertyResponse(1,
-                1,"Test Name", LocalDateTime.now(), LocalDateTime.now());
+                1, "Test Name", LocalDateTime.now(), LocalDateTime.now());
 
         when(propertyRepository.findById(anyInt())).thenReturn(Optional.of(property));
         when(categoryManager.getByIdEntity(anyInt())).thenReturn(category);
@@ -199,8 +202,8 @@ class PropertyManagerTest {
 
         List<Property> propertyList = Arrays.asList(property1, property2);
 
-        GetAllPropertiesByCategoryIdResponse response1 = new GetAllPropertiesByCategoryIdResponse(1,"Test Name");
-        GetAllPropertiesByCategoryIdResponse response2 = new GetAllPropertiesByCategoryIdResponse(2,"Test Name 2");
+        GetAllPropertiesByCategoryIdResponse response1 = new GetAllPropertiesByCategoryIdResponse(1, "Test Name");
+        GetAllPropertiesByCategoryIdResponse response2 = new GetAllPropertiesByCategoryIdResponse(2, "Test Name 2");
         List<GetAllPropertiesByCategoryIdResponse> responseList = Arrays.asList(response1, response2);
 
         when(propertyRepository.findAllByCategoryId(categoryId)).thenReturn(propertyList);
